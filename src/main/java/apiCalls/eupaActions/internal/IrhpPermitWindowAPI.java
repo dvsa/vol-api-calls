@@ -3,6 +3,7 @@ package apiCalls.eupaActions.internal;
 import activesupport.http.RestUtils;
 import activesupport.system.Properties;
 import apiCalls.Utils.eupaBuilders.internal.irhp.permit.stock.OpenByCountryModel;
+import apiCalls.Utils.generic.Headers;
 import apiCalls.Utils.generic.Utils;
 import apiCalls.eupaActions.BaseAPI;
 import io.restassured.response.ValidatableResponse;
@@ -13,15 +14,13 @@ import org.dvsa.testing.lib.url.utils.EnvironmentType;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class IrhpPermitWindowAPI extends BaseAPI {
+public class IrhpPermitWindowAPI {
 
     private static String baseResource = "irhp-permit-window/";
-    private static ValidatableResponse response;
-    private static String apiHeader = Utils.config.getString("apiHeader");
+    private static ValidatableResponse apiResponse;
+    public Headers apiHeaders = new Headers();
 
-    public static OpenByCountryModel openByCountry(String... countryIds) {
-        String oldXPID = getHeader("x-pid"); // Needed as other calls might expect an external x-pid
-        updateHeader("x-pid", apiHeader);
+    public ValidatableResponse openByCountry(String... countryIds) {
         String path = "open-by-country/?dto=Dvsa%5COlcs%5CTransfer%5CQuery%5CIrhpPermitWindow%5COpenByCountry";
 
         String countries = IntStream.range(0, countryIds.length)
@@ -30,12 +29,11 @@ public class IrhpPermitWindowAPI extends BaseAPI {
 
         URL.build(EnvironmentType.getEnum(Properties.get("env", true)), baseResource + path.concat(countries));
 
-        response = RestUtils.get(URL.getURL().toString().substring(0, URL.getURL().toString().length() - 1), getHeaders());
+        apiResponse = RestUtils.get(URL.getURL().toString().substring(0, URL.getURL().toString().length() - 1), apiHeaders.getHeaders());
 
-        response.statusCode(HttpStatus.SC_OK);
-        updateHeader("x-pid", oldXPID);
+        Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
 
-        return response.extract().as(OpenByCountryModel.class);
+        return apiResponse;
     }
 
     public static OpenByCountryModel openByCountry() {

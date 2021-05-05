@@ -3,27 +3,28 @@ package apiCalls.eupaActions.external.permits;
 import activesupport.http.RestUtils;
 import activesupport.system.Properties;
 import apiCalls.Utils.eupaBuilders.external.permits.TypesModel;
-import apiCalls.eupaActions.BaseAPI;
+import apiCalls.Utils.generic.Headers;
+import apiCalls.Utils.generic.Utils;
 import io.restassured.response.ValidatableResponse;
 import org.apache.http.HttpStatus;
 import org.dvsa.testing.lib.url.api.URL;
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 
-public class AvailableTypesAPI extends BaseAPI {
+public class AvailableTypesAPI {
 
     private static String baseResource = "permits/available-types/";
-    private static ValidatableResponse response;
+    private static ValidatableResponse apiResponse;
 
-    public static TypesModel types() {
+    public Headers apiHeaders = new Headers();
+
+    public ValidatableResponse types() {
         URL.build(EnvironmentType.getEnum(Properties.get("env")), baseResource);
 
-        response = RestUtils.get(String.valueOf(URL.getURL()), getHeaders());
+        apiResponse = RestUtils.get(String.valueOf(URL.getURL()), apiHeaders.getHeaders());
 
-        prettyPrintJson(response.extract().asString());
+        Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
 
-        response.statusCode(HttpStatus.SC_OK);
-
-        return response.extract().body().as(TypesModel.class);
+        return apiResponse;
     }
 
 }
