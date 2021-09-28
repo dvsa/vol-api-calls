@@ -528,6 +528,17 @@ public class UpdateLicence extends BaseAPI {
         setVariationApplicationId(String.valueOf(apiResponse.extract().jsonPath().getInt("id.application")));
     }
 
+    public void createVariationViaSelfServe(String licenceId) {
+        String licenceHistoryResource = URL.build(env, String.format("licence/%s/variation", licenceId)).toString();
+
+        VariationBuilder variation = new VariationBuilder().withId(application.getLicenceId()).withFeeRequired("N").withAppliedVia("applied_via_phone").withVariationType(getVariationType());
+        apiResponse = RestUtils.post(variation, licenceHistoryResource, application.apiHeaders.getHeaders());
+
+        Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
+
+        setVariationApplicationId(String.valueOf(apiResponse.extract().jsonPath().getInt("id.application")));
+    }
+
     public void updateLicenceType() {
         String typeOfLicenceResource = URL.build(env, String.format("variation/%s/type-of-licence", application.getLicenceId())).toString();
         Integer variationApplicationVersion = Integer.parseInt(fetchApplicationInformation(getVariationApplicationId(), "version", "1"));
@@ -866,8 +877,10 @@ public class UpdateLicence extends BaseAPI {
         } else {
             int applicationVersion = Integer.parseInt(this.fetchApplicationInformation(this.variationApplicationId, "version", "1"));
             String updateOperatingCentreResource = URL.build(env, String.format("application/%s/operating-centres", this.variationApplicationId)).toString();
-            OperatingCentreUpdater updateOperatingCentre = (new OperatingCentreUpdater()).withId(this.variationApplicationId).withTrafficArea(this.application.getTrafficArea().value()).withEnforcementArea(this.application.getEnforcementArea().value()).withVersion(applicationVersion).withTotAuthHgvVehicles(hgvAuthorisation).withTotCommunityLicences(1).withTotAuthTrailers(this.application.getNoOfOperatingCentreTrailerAuthorised()).withTotAuthLgvVehicles(lgvAuthorisation);
-            this.apiResponse = RestUtils.put(updateOperatingCentre, updateOperatingCentreResource, this.apiHeaders.getHeaders());
+            OperatingCentreUpdater updateOperatingCentre = (new OperatingCentreUpdater()).withId(this.variationApplicationId)
+                    .withVersion(applicationVersion).withTotAuthHgvVehicles(hgvAuthorisation).withTotAuthLgvVehicles(lgvAuthorisation)
+                    .withTotAuthTrailers(this.application.getNoOfOperatingCentreTrailerAuthorised()).withEnforcementArea(application.getEnforcementArea().value());
+            this.apiResponse = RestUtils.put(updateOperatingCentre, updateOperatingCentreResource, application.apiHeaders.getHeaders());
             Utils.checkHTTPStatusCode(this.apiResponse, 200);
             return this.apiResponse;
         }
