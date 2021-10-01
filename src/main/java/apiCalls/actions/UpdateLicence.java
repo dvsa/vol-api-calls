@@ -636,20 +636,6 @@ public class UpdateLicence extends BaseAPI {
         return apiResponse;
     }
 
-    public ValidatableResponse variationUpdateOperatingCentre() {
-        if (application.getLicenceType().equals("special_restricted")) {
-            throw new IllegalArgumentException("Cannot update operating centre for special_restricted licence");
-        }
-        String updateOperatingCentreResource = URL.build(env, String.format("application/%s/variation-operating-centre/%s", application.getLicenceId(), getVariationApplicationId())).toString();
-        OperatingCentreVariationBuilder updateOperatingCentre = new OperatingCentreVariationBuilder().withId(getVariationApplicationId())
-                .withApplication(getVariationApplicationId()).withNoOfVehiclesRequired(String.valueOf(application.getNoOfAddedHgvVehicles()))
-                .withVersion(version);
-        apiResponse = RestUtils.put(updateOperatingCentre, updateOperatingCentreResource, apiHeaders.getHeaders());
-
-        Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
-
-        return apiResponse;
-    }
 
     public String createInternalUser(String userRole, String userType) {
         List<String> roles = new ArrayList<>();
@@ -871,7 +857,52 @@ public class UpdateLicence extends BaseAPI {
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
     }
 
-    public ValidatableResponse updateLgvAuthorisationOnVariation(int hgvAuthorisation, int lgvAuthorisation) {
+    public ValidatableResponse addOperatingCentreToVariation(String vehicles, String trailers) {
+        if (licenceType.equals(LicenceType.SPECIAL_RESTRICTED.asString())) {
+            return null;
+        }
+        String operatingCentreResource = URL.build(env, String.format("application/%s/operating-centre/", variationApplicationId)).toString();
+        String permissionOption = "Y";
+        AddressBuilder address = new AddressBuilder().withAddressLine1("test").withAddressLine2("test").
+                withAddressLine3("test").withAddressLine4("test").withTown("test")
+                .withPostcode(application.getPostCodeByTrafficArea()).withCountryCode(getCountryCode());
+        OperatingCentreBuilder operatingCentreBuilder = new OperatingCentreBuilder().withApplication(variationApplicationId).withPermission(permissionOption).withAddress(address);
+        if (application.getOperatorType().equals(OperatorType.GOODS.asString())) {
+            operatingCentreBuilder.withNoOfHgvVehiclesRequired(String.valueOf(vehicles))
+                    .withNoOfTrailersRequired(String.valueOf(trailers));
+        }
+        if (application.getOperatorType().equals(OperatorType.PUBLIC.asString()) && (!licenceType.equals(LicenceType.RESTRICTED.asString()))) {
+            operatingCentreBuilder.withNoOfHgvVehiclesRequired(String.valueOf(application.getTotalOperatingCentreHgvAuthority()));
+            //NOTE: Because of timing constraints, psvs now store their vehicles in the hgv column and are updated via the hgv api call.
+            // This is even though the vehicles aren't hgvs. It may be fixed later but at the moment this is the new norm.
+        }
+        if (application.getOperatorType().equals(OperatorType.PUBLIC.asString()) && (licenceType.equals(LicenceType.RESTRICTED.asString()))) {
+            operatingCentreBuilder.withNoOfHgvVehiclesRequired(String.valueOf(application.getRestrictedVehicles()));
+        }
+        apiResponse = RestUtils.post(operatingCentreBuilder, operatingCentreResource, apiHeaders.getHeaders());
+
+        Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
+
+
+        return apiResponse;
+    }
+
+    public ValidatableResponse editOperatingCentreOnVariation(String operatingCentreId, int vehicle) {
+        if (application.getLicenceType().equals("special_restricted")) {
+            throw new IllegalArgumentException("Cannot update operating centre for special_restricted licence");
+        }
+        String updateOperatingCentreResource = URL.build(env, String.format("application/%s/variation-operating-centre/L%s/", getVariationApplicationId(), operatingCentreId)).toString();
+        OperatingCentreVariationBuilder updateOperatingCentre = new OperatingCentreVariationBuilder().withId(getVariationApplicationId())
+                .withApplication(getVariationApplicationId()).withNoOfVehiclesRequired(String.valueOf(vehicle))
+                .withVersion(version);
+        apiResponse = RestUtils.put(updateOperatingCentre, updateOperatingCentreResource, application.apiHeaders.getHeaders());
+
+        Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
+
+        return apiResponse;
+    }
+
+    public ValidatableResponse updateTotalAuthorisationsOnVariation(int hgvAuthorisation, int lgvAuthorisation) {
         if (this.application.getLicenceType().equals(LicenceType.SPECIAL_RESTRICTED.asString())) {
             return null;
         } else {
@@ -879,6 +910,21 @@ public class UpdateLicence extends BaseAPI {
             String updateOperatingCentreResource = URL.build(env, String.format("application/%s/operating-centres", this.variationApplicationId)).toString();
             OperatingCentreUpdater updateOperatingCentre = (new OperatingCentreUpdater()).withId(this.variationApplicationId)
                     .withVersion(applicationVersion).withTotAuthHgvVehicles(hgvAuthorisation).withTotAuthLgvVehicles(lgvAuthorisation)
+                    .withTotAuthTrailers(this.application.getNoOfOperatingCentreTrailerAuthorised()).withEnforcementArea(application.getEnforcementArea().value());
+            this.apiResponse = RestUtils.put(updateOperatingCentre, updateOperatingCentreResource, application.apiHeaders.getHeaders());
+            Utils.checkHTTPStatusCode(this.apiResponse, 200);
+            return this.apiResponse;
+        }
+    }
+
+    public ValidatableResponse updateLgvAuthorisationOnVariation(int lgvAuthorisation) {
+        if (this.application.getLicenceType().equals(LicenceType.SPECIAL_RESTRICTED.asString())) {
+            return null;
+        } else {
+            int applicationVersion = Integer.parseInt(this.fetchApplicationInformation(this.variationApplicationId, "version", "1"));
+            String updateOperatingCentreResource = URL.build(env, String.format("application/%s/operating-centres", this.variationApplicationId)).toString();
+            OperatingCentreUpdater updateOperatingCentre = (new OperatingCentreUpdater()).withId(this.variationApplicationId)
+                    .withVersion(applicationVersion).withTotAuthHgvVehicles(application.getTotalOperatingCentreHgvAuthority()).withTotAuthLgvVehicles(lgvAuthorisation)
                     .withTotAuthTrailers(this.application.getNoOfOperatingCentreTrailerAuthorised()).withEnforcementArea(application.getEnforcementArea().value());
             this.apiResponse = RestUtils.put(updateOperatingCentre, updateOperatingCentreResource, application.apiHeaders.getHeaders());
             Utils.checkHTTPStatusCode(this.apiResponse, 200);
