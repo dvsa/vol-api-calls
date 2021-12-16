@@ -6,19 +6,18 @@
 
     <groupId>org.dvsa.testing.framework</groupId>
     <artifactId>vol-api-calls</artifactId>
-    <version>1.1.2.lgv</version>
+    <version>1.1.5.lgv</version>
 
     <properties>
-        <active-support.version>1.5.0</active-support.version>
-        <slf4j.version>2.12.1</slf4j.version>
-        <slf4j-log4j12.version>2.12.1</slf4j-log4j12.version>
+        <active-support.version>1.6.1</active-support.version>
+        <slf4j.version>2.15.0</slf4j.version>
+        <slf4j-log4j12.version>2.15.0</slf4j-log4j12.version>
         <commons-lang3.version>3.7</commons-lang3.version>
-        <uri-constructor.version>1.5.2</uri-constructor.version>
+        <uri-constructor.version>1.5.4</uri-constructor.version>
         <rest-assured-schema.version>4.3.1</rest-assured-schema.version>
         <javax.xml.version>2.3.1</javax.xml.version>
         <apache-commons.version>1.6</apache-commons.version>
         <nexus.releases>https://nexus.olcs.dev-dvsacloud.uk/repository/maven-releases</nexus.releases>
-        <nexus.snapshots>https://nexus.olcs.dev-dvsacloud.uk/repository/maven-snapshots</nexus.snapshots>
     </properties>
 
     <build>
@@ -79,12 +78,14 @@
         </dependency>
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>maven-releases</id>
+            <url>${nexus.releases}</url>
+        </repository>
+    </repositories>
     <!--  Nexus Configuration  -->
     <distributionManagement>
-        <snapshotRepository>
-            <id>maven-snapshots</id>
-            <url>${nexus.snapshots}</url>
-        </snapshotRepository>
         <repository>
             <id>maven-releases</id>
             <url>${nexus.releases}</url>

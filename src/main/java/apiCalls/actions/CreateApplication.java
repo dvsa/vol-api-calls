@@ -8,7 +8,6 @@ import activesupport.number.Int;
 import activesupport.system.Properties;
 import apiCalls.enums.*;
 import io.restassured.response.ValidatableResponse;
-import jdk.nashorn.internal.runtime.regexp.joni.exception.ValueException;
 import org.apache.http.HttpStatus;
 import org.dvsa.testing.lib.url.api.URL;
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
@@ -119,12 +118,12 @@ public class CreateApplication extends BaseAPI {
     private int noOfAddedHgvVehicles;
     private int noOfAddedLgvVehicles;
 
-    // On add an operating centre page
+    // On operating centres and authorisations page
     private int totalOperatingCentreHgvAuthority;
     private int totalOperatingCentreLgvAuthority;
     private int totalOperatingCentreTrailerAuthority;
 
-    // On Operating Centre and Authorisation Page
+    // On add an operating centre page
     private int noOfOperatingCentreVehicleAuthorised;
     private int noOfOperatingCentreTrailerAuthorised;
 
@@ -820,8 +819,6 @@ public class CreateApplication extends BaseAPI {
         }
         if (operatorType.equals(OperatorType.PUBLIC.asString()) && (!licenceType.equals(LicenceType.RESTRICTED.asString()))) {
             operatingCentreBuilder.withNoOfHgvVehiclesRequired(String.valueOf(getTotalOperatingCentreHgvAuthority()));
-            //NOTE: Because of timing constraints, psvs now store their vehicles in the hgv column and are updated via the hgv api call.
-            // This is even though the vehicles aren't hgvs. It may be fixed later but at the moment this is the new norm.
         }
         if (operatorType.equals(OperatorType.PUBLIC.asString()) && (licenceType.equals(LicenceType.RESTRICTED.asString()))) {
             operatingCentreBuilder.withNoOfHgvVehiclesRequired(String.valueOf(getRestrictedVehicles()));
@@ -959,9 +956,9 @@ public class CreateApplication extends BaseAPI {
             return null;
         }
         if (getNoOfAddedHgvVehicles() > getTotalOperatingCentreHgvAuthority()) {
-            throw new ValueException("Cannot have more than the specified amount of HGVs on an operating centre.");
+            throw new IllegalArgumentException("Cannot have more than the specified amount of HGVs on an operating centre.");
         } else if (getNoOfAddedLgvVehicles() > getTotalOperatingCentreLgvAuthority()) {
-            throw new ValueException("Cannot have more than the specified amount of LGVs on an operating centre.");
+            throw new IllegalArgumentException("Cannot have more than the specified amount of LGVs on an operating centre.");
         }
         String[] hgvVRMs = new String[getNoOfAddedHgvVehicles()];
 

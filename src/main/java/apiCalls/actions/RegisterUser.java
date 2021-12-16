@@ -121,6 +121,9 @@ public class RegisterUser {
         setBusinessType( BusinessType.LIMITED_COMPANY.asString() );
     }
 
+
+
+
     public ValidatableResponse registerUser() {
         String registerResource = URL.build(env, "user/selfserve/register").toString();
         apiHeaders.getHeaders().put("api", "dvsa");

@@ -12,8 +12,8 @@ import java.util.Map;
 
 public class InterimApplicationBuilder {
 
-    @JsonProperty("authVehicles")
-    private String authVehicles;
+    @JsonProperty("authHgvVehicles")
+    private String authHgvVehicles;
     @JsonProperty("requested")
     private String requested;
     @JsonProperty("reason")
@@ -39,18 +39,18 @@ public class InterimApplicationBuilder {
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("authVehicles")
-    public String getAuthVehicles() {
-        return authVehicles;
+    @JsonProperty("authHgvVehicles")
+    public String getAuthHgvVehicles() {
+        return authHgvVehicles;
     }
 
-    @JsonProperty("authVehicles")
-    public void setAuthVehicles(String authVehicles) {
-        this.authVehicles = authVehicles;
+    @JsonProperty("authHgvVehicles")
+    public void setAuthHgvVehicles(String authHgvVehicles) {
+        this.authHgvVehicles = authHgvVehicles;
     }
 
-    public InterimApplicationBuilder withAuthVehicles(String authVehicles){
-        this.authVehicles = authVehicles;
+    public InterimApplicationBuilder withAuthHgvVehicles(String authHgvVehicles){
+        this.authHgvVehicles = authHgvVehicles;
         return this;
     }
 
@@ -232,7 +232,7 @@ public class InterimApplicationBuilder {
     @Override
     public String toString() {
         return new ToStringBuilder(ToStringStyle.JSON_STYLE)
-                .append("authVehicles", authVehicles)
+                .append("authHgvVehicles", authHgvVehicles)
                 .append("requested", requested)
                 .append("reason", reason)
                 .append("startDate", startDate)
