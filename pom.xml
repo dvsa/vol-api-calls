@@ -10,8 +10,8 @@
 
     <properties>
         <active-support.version>1.6.4</active-support.version>
-        <slf4j.version>2.17.0</slf4j.version>
-        <slf4j-log4j12.version>2.17.0</slf4j-log4j12.version>
+        <slf4j.version>2.17.1</slf4j.version>
+        <slf4j-log4j12.version>2.17.1</slf4j-log4j12.version>
         <commons-lang3.version>3.7</commons-lang3.version>
         <uri-constructor.version>1.5.4</uri-constructor.version>
         <rest-assured-schema.version>4.3.1</rest-assured-schema.version>
