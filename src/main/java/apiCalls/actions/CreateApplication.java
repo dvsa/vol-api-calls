@@ -25,7 +25,7 @@ public class CreateApplication extends BaseAPI{
     private static final int version = 1;
 
     private RegisterUser user;
-    private GetUserDetails userDetails;
+    private UserDetails userDetails;
     private String applicationId;
     private String licenceId;
     private String operatorType;
@@ -149,11 +149,11 @@ public class CreateApplication extends BaseAPI{
         this.user = user;
     }
 
-    public GetUserDetails getUserDetails() {
+    public UserDetails getUserDetails() {
         return userDetails;
     }
 
-    public void setUserDetails(GetUserDetails userDetails) {
+    public void setUserDetails(UserDetails userDetails) {
         this.userDetails = userDetails;
     }
 
@@ -953,7 +953,7 @@ public class CreateApplication extends BaseAPI{
         this.hours = hours;
     }
 
-    public CreateApplication(RegisterUser registerUser, GetUserDetails getUserDetails) {
+    public CreateApplication(RegisterUser registerUser, UserDetails getUserDetails) {
         // Classes
         setUser(registerUser);
         setUserDetails(getUserDetails);
@@ -1083,7 +1083,7 @@ public class CreateApplication extends BaseAPI{
 
     public synchronized ValidatableResponse startApplication() throws HttpException {
         String createApplicationResource = URL.build(env, "application").toString();
-        apiHeaders.headers.put("Authorization", "Bearer " + getUserDetails().getJwtToken());
+        apiHeaders.apiHeader.put("Authorization", "Bearer " + getUserDetails().getJwtToken());
         ApplicationBuilder applicationBuilder = new ApplicationBuilder().withOperatorType(getOperatorType())
                 .withLicenceType(getLicenceType()).withNiFlag(getNiFlag()).withOrganisation(getUserDetails().getOrganisationId())
                 .withLgvDeclarationConfirmation("0");
@@ -1092,7 +1092,7 @@ public class CreateApplication extends BaseAPI{
             if (VehicleType.LGV_ONLY_FLEET.asString().equals(getVehicleType()))
                 applicationBuilder.withLgvDeclarationConfirmation("1");
         }
-        apiResponse = RestUtils.post(applicationBuilder, createApplicationResource, apiHeaders.getHeaders());
+        apiResponse = RestUtils.post(applicationBuilder, createApplicationResource, apiHeaders.getApiHeader());
         setApplicationId(apiResponse.extract().jsonPath().getString("id.application"));
         setLicenceId(apiResponse.extract().jsonPath().getString("id.licence"));
 
@@ -1109,7 +1109,7 @@ public class CreateApplication extends BaseAPI{
         BusinessTypeBuilder businessTypeBuilder = new BusinessTypeBuilder().withBusinessType(getUser().getBusinessType()).withVersion(organisationVersion)
                 .withId(getUserDetails().getOrganisationId()).withApplication(getApplicationId());
         LOGGER.info("AP Request: ".concat(String.valueOf(businessTypeBuilder)));
-        apiResponse = RestUtils.put(businessTypeBuilder, updateBusinessTypeResource, apiHeaders.getHeaders());
+        apiResponse = RestUtils.put(businessTypeBuilder, updateBusinessTypeResource, apiHeaders.getApiHeader());
 
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
 
@@ -1126,7 +1126,7 @@ public class CreateApplication extends BaseAPI{
                 .withId(getApplicationId()).withCompanyNumber(getCompanyNumber()).withNatureOfBusiness(getNatureOfBusiness()).withLicence(getLicenceId())
                 .withVersion(organisationVersion).withName(getOrganisationName()).withAddress(address);
 
-        apiResponse = RestUtils.put(businessDetails, updateBusinessDetailsResource, apiHeaders.getHeaders());
+        apiResponse = RestUtils.put(businessDetails, updateBusinessDetailsResource, apiHeaders.getApiHeader());
 
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
 
@@ -1155,7 +1155,7 @@ public class CreateApplication extends BaseAPI{
         ApplicationAddressBuilder addressBuilder = new ApplicationAddressBuilder().withId(applicationId).withContact(contactDetailsBuilder)
                 .withCorrespondenceAddress(correspondenceAddress).withEstablishmentAddress(establishmentAddress).withConsultant(transportConsultant);
 
-        apiResponse = RestUtils.put(addressBuilder, applicationAddressResource, apiHeaders.getHeaders());
+        apiResponse = RestUtils.put(addressBuilder, applicationAddressResource, apiHeaders.getApiHeader());
 
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
 
@@ -1166,7 +1166,7 @@ public class CreateApplication extends BaseAPI{
         String addPersonResource = URL.build(env, String.format("application/%s/people/", getApplicationId())).toString();
         PersonBuilder addPerson = new PersonBuilder().withId(getApplicationId()).withTitle(getDirectorTitle())
                 .withForename(getDirectorForeName()).withFamilyName(getDirectorFamilyName()).withBirthDate(getDirectorDOB());
-        apiResponse = RestUtils.post(addPerson, addPersonResource, apiHeaders.getHeaders());
+        apiResponse = RestUtils.post(addPerson, addPersonResource, apiHeaders.getApiHeader());
 
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
 
@@ -1196,7 +1196,7 @@ public class CreateApplication extends BaseAPI{
         if (operatorType.equals(OperatorType.PUBLIC.asString()) && (licenceType.equals(LicenceType.RESTRICTED.asString()))) {
             operatingCentreBuilder.withNoOfHgvVehiclesRequired(String.valueOf(getRestrictedVehicles()));
         }
-        apiResponse = RestUtils.post(operatingCentreBuilder, operatingCentreResource, apiHeaders.getHeaders());
+        apiResponse = RestUtils.post(operatingCentreBuilder, operatingCentreResource, apiHeaders.getApiHeader());
 
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
 
@@ -1233,7 +1233,7 @@ public class CreateApplication extends BaseAPI{
             updateOperatingCentre.withTotAuthHgvVehicles(getRestrictedVehicles());
         }
 
-        apiResponse = RestUtils.put(updateOperatingCentre, updateOperatingCentreResource, apiHeaders.getHeaders());
+        apiResponse = RestUtils.put(updateOperatingCentre, updateOperatingCentreResource, apiHeaders.getApiHeader());
 
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
 
@@ -1250,7 +1250,7 @@ public class CreateApplication extends BaseAPI{
 
         FinancialEvidenceBuilder financialEvidenceBuilder = new FinancialEvidenceBuilder().withId(getApplicationId())
                 .withVersion(applicationVersion).withFinancialEvidenceUploaded(0);
-        apiResponse = RestUtils.put(financialEvidenceBuilder, financialEvidenceResource, apiHeaders.getHeaders());
+        apiResponse = RestUtils.put(financialEvidenceBuilder, financialEvidenceResource, apiHeaders.getApiHeader());
 
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
 
@@ -1274,7 +1274,7 @@ public class CreateApplication extends BaseAPI{
         TransportManagerBuilder transportManagerBuilder = new TransportManagerBuilder().withApplication(getApplicationId()).withFirstName(getTransportManagerFirstName())
                 .withFamilyName(getTransportManagerLastName()).withHasEmail(hasEmail).withUsername(getTransportManagerUserName()).withEmailAddress(getTransportManagerEmailAddress())
                 .withBirthDate(getTransportManagerDOB());
-        apiResponse = RestUtils.post(transportManagerBuilder, addTransportManager, apiHeaders.getHeaders());
+        apiResponse = RestUtils.post(transportManagerBuilder, addTransportManager, apiHeaders.getApiHeader());
         setTransportManagerApplicationId(apiResponse.extract().jsonPath().getString("id.transportManagerApplicationId"));
 
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
@@ -1289,7 +1289,7 @@ public class CreateApplication extends BaseAPI{
         int TMApplicationVersion = Integer.parseInt(fetchTMApplicationInformation(getTransportManagerApplicationId(), "version", "1"));
         String submitTransportManager = URL.build(env, String.format("transport-manager-application/%s/submit", getTransportManagerApplicationId())).toString();
         GenericBuilder genericBuilder = new GenericBuilder().withId(transportManagerApplicationId).withVersion(TMApplicationVersion);
-        apiResponse = RestUtils.put(genericBuilder, submitTransportManager, apiHeaders.getHeaders());
+        apiResponse = RestUtils.put(genericBuilder, submitTransportManager, apiHeaders.getApiHeader());
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
 
         return apiResponse;
@@ -1307,7 +1307,7 @@ public class CreateApplication extends BaseAPI{
                 .withHoursMon(hours).withHoursTue(hours).withHoursWed(hours).withHoursThu(hours).withHoursThu(hours).withHoursFri(hours).withHoursSat(hours).withHoursSun(hours).withDob(getTransportManagerDOB())
                 .withId(getTransportManagerApplicationId()).withVersion(TMApplicationVersion);
 
-        apiResponse = RestUtils.put(tmRespBuilder, addTMresp, apiHeaders.getHeaders());
+        apiResponse = RestUtils.put(tmRespBuilder, addTMresp, apiHeaders.getApiHeader());
 
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
 
@@ -1322,7 +1322,7 @@ public class CreateApplication extends BaseAPI{
         int TMApplicationVersion = Integer.parseInt(fetchTMApplicationInformation(getTransportManagerApplicationId(), "version", "1"));
 
         GenericBuilder genericBuilder = new GenericBuilder().withId(transportManagerApplicationId).withVersion(TMApplicationVersion);
-        apiResponse = RestUtils.put(genericBuilder, submitTmResp, apiHeaders.getHeaders());
+        apiResponse = RestUtils.put(genericBuilder, submitTmResp, apiHeaders.getApiHeader());
 
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
 
@@ -1348,7 +1348,7 @@ public class CreateApplication extends BaseAPI{
             String vrm = VehiclesBuilder.generateRandomVRM();
             VehiclesBuilder vehiclesDetails = new VehiclesBuilder().withId(getApplicationId()).withApplication(getApplicationId()).withHasEnteredReg("Y").withVrm(vrm)
                     .withPlatedWeight(String.valueOf(Int.random(3500, 7500))).withVersion(version);
-            apiResponse = RestUtils.post(vehiclesDetails, vehiclesResource, apiHeaders.getHeaders());
+            apiResponse = RestUtils.post(vehiclesDetails, vehiclesResource, apiHeaders.getApiHeader());
             hgvVRMs[i] = vrm;
         }
         if (getNoOfAddedHgvVehicles() != 0) {
@@ -1362,7 +1362,7 @@ public class CreateApplication extends BaseAPI{
                 String vrm = VehiclesBuilder.generateRandomVRM();
                 VehiclesBuilder vehiclesDetails = new VehiclesBuilder().withId(getApplicationId()).withApplication(getApplicationId()).withHasEnteredReg("Y").withVrm(vrm)
                         .withPlatedWeight(String.valueOf(Int.random(2500, 3000))).withVersion(version);
-                apiResponse = RestUtils.post(vehiclesDetails, vehiclesResource, apiHeaders.getHeaders());
+                apiResponse = RestUtils.post(vehiclesDetails, vehiclesResource, apiHeaders.getApiHeader());
                 lgvVRMs[i] = vrm;
             }
             if (getNoOfAddedLgvVehicles() != 0) {
@@ -1385,7 +1385,7 @@ public class CreateApplication extends BaseAPI{
                 ).withPsvVehicleSize(psvVehicleSize)
                 .withPsvLimousines(psvLimousines).withPsvNoSmallVhlConfirmation(psvNoSmallVhlConfirmation).withPsvOperateSmallVhl(psvOperateSmallVhl).withPsvSmallVhlNotes(psvSmallVhlNotes)
                 .withPsvNoLimousineConfirmation(psvNoLimousineConfirmation).withPsvOnlyLimousinesConfirmation(psvOnlyLimousinesConfirmation).withVersion(applicationVersion);
-        apiResponse = RestUtils.put(vehicleDeclarationBuilder, vehicleDeclarationResource, apiHeaders.getHeaders());
+        apiResponse = RestUtils.put(vehicleDeclarationBuilder, vehicleDeclarationResource, apiHeaders.getApiHeader());
 
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
 
@@ -1404,7 +1404,7 @@ public class CreateApplication extends BaseAPI{
         FinancialHistoryBuilder financialHistoryBuilder = new FinancialHistoryBuilder().withId(getApplicationId()).withVersion(String.valueOf(applicationVersion)).withBankrupt(financialHistoryAnswer)
                 .withLiquidation(financialHistoryAnswer).withReceivership(financialHistoryAnswer).withAdministration(financialHistoryAnswer).withAdministration(financialHistoryAnswer)
                 .withDisqualified(financialHistoryAnswer).withInsolvencyDetails(insolvencyAnswer).withInsolvencyConfirmation(insolvencyAnswer);
-        apiResponse = RestUtils.put(financialHistoryBuilder, financialHistoryResource, apiHeaders.getHeaders());
+        apiResponse = RestUtils.put(financialHistoryBuilder, financialHistoryResource, apiHeaders.getApiHeader());
 
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
 
@@ -1426,7 +1426,7 @@ public class CreateApplication extends BaseAPI{
                 .withSafetyInsTrailers(String.valueOf(numberOfWeeksUntilInspection)).withTachographIns(tachographIns);
         ApplicationSafetyBuilder applicationSafetyBuilder = new ApplicationSafetyBuilder().withId(getApplicationId()).withVersion(applicationVersion)
                 .withSafetyConfirmation(safetyConfirmationOption).withLicence(licence);
-        apiResponse = RestUtils.put(applicationSafetyBuilder, applicationSafetyResource, apiHeaders.getHeaders());
+        apiResponse = RestUtils.put(applicationSafetyBuilder, applicationSafetyResource, apiHeaders.getApiHeader());
 
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
 
@@ -1443,7 +1443,7 @@ public class CreateApplication extends BaseAPI{
         ContactDetailsBuilder contactDetailsBuilder = new ContactDetailsBuilder().withFullName(String.format("%s %s", safetyInspectorForeName, safetyInspectorFamilyName)).withAddress(addressBuilder);
         SafetyInspectorBuilder safetyInspectorBuilder = new SafetyInspectorBuilder().withApplication(applicationId).withLicence(getLicenceId()).withIsExternal("N")
                 .withContactDetails(contactDetailsBuilder);
-        apiResponse = RestUtils.post(safetyInspectorBuilder, safetyInspectorResource, apiHeaders.getHeaders());
+        apiResponse = RestUtils.post(safetyInspectorBuilder, safetyInspectorResource, apiHeaders.getApiHeader());
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
 
         return apiResponse;
@@ -1458,7 +1458,7 @@ public class CreateApplication extends BaseAPI{
 
         CaseConvictionsPenaltiesBuilder convictionsPenaltiesBuilder = new CaseConvictionsPenaltiesBuilder().withId(applicationId).withConvictionsConfirmation("Y")
                 .withPrevConviction("N").withVersion(applicationVersion);
-        apiResponse = RestUtils.put(convictionsPenaltiesBuilder, previousConvictionsResource, apiHeaders.getHeaders());
+        apiResponse = RestUtils.put(convictionsPenaltiesBuilder, previousConvictionsResource, apiHeaders.getApiHeader());
 
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
 
@@ -1476,7 +1476,7 @@ public class CreateApplication extends BaseAPI{
         LicenceHistoryBuilder licenceHistoryBuilder = new LicenceHistoryBuilder().withId(applicationId).withPrevHadLicence(optionResponse).withPrevHasLicence(optionResponse)
                 .withPrevBeenAtPi(optionResponse).withPrevBeenDisqualifiedTc(optionResponse).withPrevBeenRefused(optionResponse).withPrevBeenRevoked(optionResponse).withPrevPurchasedAssets(optionResponse)
                 .withVersion(applicationVersion);
-        apiResponse = RestUtils.put(licenceHistoryBuilder, licenceHistoryResource, apiHeaders.getHeaders());
+        apiResponse = RestUtils.put(licenceHistoryBuilder, licenceHistoryResource, apiHeaders.getApiHeader());
 
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
 
@@ -1491,11 +1491,11 @@ public class CreateApplication extends BaseAPI{
             AddressBuilder addressBuilder = new AddressBuilder().withAddressLine1(getTaxiPhvAddressLine1()).withAddressLine2(getTaxiPhvAddressLine2())
                     .withAddressLine3(getTaxiPhvAddressLine3()).withAddressLine4(getTaxiPhvAddressLine4()).withTown(getTaxiPhvTown()).withPostcode(postCodeByTrafficArea).withCountryCode(getCountryCode());
             PhvTaxiBuilder taxiBuilder = new PhvTaxiBuilder().withId(applicationId).withPrivateHireLicenceNo(phLicenceNumber).withCouncilName(councilName).withLicence(getLicenceId()).withAddress(addressBuilder);
-            apiResponse = RestUtils.post(taxiBuilder, submitResource, apiHeaders.getHeaders());
+            apiResponse = RestUtils.post(taxiBuilder, submitResource, apiHeaders.getApiHeader());
             Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
             PhvTaxiUpdateBuilder updatePhvTaxiUpdateBuilder = new PhvTaxiUpdateBuilder().withId(applicationId).withTrafficArea(trafficArea.value());
 
-            apiResponse = RestUtils.put(updatePhvTaxiUpdateBuilder, submitResource, apiHeaders.getHeaders());
+            apiResponse = RestUtils.put(updatePhvTaxiUpdateBuilder, submitResource, apiHeaders.getApiHeader());
         }
         return apiResponse;
     }
@@ -1510,7 +1510,7 @@ public class CreateApplication extends BaseAPI{
         if (getOperatorType().equals(OperatorType.GOODS.asString()) && (getIsInterim().equals("Y"))) {
             undertakings.withInterimRequested("Y").withInterimReason("Testing through the API");
         }
-        apiResponse = RestUtils.put(undertakings, reviewResource, apiHeaders.getHeaders());
+        apiResponse = RestUtils.put(undertakings, reviewResource, apiHeaders.getApiHeader());
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
         return apiResponse;
     }
@@ -1520,7 +1520,7 @@ public class CreateApplication extends BaseAPI{
         int applicationVersion = Integer.parseInt(fetchApplicationInformation(applicationId, "version", "1"));
 
         GenericBuilder genericBuilder = new GenericBuilder().withId(applicationId).withVersion(applicationVersion);
-        apiResponse = RestUtils.put(genericBuilder, submitResource, apiHeaders.getHeaders());
+        apiResponse = RestUtils.put(genericBuilder, submitResource, apiHeaders.getApiHeader());
 
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
 

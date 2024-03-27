@@ -6,7 +6,7 @@ import apiCalls.Utils.eupaBuilders.external.StandardResponseModel;
 import apiCalls.Utils.eupaBuilders.internal.GrantApplicationModel;
 import apiCalls.Utils.eupaBuilders.internal.OverviewModel;
 import apiCalls.Utils.generic.Utils;
-import apiCalls.actions.AccessToken;
+import apiCalls.actions.Token;
 import apiCalls.enums.UserRoles;
 import apiCalls.eupaActions.BaseAPI;
 import io.restassured.response.ValidatableResponse;
@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 public class CaseWorkerAPI extends BaseAPI {
 
     private static ValidatableResponse response;
-    private static AccessToken accessToken = new AccessToken();
+    private static Token accessToken = new Token();
 
     public static void overview(@NotNull OverviewModel overview) throws HttpException {
         updateHeader("Authorization", "Bearer " + accessToken.getToken(Utils.config.getString("adminUser"), Utils.config.getString("adminPassword"), UserRoles.INTERNAL.asString()));

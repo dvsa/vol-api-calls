@@ -6,7 +6,7 @@ import apiCalls.Utils.eupaBuilders.external.PersonModel;
 import apiCalls.Utils.eupaBuilders.external.UserModel;
 import apiCalls.Utils.eupaBuilders.external.UserRegistrationDetailsModel;
 import apiCalls.Utils.generic.Utils;
-import apiCalls.actions.AccessToken;
+import apiCalls.actions.Token;
 import apiCalls.enums.UserRoles;
 import apiCalls.eupaActions.BaseAPI;
 import io.restassured.response.ValidatableResponse;
@@ -30,7 +30,7 @@ public class UserAPI extends BaseAPI {
      * @return The user that was registered.
      */
     public static PersonModel register(@NotNull UserRegistrationDetailsModel userRegistrationDetailsModel) throws HttpException {
-        AccessToken accessToken = new AccessToken();
+        Token accessToken = new Token();
         BaseAPI.setHeader("Authorization", "Bearer " + accessToken.getToken(Utils.config.getString("adminUser"), Utils.config.getString("adminPassword"), UserRoles.INTERNAL.asString()));
         URL.build(EnvironmentType.getEnum(Properties.get("env", true)), baseResource + "register");
         int maxTries = 5;

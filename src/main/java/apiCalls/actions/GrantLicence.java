@@ -8,7 +8,6 @@ import apiCalls.Utils.volBuilders.*;
 import apiCalls.Utils.generic.BaseAPI;
 import apiCalls.Utils.generic.Headers;
 import apiCalls.Utils.generic.Utils;
-import apiCalls.enums.UserRoles;
 import io.restassured.response.ValidatableResponse;
 import org.apache.hc.core5.http.HttpException;
 import org.apache.http.HttpStatus;
@@ -52,10 +51,8 @@ public class GrantLicence extends BaseAPI{
     }
 
     public HashMap<String, String> header() throws HttpException {
-        AccessToken accessToken = new AccessToken();
-        String header = accessToken.getToken(Utils.config.getString("adminUser"), Utils.config.getString("adminPassword"), UserRoles.INTERNAL.asString());
-        apiHeaders.getHeaders().put("Authorization", "Bearer " + header);
-        return apiHeaders.headers;
+        apiHeaders.getApiHeader().put("Authorization", "Bearer " + adminJWT());
+        return apiHeaders.apiHeader;
     }
 
     public synchronized ValidatableResponse grantLicence() throws HttpException {

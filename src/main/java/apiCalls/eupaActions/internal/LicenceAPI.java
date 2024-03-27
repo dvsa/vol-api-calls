@@ -3,7 +3,7 @@ package apiCalls.eupaActions.internal;
 import activesupport.http.RestUtils;
 import activesupport.system.Properties;
 import apiCalls.Utils.generic.Utils;
-import apiCalls.actions.AccessToken;
+import apiCalls.actions.Token;
 import apiCalls.enums.UserRoles;
 import apiCalls.eupaActions.BaseAPI;
 import io.restassured.response.ValidatableResponse;
@@ -18,7 +18,7 @@ public class LicenceAPI extends BaseAPI {
     private static final String baseResource = "licence/";
 
     public static String licenceNumber(@NotNull String licenceId) throws HttpException {
-        AccessToken accessToken = new AccessToken();
+        Token accessToken = new Token();
         updateHeader( "Authorization", "Bearer " + accessToken.getToken(Utils.config.getString("adminUser"), Utils.config.getString("adminPassword"), UserRoles.INTERNAL.asString()));
 
         String env = Properties.get("env", true);

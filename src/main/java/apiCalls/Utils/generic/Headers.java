@@ -6,10 +6,10 @@ public class Headers {
 
     private static String API_HEADER;
 
-    public HashMap<String, String> headers = new HashMap<>();
+    public HashMap<String, String> apiHeader = new HashMap<>();
 
-    public HashMap<String, String> getHeaders() {
-        return headers;
+    public HashMap<String, String> getApiHeader() {
+        return apiHeader;
     }
 
     public static String getAPI_HEADER() {
