@@ -21,3 +21,5 @@ jobs:
        - uses: actions/checkout@v4
         
        - run: mvn -B -P github package -file ${{inputs.file}}
+
+    
