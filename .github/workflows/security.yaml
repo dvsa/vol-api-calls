@@ -31,6 +31,6 @@ jobs:
             distribution: "corretto"
             java-version: "11"
             cache: maven
-        - run: snyk test --maven-aggregate-project --severity-threshold=${{ inputs.severity-threshold || 'high' }}
+        - run: snyk test --maven-aggregate-project -P github --severity-threshold=${{ inputs.severity-threshold || 'high' }}
           env:
             SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
