@@ -27,7 +27,7 @@ jobs:
           - name: Generate Maven settings.xml file to access GitHub Packages
             uses: whelk-io/maven-settings-xml-action@v22
             with:
-              servers: '[{ id="github", "configuration": { "httpHeaders": { property: { name:"Authorization", value:"Bearer ${{ secrets.GITHUB_TOKEN }}"} } }]'
+              servers: '[{ "id":"github", "configuration": { "httpHeaders": { "property": { "name":"Authorization", "value":"Bearer ${{ secrets.GITHUB_TOKEN }}"} } } } ]'
 
     scan:
         name: scan
