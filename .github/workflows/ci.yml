@@ -3,7 +3,12 @@ name: CI
 on:
     pull_request:
  
-jobs:     
+jobs:
+  security:
+    name: Security
+    uses: ./.github/workflows/security.yaml
+    secrets: inherit
+         
   build:
     runs-on: ubuntu-latest
     permissions:
@@ -17,7 +22,7 @@ jobs:
           uses: actions/setup-java@v4
           with:
             java-version: '11'
-            distribution: 'temurin'
+            distribution: 'corretto'
             cache: 'maven'
         
         - name: Test
