@@ -38,6 +38,6 @@ jobs:
             java-version: "11"
             cache: maven
         - run: mvn --version
-        - run: snyk test --severity-threshold=${{ inputs.severity-threshold || 'high' }} -- -P github
+        - run: snyk test --severity-threshold=${{ inputs.severity-threshold || 'high' }} -- -P github -s /home/runner/.m2/settings.xml
           env:
             SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
