@@ -31,9 +31,16 @@
                     <snapshots><enabled>true</enabled></snapshots>
                 </repository>
                 <repository>
-                    <id>github</id>
+                    <id>github-vol-active-support</id>
                     <name>GitHub dvsa Apache Maven Packages</name>
                     <url>https://maven.pkg.github.com/dvsa/vol-active-support</url>
+                    <snapshots><enabled>true</enabled></snapshots>
+                    <releases><enabled>true</enabled></releases>
+                </repository>
+                <repository>
+                    <id>github-vol-uri-constructor</id>
+                    <name>GitHub dvsa Apache Maven Packages</name>
+                    <url>https://maven.pkg.github.com/dvsa/vol-uri-constructor</url>
                     <snapshots><enabled>true</enabled></snapshots>
                     <releases><enabled>true</enabled></releases>
                 </repository>
