@@ -20,6 +20,15 @@ permissions:
   contents: read
 
 jobs:
+    setup-maven-settings-xml:
+        name: Setup Maven settings.xml
+        runs-on: ubuntu-latest
+        steps:
+          - name: Generate Maven settings.xml file to access GitHub Packages
+            uses: whelk-io/maven-settings-xml-action@v21
+            with:
+              servers: '[{ id="github", "configuration": { "httpHeaders": { property: { name:"Authorization", value:"Bearer ${{ secrets.GITHUB_TOKEN }}"} }]'
+
     scan:
         name: scan
         runs-on: ubuntu-latest
@@ -31,6 +40,6 @@ jobs:
             distribution: "corretto"
             java-version: "11"
             cache: maven
-        - run: snyk test -P github --severity-threshold=${{ inputs.severity-threshold || 'high' }}
+        - run: snyk test --severity-threshold=${{ inputs.severity-threshold || 'high' }} -- -P github
           env:
             SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
