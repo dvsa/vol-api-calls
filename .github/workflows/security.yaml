@@ -29,7 +29,7 @@ jobs:
         - name: Generate Maven settings.xml file to access GitHub Packages
           uses: whelk-io/maven-settings-xml-action@v22
           with:
-            servers: '[{ "id":"github-vol-active-support", "configuration": { "httpHeaders": { "property": { "name":"Authorization", "value":"Bearer ${{ secrets.GITHUB_TOKEN }}"} } } } ]'
+            servers: '[{ "id":"github-vol-active-support", "configuration": { "httpHeaders": { "property": { "name":"Authorization", "value":"Bearer ${ env.GITHUB_TOKEN }"} } } } ]'
         - uses: actions/checkout@v4
         - uses: snyk/actions/setup@master
         - uses: actions/setup-java@v4
@@ -38,6 +38,6 @@ jobs:
             java-version: "11"
             cache: maven
         - run: mvn --version
-        - run: snyk test --severity-threshold=${{ inputs.severity-threshold || 'high' }} -- -P github -s /home/runner/.m2/settings.xml
+        - run: snyk test --severity-threshold=${{ inputs.severity-threshold || 'high' }} -- -P github 
           env:
             SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
