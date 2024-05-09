@@ -10,7 +10,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <active-support.version>2.1.11</active-support.version>
+        <active-support.version>2.2.0</active-support.version>
         <log4j.version>2.22.0</log4j.version>
         <log4j12.version>2.22.0</log4j12.version>
         <commons-lang3.version>3.14.0</commons-lang3.version>
