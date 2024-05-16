@@ -10,12 +10,12 @@
     <packaging>pom</packaging>
 
     <properties>
-        <active-support.version>2.0.1.9</active-support.version>
+        <active-support.version>2.2.0</active-support.version>
         <log4j.version>2.22.0</log4j.version>
         <log4j12.version>2.22.0</log4j12.version>
         <commons-lang3.version>3.14.0</commons-lang3.version>
         <uri-constructor.version>2.0.2</uri-constructor.version>
-        <apache-http.version>5.2.1</apache-http.version>
+        <apache-http.version>5.3.1</apache-http.version>
         <maven.compiler.version>3.8.1</maven.compiler.version>
         <github.url>https://maven.pkg.github.com/dvsa/vol-api-calls</github.url>
     </properties>
@@ -31,9 +31,9 @@
                     <snapshots><enabled>true</enabled></snapshots>
                 </repository>
                 <repository>
-                    <id>github</id>
+                    <id>dvsa-github-packages</id>
                     <name>GitHub dvsa Apache Maven Packages</name>
-                    <url>https://maven.pkg.github.com/dvsa/vol-active-support</url>
+                    <url>https://maven.pkg.github.com/dvsa/*</url>
                     <snapshots><enabled>true</enabled></snapshots>
                     <releases><enabled>true</enabled></releases>
                 </repository>
@@ -76,7 +76,6 @@
             <artifactId>log4j-api</artifactId>
             <version>${log4j.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -92,7 +91,11 @@
             <artifactId>httpclient5</artifactId>
             <version>${apache-http.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>2.2</version>
+        </dependency>
     </dependencies>
 
 
