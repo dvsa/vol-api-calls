@@ -6,13 +6,12 @@ This library consists of helper methods that call the VOL backend API and is to 
 - Maven 3.6.3 or greater
 
 
-
 ## Installation
 Add the following Maven dependency to your project's `pom.xml` file:
 ```xml
 <dependency>
     <groupId>org.dvsa.testing.framework</groupId>
-    <artifactId>vol-api-calls</artifactId>
+    <artifactId>accessibility-library</artifactId>
     <version>[insert latest version of package]</version>
 </dependency>
 ```
