@@ -12,7 +12,7 @@ Add the following Maven dependency to your project's `pom.xml` file:
 ```xml
 <dependency>
     <groupId>org.dvsa.testing.framework</groupId>
-    <artifactId>vol-api-calls</artifactId>
+    <artifactId>accessibility-library</artifactId>
     <version>[insert latest version of package]</version>
 </dependency>
 ```
