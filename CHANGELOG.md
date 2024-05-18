@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.0.6](https://github.com/dvsa/vol-api-calls/compare/v2.0.5...v2.0.6) (2024-05-18)
+
+
+### Bug Fixes
+
+* amend workflows for permissions ([1730c4d](https://github.com/dvsa/vol-api-calls/commit/1730c4db0b4ec560cbae0a1504367ea006e76748))
+
+
+### Miscellaneous Chores
+
+* release 2.0.6 ([c0867d1](https://github.com/dvsa/vol-api-calls/commit/c0867d1141c1843cb812a15c940c55db85966471))
+* release 2.0.6 ([50a7c8f](https://github.com/dvsa/vol-api-calls/commit/50a7c8fa00a1e4f123c5bbbd17246823fa8002cb))
+* release 2.0.6 ([b9ebfb3](https://github.com/dvsa/vol-api-calls/commit/b9ebfb388d82d9dfe11b0dd9087cac9fc5df446f))
+
 ## [2.0.5](https://github.com/dvsa/vol-api-calls/compare/v2.0.4...v2.0.5) (2024-05-18)
 
 
