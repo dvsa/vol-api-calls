@@ -41,6 +41,8 @@
                     <id>github-publish</id>
                     <name>GitHub dvsa Apache Maven Packages</name>
                     <url>${github.url}</url>
+                    <snapshots><enabled>true</enabled></snapshots>
+                    <releases><enabled>true</enabled></releases>
                 </repository>
             </distributionManagement>
         </profile>
