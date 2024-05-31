@@ -1,17 +1,17 @@
-name: Maven Build
+name: Maven 
 
 on:
   workflow_call:
     inputs:
-      file:
-        description: "pom file"
-        required: false
-        default: "pom.xml"
+      maven-goal:
+        description: 'Maven goal to run'
+        required: true
+        default: 'package'
         type: string
-
+  
 permissions:
   contents: read
-  packages: write
+
 
 jobs:
     build:
@@ -20,6 +20,6 @@ jobs:
       steps:
        - uses: actions/checkout@v4
         
-       - run: mvn -B -P github package -file ${{inputs.file}}
+       - run: mvn -B -P github ${{ inputs.maven-goal}}
 
     

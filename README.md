@@ -1,30 +1,18 @@
-# VOL-API-CALLS
-This project contains the methods that call the VOL Backend API
+# DVSA TestHelper - VOL-API-CALLS
+This library consists of helper methods that call the VOL backend API and is to be used as a toolkit of support libraries in the [VOL Functional test suite.](https://github.com/dvsa/vol-functional-tests)
 
-## Prerequisite 
-The following technologies should be installed on your system.
-* Java JDK 8
-* Maven 3
-
-## Technologies
-* Java
-* Maven
+## Requirements
+- Java 11
+- Maven 3.6.3 or greater
 
 
-## Deploying
-
-### Local
-
-``mvn install``
-
-### Nexus
-
-``mvn deploy``
-
-###TODO
-
-``API methods for creating cases
-  API methods for creating variations
-  Any other API calls
- ``
+## Installation
+Add the following Maven dependency to your project's `pom.xml` file:
+```xml
+<dependency>
+    <groupId>org.dvsa.testing.framework</groupId>
+    <artifactId>vol-api-calls</artifactId>
+    <version>[insert latest version of package]</version>
+</dependency>
+```
 
