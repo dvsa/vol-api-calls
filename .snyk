@@ -27,4 +27,9 @@ ignore:
         reason: None Given
         expires: 2024-06-07T14:51:31.152Z
         created: 2024-05-08T14:51:31.158Z
+  SNYK-JAVA-ORGYAML-537645:
+    - '*':
+        reason: None Given
+        expires: 2024-06-30T15:24:50.162Z
+        created: 2024-05-31T15:24:50.169Z
 patch: {}
