@@ -45,6 +45,9 @@
                     <releases><enabled>true</enabled></releases>
                 </repository>
             </distributionManagement>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
     </profiles>
 
