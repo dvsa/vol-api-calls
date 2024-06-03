@@ -93,7 +93,7 @@
         </dependency>
         <dependency>
             <groupId>org.dvsa.testing.lib</groupId>
-            <artifactId>uri-constructor</artifactId>
+            <artifactId>vol-uri-constructor</artifactId>
             <version>${uri-constructor.version}</version>
         </dependency>
         <dependency>
