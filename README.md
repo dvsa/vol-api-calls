@@ -3,7 +3,7 @@ This library consists of helper methods that call the VOL backend API and is to 
 
 ## Requirements
 - Java 11
-- Maven 3.6.3 or greater.
+- Maven 3.6.3 or greater
 
 
 ## Installation
