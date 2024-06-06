@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://github.com/dvsa/vol-api-calls/compare/v2.2.0...v2.3.0) (2024-06-06)
+
+
+### Features
+
+* packing revert back to 'pom' ([04bcc1a](https://github.com/dvsa/vol-api-calls/commit/04bcc1a77ad2caa5d4730d3b90ba8ae83405a37c))
+
 ## [2.2.0](https://github.com/dvsa/vol-api-calls/compare/v2.1.0...v2.2.0) (2024-06-06)
 
 
