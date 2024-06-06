@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.2.0](https://github.com/dvsa/vol-api-calls/compare/v2.1.0...v2.2.0) (2024-06-06)
+
+
+### Features
+
+* Update README.md ([fbea09f](https://github.com/dvsa/vol-api-calls/commit/fbea09f8e7798f65a50f33725217617755661b69))
+
+## [2.1.0](https://github.com/dvsa/vol-api-calls/compare/v2.0.7...v2.1.0) (2024-06-04)
+
+
+### Features
+
+* packaging type to jar ([9684e15](https://github.com/dvsa/vol-api-calls/commit/9684e155d8c75e7bacf36497e8c0b11a5ef9f91a))
+
 ## [2.0.7](https://github.com/dvsa/vol-api-calls/compare/v2.0.6...v2.0.7) (2024-06-03)
 
 
