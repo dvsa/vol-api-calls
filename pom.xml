@@ -5,7 +5,7 @@
     <groupId>org.dvsa.testing.framework</groupId>
     <artifactId>vol-api-calls</artifactId>
     <version>2.2.0</version>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <properties>
         <active-support.version>2.2.1</active-support.version>
