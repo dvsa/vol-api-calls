@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.1](https://github.com/dvsa/vol-api-calls/compare/v2.3.0...v2.3.1) (2024-06-06)
+
+
+### Bug Fixes
+
+* Update pom.xml ([fbcd1e6](https://github.com/dvsa/vol-api-calls/commit/fbcd1e67671a5c665322f48f4baf74988d9f297b))
+
 ## [2.3.0](https://github.com/dvsa/vol-api-calls/compare/v2.2.0...v2.3.0) (2024-06-06)
 
 
