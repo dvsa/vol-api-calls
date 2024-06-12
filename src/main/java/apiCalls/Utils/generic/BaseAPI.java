@@ -1,3 +1,5 @@
+package apiCalls.Utils.generic;
+
 import activesupport.http.RestUtils;
 import activesupport.system.Properties;
 import apiCalls.actions.Token;
