@@ -30,10 +30,10 @@ public class SecretsManagerClient {
             .cacheItemTTL(Duration.ofMinutes(30)) // Set the cache item TTL
             .build();
         secretId = "OLCS-DEVAPPCI-DEVCI-BATCHTESTRUNNER-MAIN-APPLICATION";
-
+    
         // Create the SecretsManagerCache
-        SecretsManagerCache cache = new SecretsManagerCache(secretsManager, cacheConfig);
-
+        this.cache = new SecretsManagerCache(secretsManager, cacheConfig);
+    
     }
 
     public String getSecret(String secretName) throws IllegalArgumentException {
