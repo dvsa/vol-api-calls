@@ -19,7 +19,7 @@ public class LicenceAPI extends BaseAPI {
 
     public static String licenceNumber(@NotNull String licenceId) throws HttpException {
         Token accessToken = new Token();
-        updateHeader( "Authorization", "Bearer " + accessToken.getToken(Utils.config.getString("adminUser"), Utils.config.getString("adminPassword"), UserRoles.INTERNAL.asString()));
+        updateHeader( "Authorization", "Bearer " + accessToken.getToken(secrets.getSecret("adminUser"), secrets.getSecret("adminPassword"), UserRoles.INTERNAL.asString()));
 
         String env = Properties.get("env", true);
         URL.build(EnvironmentType.getEnum(env), baseResource.concat(licenceId));

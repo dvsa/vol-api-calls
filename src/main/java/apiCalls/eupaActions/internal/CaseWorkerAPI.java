@@ -22,7 +22,7 @@ public class CaseWorkerAPI extends BaseAPI {
     private static Token accessToken = new Token();
 
     public static void overview(@NotNull OverviewModel overview) throws HttpException {
-        updateHeader("Authorization", "Bearer " + accessToken.getToken(Utils.config.getString("adminUser"), Utils.config.getString("adminPassword"), UserRoles.INTERNAL.asString()));
+        updateHeader("Authorization", "Bearer " + accessToken.getToken(secrets.getSecret("adminUser"), secrets.getSecret("adminPassword"), UserRoles.INTERNAL.asString()));
         URL.build(EnvironmentType.getEnum(Properties.get("env", true)), String.format("application/%s/overview/", overview.getApplicationId()));
         int version = 1;
 
@@ -43,7 +43,7 @@ public class CaseWorkerAPI extends BaseAPI {
     }
 
     public static StandardResponseModel grantApplication(@NotNull GrantApplicationModel grantApplication) throws HttpException {
-        updateHeader( "Authorization", "Bearer " + accessToken.getToken(Utils.config.getString("adminUser"), Utils.config.getString("adminPassword"), UserRoles.INTERNAL.asString()));
+        updateHeader( "Authorization", "Bearer " + accessToken.getToken(secrets.getSecret("adminUser"), secrets.getSecret("adminPassword"), UserRoles.INTERNAL.asString()));
         URL.build(EnvironmentType.getEnum(Properties.get("env", true)), String.format("application/%s/grant/", grantApplication.getId()));
 
         response = RestUtils.put(grantApplication, String.valueOf(URL.getURL()), getHeaders());

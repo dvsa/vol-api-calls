@@ -1,5 +1,3 @@
-package apiCalls.Utils.generic;
-
 import activesupport.http.RestUtils;
 import activesupport.system.Properties;
 import apiCalls.actions.Token;
@@ -12,10 +10,12 @@ import org.dvsa.testing.lib.url.utils.EnvironmentType;
 public class BaseAPI extends Token {
     protected static EnvironmentType env = EnvironmentType.getEnum(Properties.get("env", true));
     static Headers headers = new Headers();
-
+    protected SecretsManagerClient secretsManagerClient = new SecretsManagerClient();
     public synchronized String adminJWT() throws HttpException {
+        String adminUser =secretsManagerClient.getSecret("adminUser");
+        String adminPassword = secretsManagerClient.getSecret("adminPassword");
         if(getAdminToken() == null){
-            generateAdminToken();
+            generateAdminToken(adminUser, adminPassword);
         }
         return getAdminToken();
     }

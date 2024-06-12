@@ -20,10 +20,11 @@ public abstract class BaseAPI {
     private static final Map<String, String> headers = new HashMap<>();
 
     static {
-        Token token = new Token();
+        SecretsManagerClient secrets = new SecretsManagerClient();
+        Token token = new Token(client);
         URL.build(EnvironmentType.getEnum(Properties.get("env", true)));
         try {
-            setHeader( "Authorization", "Bearer " + token.getToken(Utils.config.getString("adminUser"), Utils.config.getString("adminPassword"), UserRoles.INTERNAL.asString()));
+            setHeader( "Authorization", "Bearer " + token.getToken(secrets.getSecret("adminUser"), secrets.getSecret("adminPassword"), UserRoles.INTERNAL.asString()));
         } catch (HttpException e) {
             throw new RuntimeException(e);
         }

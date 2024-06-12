@@ -25,7 +25,7 @@ public class IrhpPermitWindowAPI {
 
     public static OpenByCountryModel openByCountry(String[] countryIds) throws HttpException {
         Token accessToken = new Token();
-        apiHeaders.apiHeader.put( "Authorization", "Bearer " + accessToken.getToken(Utils.config.getString("adminUser"), Utils.config.getString("adminPassword"), UserRoles.INTERNAL.asString()));
+        apiHeaders.apiHeader.put( "Authorization", "Bearer " + accessToken.getToken(secrets.getSecret("adminUser"), secrets.getSecret("adminPassword"), UserRoles.INTERNAL.asString()));
         String openCountries = URL.build(env,"irhp-permit-window/open-by-country").toString();
 
         Map<String, String> map = new HashMap<>();

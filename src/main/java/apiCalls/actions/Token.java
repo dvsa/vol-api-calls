@@ -15,14 +15,16 @@ import java.util.HashMap;
 
 public class Token {
     private String adminToken;
+    
     EnvironmentType env = EnvironmentType.getEnum(Properties.get("env", true));
     HashMap<String, String> header = new HashMap<>();
     TokenRequestBuilder tokenBody = new TokenRequestBuilder();
+    
 
-    public synchronized String generateAdminToken() throws HttpException {
+    public synchronized String generateAdminToken(String adminUser, String adminPassword) throws HttpException {
         String adminToken = null;
         if (getAdminToken() == null) {
-            adminToken = getToken(Utils.config.getString("adminUser"), Utils.config.getString("adminPassword"), UserType.INTERNAL.asString());
+            adminToken = getToken(adminUser, adminPassword, UserType.INTERNAL.asString());
             setToken(adminToken);
         }
         return adminToken;
