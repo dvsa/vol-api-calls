@@ -15,14 +15,13 @@ public class SecretsManagerClient {
     
     private SecretsManagerCache cache;
 
-    private final String region = "eu-west-1";
-
-    private final String secretId = "OLCS-DEVAPPCI-DEVCI-BATCHTESTRUNNER-MAIN-APPLICATION";
+    private final String secretId;
 
     private AmazonSecretsManager secretsManager;
 
     public SecretsManagerClient() {
         this.secretsManager = AmazonSecretsManagerClientBuilder.defaultClient();
+        String region = "eu-west-1";
         this.secretsManager.setRegion(Region.of(region));
         
         // Create a SecretsManagerCache configuration
@@ -30,7 +29,7 @@ public class SecretsManagerClient {
             .maxCacheSize(100) // Set the maximum cache size
             .cacheItemTTL(Duration.ofMinutes(30)) // Set the cache item TTL
             .build();
-            }
+        secretId = "OLCS-DEVAPPCI-DEVCI-BATCHTESTRUNNER-MAIN-APPLICATION";
 
         // Create the SecretsManagerCache
         SecretsManagerCache cache = new SecretsManagerCache(secretsManager, cacheConfig);
