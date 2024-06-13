@@ -11,11 +11,18 @@ import org.dvsa.testing.lib.url.utils.EnvironmentType;
 
 public class BaseAPI extends Token {
     protected static EnvironmentType env = EnvironmentType.getEnum(Properties.get("env", true));
+    protected SecretsManager secrets;
+
+
+    public BaseAPI() {
+        secrets= new SecretsManager();
+    }
+
     static Headers headers = new Headers();
-    SecretsManager secretsManagerClient = new SecretsManager();
+
     public synchronized String adminJWT() throws HttpException {
-        String adminUser =secretsManagerClient.getSecret("adminUser");
-        String adminPassword = secretsManagerClient.getSecret("adminPassword");
+        String adminUser =secrets.getSecret("adminUser");
+        String adminPassword = secrets.getSecret("adminPassword");
         if(getAdminToken() == null){
             generateAdminToken(adminUser, adminPassword);
         }
