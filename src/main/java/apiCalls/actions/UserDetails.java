@@ -20,7 +20,6 @@ public class UserDetails extends BaseAPI {
     private Headers apiHeaders = new Headers();
     private String jwtToken;
 
-    private String adminToken;
     private String organisationId;
 
     EnvironmentType env = EnvironmentType.getEnum(Properties.get("env", true));
