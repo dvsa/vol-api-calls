@@ -12,7 +12,7 @@ import org.dvsa.testing.lib.url.utils.EnvironmentType;
 public class BaseAPI extends Token {
     protected static EnvironmentType env = EnvironmentType.getEnum(Properties.get("env", true));
     static Headers headers = new Headers();
-    protected SecretsManagerClient secretsManagerClient = new SecretsManagerClient();
+    SecretsManager secretsManagerClient = new SecretsManager();
     public synchronized String adminJWT() throws HttpException {
         String adminUser =secretsManagerClient.getSecret("adminUser");
         String adminPassword = secretsManagerClient.getSecret("adminPassword");
