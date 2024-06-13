@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.5.0](https://github.com/dvsa/vol-api-calls/compare/v2.4.0...v2.5.0) (2024-06-13)
+
+
+### Features
+
+* scrts manager refactoring ([561ca6d](https://github.com/dvsa/vol-api-calls/commit/561ca6d3ce44b86f3ceb438620e3be96f684f33e))
+
+
+### Bug Fixes
+
+* added secrets amanger implementation ([9a75c8f](https://github.com/dvsa/vol-api-calls/commit/9a75c8fc060b8c60a30b263aaae05406c4dc7943))
+
 ## [2.4.0](https://github.com/dvsa/vol-api-calls/compare/v2.3.1...v2.4.0) (2024-06-07)
 
 
