@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.1](https://github.com/dvsa/vol-api-calls/compare/v2.5.0...v2.5.1) (2024-06-13)
+
+
+### Miscellaneous Chores
+
+* release 2.5.1 ([1b4d63b](https://github.com/dvsa/vol-api-calls/commit/1b4d63b934af2e5789662b4bcc4f2d996d24719d))
+
 ## [2.5.0](https://github.com/dvsa/vol-api-calls/compare/v2.4.0...v2.5.0) (2024-06-13)
 
 
