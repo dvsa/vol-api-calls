@@ -1,6 +1,7 @@
 package apiCalls.eupaActions;
 
 import activesupport.system.Properties;
+import apiCalls.Utils.generic.SecretsManager;
 import apiCalls.Utils.generic.Utils;
 import apiCalls.actions.Token;
 import apiCalls.enums.UserRoles;
@@ -18,12 +19,13 @@ import java.util.Map;
 public abstract class BaseAPI {
 
     private static final Map<String, String> headers = new HashMap<>();
-
+    protected static SecretsManager secrets;
     static {
+         secrets = new SecretsManager();
         Token token = new Token();
         URL.build(EnvironmentType.getEnum(Properties.get("env", true)));
         try {
-            setHeader( "Authorization", "Bearer " + token.getToken(Utils.config.getString("adminUser"), Utils.config.getString("adminPassword"), UserRoles.INTERNAL.asString()));
+            setHeader( "Authorization", "Bearer " + token.getToken(SecretsManager.getSecret("adminUser"), SecretsManager.getSecret("adminPassword"), UserRoles.INTERNAL.asString()));
         } catch (HttpException e) {
             throw new RuntimeException(e);
         }

@@ -15,5 +15,3 @@ jobs:
     with:
         maven-goal: package
     needs: security
-
-
