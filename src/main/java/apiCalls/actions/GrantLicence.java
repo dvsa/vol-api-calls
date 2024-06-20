@@ -78,15 +78,45 @@ public class GrantLicence extends BaseAPI{
         int applicationVersion = Integer.parseInt(fetchApplicationInformation(application.getApplicationId(), "version", "1"));
         int applicationTrackingVersion = Integer.parseInt(fetchApplicationInformation(application.getApplicationId(), "applicationTracking.version", "1"));
 
-        TrackingBuilder tracking = new TrackingBuilder().withId(trackingId).withVersion(applicationTrackingVersion).withAddressesStatus(status).withBusinessDetailsStatus(status).withBusinessTypeStatus(status)
-                .withCommunityLicencesStatus(status).withConditionsUndertakingsStatus(status).withConvictionsPenaltiesStatus(status).withFinancialEvidenceStatus(status)
-                .withFinancialHistoryStatus(status).withLicenceHistoryStatus(status).withOperatingCentresStatus(status).withPeopleStatus(status).withSafetyStatus(status)
-                .withTransportManagersStatus(status).withTypeOfLicenceStatus(status).withDeclarationsInternalStatus(status).withVehiclesDeclarationsStatus(status).withVehiclesStatus(status).withVehiclesPsvStatus(status)
-                .withTaxiPhvStatus(status);
-        OverviewBuilder overview = new OverviewBuilder().withId(application.getApplicationId()).withVersion(applicationVersion).withLeadTcArea(transportArea).withOverrideOppositionDate(overrideOption)
-                .withTracking(tracking);
-        apiResponse = RestUtils.put(overview, overviewResource, header());
+        // Fetch the applicationReferredToPi value from the application information
+        String applicationReferredToPi = fetchApplicationInformation(application.getApplicationId(), "applicationReferredToPi", null);
+        if (applicationReferredToPi == null || (!applicationReferredToPi.equals("Y") && !applicationReferredToPi.equals("1"))) {
+            applicationReferredToPi = "N"; // Set to "N" if null or not "Y" or "1"
+        }
 
+        TrackingBuilder tracking = new TrackingBuilder()
+                .withId(trackingId)
+                .withVersion(applicationTrackingVersion)
+                .withAddressesStatus(status)
+                .withBusinessDetailsStatus(status)
+                .withBusinessTypeStatus(status)
+                .withCommunityLicencesStatus(status)
+                .withConditionsUndertakingsStatus(status)
+                .withConvictionsPenaltiesStatus(status)
+                .withFinancialEvidenceStatus(status)
+                .withFinancialHistoryStatus(status)
+                .withLicenceHistoryStatus(status)
+                .withOperatingCentresStatus(status)
+                .withPeopleStatus(status)
+                .withSafetyStatus(status)
+                .withTransportManagersStatus(status)
+                .withTypeOfLicenceStatus(status)
+                .withDeclarationsInternalStatus(status)
+                .withVehiclesDeclarationsStatus(status)
+                .withVehiclesStatus(status)
+                .withVehiclesPsvStatus(status)
+                .withTaxiPhvStatus(status);
+
+        OverviewBuilder overview = new OverviewBuilder()
+                .withId(application.getApplicationId())
+                .withVersion(applicationVersion)
+                .withLeadTcArea(transportArea)
+                .withTracking(tracking)
+                .withOverrideOppositionDate(overrideOption)
+                .withApplicationReferredToPi(applicationReferredToPi);
+
+
+        apiResponse = RestUtils.put(overview, overviewResource, header());
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
     }
 

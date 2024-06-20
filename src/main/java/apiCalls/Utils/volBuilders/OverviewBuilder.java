@@ -1,3 +1,4 @@
+
 package apiCalls.Utils.volBuilders;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -12,24 +13,34 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "receivedDate",
         "targetCompletionDate",
         "overrideOppositionDate",
-        "tracking"
+        "tracking",
+        "applicationReferredToPi"
 })
 public class OverviewBuilder {
 
     @JsonProperty("id")
     private String id;
+
     @JsonProperty("version")
     private int version;
+
     @JsonProperty("leadTcArea")
     private String leadTcArea;
+
     @JsonProperty("receivedDate")
     private Object receivedDate;
+
     @JsonProperty("targetCompletionDate")
     private Object targetCompletionDate;
+
     @JsonProperty("overrideOppositionDate")
     private String overrideOppositionDate;
+
     @JsonProperty("tracking")
     private TrackingBuilder tracking;
+
+    @JsonProperty("applicationReferredToPi")
+    private String applicationReferredToPi;
 
     @JsonProperty("id")
     public String getId() {
@@ -136,10 +147,25 @@ public class OverviewBuilder {
         return this;
     }
 
+    @JsonProperty("applicationReferredToPi")
+    public String getApplicationReferredToPi() {
+        return applicationReferredToPi;
+    }
+
+    @JsonProperty("applicationReferredToPi")
+    public void setApplicationReferredToPi(String applicationReferredToPi) {
+        this.applicationReferredToPi = applicationReferredToPi;
+    }
+
+    public OverviewBuilder withApplicationReferredToPi(String applicationReferredToPi) {
+        this.applicationReferredToPi = applicationReferredToPi;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "id:" + getId() + ",version:" + getVersion() + ",leadTcArea:" + getLeadTcArea()
                 + ",receivedDate:" + getReceivedDate() + ",targetCompletionDate:" + getTargetCompletionDate() + ",overrideOppositionDate:" + getOverrideOppositionDate()
-                + "tracking:" + getTracking();
+                + ",tracking:" + getTracking() + ",applicationReferredToPi:" + getApplicationReferredToPi();
     }
 }
