@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.0](https://github.com/dvsa/vol-api-calls/compare/v2.5.1...v2.6.0) (2024-06-28)
+
+
+### Features
+
+* missing field for granting ([126e5f5](https://github.com/dvsa/vol-api-calls/commit/126e5f55173028a6ca8d43472cd1b9dbc69b73ae))
+
 ## [2.5.1](https://github.com/dvsa/vol-api-calls/compare/v2.5.0...v2.5.1) (2024-06-13)
 
 
