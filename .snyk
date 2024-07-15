@@ -15,7 +15,7 @@ ignore:
   SNYK-JAVA-DOM4J-2812975:
     - '*':
         reason: None Given
-        expires: 2024-012-07T14:38:10.419Z
+        expires: 2024-12-07T14:38:10.419Z
         created: 2024-05-08T14:38:10.424Z
   SNYK-JAVA-DOM4J-174153:
     - '*':
