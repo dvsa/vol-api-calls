@@ -119,5 +119,10 @@
             <artifactId>aws-java-sdk</artifactId>
             <version>${aws-java-sdk-s3.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.amazon.ion</groupId>
+            <artifactId>ion-java</artifactId>
+            <version>1.11.9</version>
+        </dependency>
     </dependencies>
 </project>
