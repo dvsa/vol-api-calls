@@ -742,7 +742,7 @@ public class UpdateLicence extends BaseAPI {
 
     public synchronized HashMap<String, String> header() throws HttpException {
         apiHeaders.getApiHeader().put("Authorization", "Bearer " + adminJWT());
-        return apiHeaders.apiHeader;
+        return (HashMap<String, String>) apiHeaders.getApiHeader();
     }
 
     public synchronized void createVariation() throws HttpException {

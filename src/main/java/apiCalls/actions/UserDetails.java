@@ -15,6 +15,7 @@ import org.apache.http.HttpStatus;
 import org.dvsa.testing.lib.url.api.URL;
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 
+import java.util.concurrent.ConcurrentHashMap;
 
 public class UserDetails extends BaseAPI {
     private Headers apiHeaders = new Headers();
@@ -22,16 +23,15 @@ public class UserDetails extends BaseAPI {
 
     private String organisationId;
 
-    EnvironmentType env = EnvironmentType.getEnum(Properties.get("env", true));
-
     private ValidatableResponse apiResponse;
 
+    private EnvironmentType env = EnvironmentType.getEnum(Properties.get("env", true));
+
+    private static final ConcurrentHashMap<String, String> userOrgMap = new ConcurrentHashMap<>();
 
     public synchronized ValidatableResponse getUserDetails(String userType, String userId, String username, String password) throws HttpException {
         String userDetailsResource;
-            apiHeaders
-                    .apiHeader
-                    .put("Authorization", "Bearer " + adminJWT());
+        apiHeaders.getApiHeader().put("Authorization", "Bearer " + adminJWT());
 
         if (userType.equals(UserType.EXTERNAL.asString())) {
             String orgId;
@@ -40,6 +40,8 @@ public class UserDetails extends BaseAPI {
             setJwtToken(getToken(username, password, Realm.SELF_SERVE.asString()));
             orgId = apiResponse.extract().jsonPath().prettyPeek().getString("organisationUsers.organisation.id");
             setOrganisationId(orgId);
+            userOrgMap.put(userId, orgId);
+
         } else if (userType.equals(UserType.INTERNAL.asString())) {
             userDetailsResource = URL.build(env, String.format("user/%s/%s", userType, userId)).toString();
             apiResponse = RestUtils.get(userDetailsResource, apiHeaders.getApiHeader());

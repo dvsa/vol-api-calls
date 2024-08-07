@@ -20,7 +20,7 @@ public class InternalDetails extends BaseAPI {
     EnvironmentType env = EnvironmentType.getEnum(Properties.get("env", true));
     public HashMap<String, String> header() throws HttpException {
         apiHeaders.getApiHeader().put("Authorization", "Bearer " + adminJWT());
-        return apiHeaders.apiHeader;
+        return (HashMap<String, String>) apiHeaders.getApiHeader();
     }
 
     public synchronized ValidatableResponse getFinancialStandingRates () throws HttpException {

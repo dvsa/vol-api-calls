@@ -8,7 +8,7 @@
 
 
     <properties>
-        <active-support.version>2.4.1</active-support.version>
+        <active-support.version>2.4.2-SNAPSHOT</active-support.version>
         <log4j.version>2.22.0</log4j.version>
         <log4j12.version>2.22.0</log4j12.version>
         <commons-lang3.version>3.14.0</commons-lang3.version>
@@ -105,24 +105,9 @@
             <version>${apache-http.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>${snakeyamal.version}</version>
-        </dependency>
-         <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-secretsmanager</artifactId>
-            <version>${aws-secrets-manager.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk</artifactId>
-            <version>${aws-java-sdk-s3.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.amazon.ion</groupId>
-            <artifactId>ion-java</artifactId>
-            <version>1.11.9</version>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>4.4.0</version>
         </dependency>
     </dependencies>
 </project>

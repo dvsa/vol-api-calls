@@ -1083,16 +1083,27 @@ public class CreateApplication extends BaseAPI{
 
     public synchronized ValidatableResponse startApplication() throws HttpException {
         String createApplicationResource = URL.build(env, "application").toString();
-        apiHeaders.apiHeader.put("Authorization", "Bearer " + getUserDetails().getJwtToken());
-        ApplicationBuilder applicationBuilder = new ApplicationBuilder().withOperatorType(getOperatorType())
-                .withLicenceType(getLicenceType()).withNiFlag(getNiFlag()).withOrganisation(getUserDetails().getOrganisationId())
-                .withLgvDeclarationConfirmation("0");
-        if (operatorType.equals(OperatorType.GOODS.asString()) && licenceType.equals(LicenceType.STANDARD_INTERNATIONAL.asString())) {
-            applicationBuilder.withVehicleType(getVehicleType());
-            if (VehicleType.LGV_ONLY_FLEET.asString().equals(getVehicleType()))
-                applicationBuilder.withLgvDeclarationConfirmation("1");
+
+        synchronized (this) {
+            apiHeaders.getApiHeader().put("Authorization", "Bearer " + getUserDetails().getJwtToken());
+
+            ApplicationBuilder applicationBuilder = new ApplicationBuilder()
+                    .withOperatorType(getOperatorType())
+                    .withLicenceType(getLicenceType())
+                    .withNiFlag(getNiFlag())
+                    .withOrganisation(getUserDetails().getOrganisationId())
+                    .withLgvDeclarationConfirmation("0");
+
+            if (operatorType.equals(OperatorType.GOODS.asString()) && licenceType.equals(LicenceType.STANDARD_INTERNATIONAL.asString())) {
+                applicationBuilder.withVehicleType(getVehicleType());
+                if (VehicleType.LGV_ONLY_FLEET.asString().equals(getVehicleType())) {
+                    applicationBuilder.withLgvDeclarationConfirmation("1");
+                }
+            }
+
+            apiResponse = RestUtils.post(applicationBuilder, createApplicationResource, apiHeaders.getApiHeader());
         }
-        apiResponse = RestUtils.post(applicationBuilder, createApplicationResource, apiHeaders.getApiHeader());
+
         setApplicationId(apiResponse.extract().jsonPath().getString("id.application"));
         setLicenceId(apiResponse.extract().jsonPath().getString("id.licence"));
 
