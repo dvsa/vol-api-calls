@@ -2,6 +2,7 @@ package apiCalls.Utils.generic;
 
 import activesupport.http.RestUtils;
 import activesupport.system.Properties;
+import activesupport.aws.s3.SecretsManager;
 import apiCalls.actions.Token;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTDecodeException;
@@ -25,8 +26,8 @@ public class BaseAPI extends Token {
     static Headers headers = new Headers();
 
     public synchronized String adminJWT() throws HttpException {
-        String adminUser = SecretsManager.getSecret("adminUser");
-        String adminPassword = SecretsManager.getSecret("adminPassword");
+        String adminUser = SecretsManager.getSecretValue("adminUser");
+        String adminPassword = SecretsManager.getSecretValue("adminPassword");
 
         if (getAdminToken() == null || isTokenExpired(getAdminToken())) {
             LOGGER.info("Generating new admin token");

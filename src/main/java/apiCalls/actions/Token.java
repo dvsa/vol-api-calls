@@ -56,7 +56,7 @@ public class Token {
                 LOGGER.warning("Token creation failed, retrying... " + e.getMessage());
                 retryCount++;
                 try {
-                    Thread.sleep((long) Math.pow(2, retryCount) * 1000); // Exponential backoff
+                    Thread.sleep((long) Math.pow(2, retryCount) * 1000);
                 } catch (InterruptedException ie) {
                     Thread.currentThread().interrupt();
                 }

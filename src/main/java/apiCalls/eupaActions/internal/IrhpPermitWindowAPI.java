@@ -1,10 +1,10 @@
 package apiCalls.eupaActions.internal;
 
+import activesupport.aws.s3.SecretsManager;
 import activesupport.http.RestUtils;
 import activesupport.system.Properties;
 import apiCalls.Utils.eupaBuilders.internal.irhp.permit.stock.OpenByCountryModel;
 import apiCalls.Utils.generic.Headers;
-import apiCalls.Utils.generic.SecretsManager;
 import apiCalls.Utils.generic.Utils;
 import apiCalls.actions.Token;
 import apiCalls.enums.UserRoles;
@@ -26,7 +26,7 @@ public class IrhpPermitWindowAPI {
 
     public static OpenByCountryModel openByCountry(String[] countryIds) throws HttpException {
         Token accessToken = new Token();
-        apiHeaders.getApiHeader().put( "Authorization", "Bearer " + accessToken.getToken(SecretsManager.getSecret("adminUser"), SecretsManager.getSecret("adminPassword"), UserRoles.INTERNAL.asString()));
+        apiHeaders.getApiHeader().put( "Authorization", "Bearer " + accessToken.getToken(SecretsManager.getSecretValue("adminUser"), SecretsManager.getSecretValue("adminPassword"), UserRoles.INTERNAL.asString()));
         String openCountries = URL.build(env,"irhp-permit-window/open-by-country").toString();
 
         Map<String, String> map = new HashMap<>();

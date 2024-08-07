@@ -1,11 +1,11 @@
 package apiCalls.eupaActions.internal;
 
+import activesupport.aws.s3.SecretsManager;
 import activesupport.http.RestUtils;
 import activesupport.system.Properties;
 import apiCalls.Utils.eupaBuilders.external.StandardResponseModel;
 import apiCalls.Utils.eupaBuilders.internal.GrantApplicationModel;
 import apiCalls.Utils.eupaBuilders.internal.OverviewModel;
-import apiCalls.Utils.generic.Utils;
 import apiCalls.actions.Token;
 import apiCalls.enums.UserRoles;
 import apiCalls.eupaActions.BaseAPI;
@@ -22,7 +22,7 @@ public class CaseWorkerAPI extends BaseAPI {
     private static Token accessToken = new Token();
 
     public static void overview(@NotNull OverviewModel overview) throws HttpException {
-        updateHeader("Authorization", "Bearer " + accessToken.getToken(secrets.getSecret("adminUser"), secrets.getSecret("adminPassword"), UserRoles.INTERNAL.asString()));
+        updateHeader("Authorization", "Bearer " + accessToken.getToken(SecretsManager.getSecretValue("adminUser"), SecretsManager.getSecretValue("adminPassword"), UserRoles.INTERNAL.asString()));
         URL.build(EnvironmentType.getEnum(Properties.get("env", true)), String.format("application/%s/overview/", overview.getApplicationId()));
         int version = 1;
 
@@ -43,7 +43,7 @@ public class CaseWorkerAPI extends BaseAPI {
     }
 
     public static StandardResponseModel grantApplication(@NotNull GrantApplicationModel grantApplication) throws HttpException {
-        updateHeader( "Authorization", "Bearer " + accessToken.getToken(secrets.getSecret("adminUser"), secrets.getSecret("adminPassword"), UserRoles.INTERNAL.asString()));
+        updateHeader( "Authorization", "Bearer " + accessToken.getToken(SecretsManager.getSecretValue("adminUser"), SecretsManager.getSecretValue("adminPassword"), UserRoles.INTERNAL.asString()));
         URL.build(EnvironmentType.getEnum(Properties.get("env", true)), String.format("application/%s/grant/", grantApplication.getId()));
 
         response = RestUtils.put(grantApplication, String.valueOf(URL.getURL()), getHeaders());
