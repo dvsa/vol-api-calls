@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.0](https://github.com/dvsa/vol-api-calls/compare/v2.6.1...v2.7.0) (2024-08-08)
+
+
+### Features
+
+* concurrency hashmap & check token expiry ([0e67624](https://github.com/dvsa/vol-api-calls/commit/0e6762416980c22016a05c86022c4ce4a743b450))
+
 ## [2.6.1](https://github.com/dvsa/vol-api-calls/compare/v2.6.0...v2.6.1) (2024-07-25)
 
 
