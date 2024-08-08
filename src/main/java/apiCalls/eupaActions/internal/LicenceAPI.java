@@ -1,5 +1,6 @@
 package apiCalls.eupaActions.internal;
 
+import activesupport.aws.s3.SecretsManager;
 import activesupport.http.RestUtils;
 import activesupport.system.Properties;
 import apiCalls.Utils.generic.Utils;
@@ -19,7 +20,7 @@ public class LicenceAPI extends BaseAPI {
 
     public static String licenceNumber(@NotNull String licenceId) throws HttpException {
         Token accessToken = new Token();
-        updateHeader( "Authorization", "Bearer " + accessToken.getToken(secrets.getSecret("adminUser"), secrets.getSecret("adminPassword"), UserRoles.INTERNAL.asString()));
+        updateHeader( "Authorization", "Bearer " + accessToken.getToken(SecretsManager.getSecretValue("adminUser"), SecretsManager.getSecretValue("adminPassword"), UserRoles.INTERNAL.asString()));
 
         String env = Properties.get("env", true);
         URL.build(EnvironmentType.getEnum(env), baseResource.concat(licenceId));

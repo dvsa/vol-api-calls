@@ -11,44 +11,66 @@ import org.apache.http.HttpStatus;
 import org.dvsa.testing.lib.url.api.URL;
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 public class Token {
+    private static final Logger LOGGER = Logger.getLogger(Token.class.getName());
     private String adminToken;
-    
-    EnvironmentType env = EnvironmentType.getEnum(Properties.get("env", true));
-    HashMap<String, String> header = new HashMap<>();
-    TokenRequestBuilder tokenBody = new TokenRequestBuilder();
-    
+    private final EnvironmentType env;
+    private final ConcurrentHashMap<String, String> header;
+    private final TokenRequestBuilder tokenBody;
+
+    public Token() {
+        this.env = EnvironmentType.getEnum(Properties.get("env", true));
+        this.header = new ConcurrentHashMap<>();
+        this.tokenBody = new TokenRequestBuilder();
+    }
 
     public synchronized String generateAdminToken(String adminUser, String adminPassword) throws HttpException {
-        String adminToken = null;
-        if (getAdminToken() == null) {
+        if (adminToken == null) {
+            LOGGER.info("Admin token is null, generating a new token.");
             adminToken = getToken(adminUser, adminPassword, UserType.INTERNAL.asString());
             setToken(adminToken);
+        } else {
+            LOGGER.info("Admin token already exists, returning the existing token.");
         }
         return adminToken;
     }
 
     public synchronized String getToken(String username, String password, String realm) throws HttpException {
-        String jwtTokenResource;
-        ValidatableResponse tokenResponse;
-        jwtTokenResource = URL.build(env).toString().concat("auth/login");
+        String jwtTokenResource = URL.build(env).toString().concat("auth/login");
         tokenBody.withUsername(username).withPassword(password).withRealm(realm);
-        tokenResponse = RestUtils.post(tokenBody, jwtTokenResource, header);
-        try {
-            Utils.checkHTTPStatusCode(tokenResponse, HttpStatus.SC_CREATED);
-        } catch (Exception e) {
-            tokenResponse = RestUtils.post(tokenBody, jwtTokenResource, header);
+
+        LOGGER.info("Requesting token from URL: " + jwtTokenResource);
+
+        int retryCount = 0;
+        int maxRetries = 3;
+        while (retryCount < maxRetries) {
+            try {
+                ValidatableResponse tokenResponse = RestUtils.post(tokenBody, jwtTokenResource, header);
+                Utils.checkHTTPStatusCode(tokenResponse, HttpStatus.SC_CREATED);
+                LOGGER.info("Token successfully created.");
+                return tokenResponse.extract().body().jsonPath().getString("flags.identity.Token.access_token");
+            } catch (Exception e) {
+                LOGGER.warning("Token creation failed, retrying... " + e.getMessage());
+                retryCount++;
+                try {
+                    Thread.sleep((long) Math.pow(2, retryCount) * 1000);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                }
+            }
         }
-        return tokenResponse.extract().body().jsonPath().getString("flags.identity.Token.access_token");
+        throw new HttpException("Failed to create token after " + maxRetries + " retries.");
     }
 
     public String getAdminToken() {
         return adminToken;
     }
 
-    public void setToken(String adminToken) {
+    private synchronized void setToken(String adminToken) {
         this.adminToken = adminToken;
+        LOGGER.info("Admin token set.");
     }
 }

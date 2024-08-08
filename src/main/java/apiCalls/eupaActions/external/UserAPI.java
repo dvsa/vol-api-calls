@@ -1,5 +1,6 @@
 package apiCalls.eupaActions.external;
 
+import activesupport.aws.s3.SecretsManager;
 import activesupport.http.RestUtils;
 import activesupport.system.Properties;
 import apiCalls.Utils.eupaBuilders.external.PersonModel;
@@ -31,7 +32,7 @@ public class UserAPI extends BaseAPI {
      */
     public static PersonModel register(@NotNull UserRegistrationDetailsModel userRegistrationDetailsModel) throws HttpException {
         Token accessToken = new Token();
-        BaseAPI.setHeader("Authorization", "Bearer " + accessToken.getToken(secrets.getSecret("adminUser"), secrets.getSecret("adminPassword"), UserRoles.INTERNAL.asString()));
+        BaseAPI.setHeader("Authorization", "Bearer " + accessToken.getToken(SecretsManager.getSecretValue("adminUser"), SecretsManager.getSecretValue("adminPassword"), UserRoles.INTERNAL.asString()));
         URL.build(EnvironmentType.getEnum(Properties.get("env", true)), baseResource + "register");
         int maxTries = 5;
 
@@ -71,7 +72,7 @@ public class UserAPI extends BaseAPI {
      * @return the information associated with the person passed in as an argument.
      */
     public static UserModel get(@NotNull PersonModel personModel) {
-        BaseAPI.getHeaders().put("x-pid", secrets.getSecret("apiHeader"));
+        BaseAPI.getHeaders().put("x-pid", SecretsManager.getSecretValue("apiHeader"));
         URL.build(EnvironmentType.getEnum(Properties.get("env", true)), baseResource + personModel.getUserId());
 
         response = RestUtils.get(String.valueOf(URL.getURL()), getHeaders());

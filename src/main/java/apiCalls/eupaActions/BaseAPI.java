@@ -1,8 +1,7 @@
 package apiCalls.eupaActions;
 
 import activesupport.system.Properties;
-import apiCalls.Utils.generic.SecretsManager;
-import apiCalls.Utils.generic.Utils;
+import activesupport.aws.s3.SecretsManager;
 import apiCalls.actions.Token;
 import apiCalls.enums.UserRoles;
 import com.google.gson.Gson;
@@ -25,7 +24,7 @@ public abstract class BaseAPI {
         Token token = new Token();
         URL.build(EnvironmentType.getEnum(Properties.get("env", true)));
         try {
-            setHeader( "Authorization", "Bearer " + token.getToken(SecretsManager.getSecret("adminUser"), SecretsManager.getSecret("adminPassword"), UserRoles.INTERNAL.asString()));
+            setHeader( "Authorization", "Bearer " + token.getToken(SecretsManager.getSecretValue("adminUser"), SecretsManager.getSecretValue("adminPassword"), UserRoles.INTERNAL.asString()));
         } catch (HttpException e) {
             throw new RuntimeException(e);
         }
