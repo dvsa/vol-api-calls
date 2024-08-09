@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.1](https://github.com/dvsa/vol-api-calls/compare/v2.7.0...v2.7.1) (2024-08-09)
+
+
+### Miscellaneous Chores
+
+* bump to 2.7.1 ([8c79fb3](https://github.com/dvsa/vol-api-calls/commit/8c79fb34ee6a5bf04ff19e628c7bf33be68dc657))
+
 ## [2.7.0](https://github.com/dvsa/vol-api-calls/compare/v2.6.1...v2.7.0) (2024-08-08)
 
 
