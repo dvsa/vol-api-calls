@@ -3,14 +3,14 @@ package apiCalls.eupaActions.external;
 import activesupport.http.RestUtils;
 import activesupport.system.Properties;
 import apiCalls.Utils.eupaBuilders.ECMTApplicationModel;
-import apiCalls.eupaActions.BaseAPI;
+import apiCalls.eupaActions.EupaBaseAPI;
 import io.restassured.response.ValidatableResponse;
 import org.apache.http.HttpStatus;
 import org.dvsa.testing.lib.url.api.URL;
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 import org.jetbrains.annotations.NotNull;
 
-public class ECMTPermitApplicationAPI extends BaseAPI {
+public class ECMTPermitApplicationAPIEupa extends EupaBaseAPI {
 
     public static ECMTApplicationModel get(@NotNull String organisationId){
         String baseResource = "permits/ecmt-permit-application/";

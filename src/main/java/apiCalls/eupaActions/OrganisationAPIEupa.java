@@ -9,7 +9,7 @@ import org.dvsa.testing.lib.url.api.URL;
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 import org.jetbrains.annotations.NotNull;
 
-public class OrganisationAPI extends BaseAPI {
+public class OrganisationAPIEupa extends EupaBaseAPI {
 
     private static String baseResource = "organisation/";
     private static ValidatableResponse response;

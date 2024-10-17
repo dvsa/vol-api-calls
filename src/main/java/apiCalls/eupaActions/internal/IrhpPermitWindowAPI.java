@@ -42,7 +42,7 @@ public class IrhpPermitWindowAPI {
     }
 
     public static OpenByCountryModel openByCountry() throws HttpException {
-        List<String> countryIds = IrhpPermitStockAPI.availableCountries().getAllCountryIds();
+        List<String> countryIds = IrhpPermitStockAPIEupa.availableCountries().getAllCountryIds();
         return openByCountry(countryIds.toArray(new String[0]));
     }
 }

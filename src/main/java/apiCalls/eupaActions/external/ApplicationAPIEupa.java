@@ -7,7 +7,7 @@ import apiCalls.Utils.eupaBuilders.GenericModel;
 import apiCalls.Utils.eupaBuilders.external.*;
 import apiCalls.Utils.eupaBuilders.internal.ApplicationFeesModel;
 import apiCalls.Utils.eupaBuilders.internal.FeesModel;
-import apiCalls.eupaActions.BaseAPI;
+import apiCalls.eupaActions.EupaBaseAPI;
 import io.restassured.response.ValidatableResponse;
 import org.apache.http.HttpStatus;
 import org.dvsa.testing.lib.url.api.URL;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.TimeUnit;
 
-public class ApplicationAPI extends BaseAPI {
+public class ApplicationAPIEupa extends EupaBaseAPI {
     private static ValidatableResponse response;
 
     public static StandardResponseModel create(@NotNull ApplicationModel applicationModel) {
