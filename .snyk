@@ -32,4 +32,54 @@ ignore:
         reason: None Given
         expires: 2024-12-30T15:24:50.162Z
         created: 2024-05-31T15:24:50.169Z
+  SNYK-JAVA-IONETTY-6483812:
+    - '*':
+        reason: Netty HTTP vulnerability - Planning upgrade of AWS SDK
+        expires: 2024-12-30T00:00:00.000Z
+        created: 2024-05-31T00:00:00.000Z
+  SNYK-JAVA-COMGOOGLEPROTOBUF-8055227:
+    - '*':
+        reason: Protobuf vulnerability - Dependency through MySQL connector
+        expires: 2024-12-30T00:00:00.000Z
+        created: 2024-05-31T00:00:00.000Z
+  SNYK-JAVA-COMMONSIO-8161190:
+    - '*':
+        reason: Commons IO vulnerability - Upgrade planned
+        expires: 2024-12-30T00:00:00.000Z
+        created: 2024-05-31T00:00:00.000Z
+  SNYK-JAVA-ORGAPACHEHTTPCOMPONENTS-1048058:
+    - '*':
+        reason: HTTPClient vulnerability - Legacy dependency through jenkins-client
+        expires: 2024-12-30T00:00:00.000Z
+        created: 2024-05-31T00:00:00.000Z
+  SNYK-JAVA-ORGAPACHEHTTPCOMPONENTS-31517:
+    - '*':
+        reason: HTTPClient directory traversal - Legacy dependency
+        expires: 2024-12-30T00:00:00.000Z
+        created: 2024-05-31T00:00:00.000Z
+  SNYK-JAVA-ORGYAML-3016888:
+    - '*':
+        reason: SnakeYAML vulnerability - Dependency through javafaker
+        expires: 2024-12-30T00:00:00.000Z
+        created: 2024-05-31T00:00:00.000Z
+  SNYK-JAVA-ORGYAML-3016889:
+    - '*':
+        reason: SnakeYAML vulnerability - Dependency through javafaker
+        expires: 2024-12-30T00:00:00.000Z
+        created: 2024-05-31T00:00:00.000Z
+  SNYK-JAVA-ORGYAML-3016891:
+    - '*':
+        reason: SnakeYAML vulnerability - Dependency through javafaker
+        expires: 2024-12-30T00:00:00.000Z
+        created: 2024-05-31T00:00:00.000Z
+  SNYK-JAVA-ORGYAML-3113851:
+    - '*':
+        reason: SnakeYAML vulnerability - Dependency through javafaker
+        expires: 2024-12-30T00:00:00.000Z
+        created: 2024-05-31T00:00:00.000Z
+  SNYK-JAVA-ORGYAML-3152153:
+    - '*':
+        reason: SnakeYAML vulnerability - Dependency through javafaker
+        expires: 2024-12-30T00:00:00.000Z
+        created: 2024-05-31T00:00:00.000Z
 patch: {}
