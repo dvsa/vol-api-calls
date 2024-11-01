@@ -18,7 +18,6 @@
         <github.url>https://maven.pkg.github.com/dvsa/vol-api-calls</github.url>
         <aws-java-sdk-s3.version>1.12.610</aws-java-sdk-s3.version>
         <aws-secrets-manager.version>1.12.610</aws-secrets-manager.version>
-        <snakeyamal.version>2.2</snakeyamal.version>
     </properties>
 
     <profiles>
@@ -103,11 +102,6 @@
             <groupId>org.apache.httpcomponents.client5</groupId>
             <artifactId>httpclient5</artifactId>
             <version>${apache-http.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>${snakeyamal.version}</version>
         </dependency>
          <dependency>
             <groupId>com.amazonaws</groupId>
