@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.0](https://github.com/dvsa/vol-api-calls/compare/v2.7.1...v2.8.0) (2024-11-21)
+
+
+### Features
+
+* add Register Consultant action ([ff31ca1](https://github.com/dvsa/vol-api-calls/commit/ff31ca1e3822985848f43bf050d7b18872dd1f9c))
+
 ## [2.7.1](https://github.com/dvsa/vol-api-calls/compare/v2.7.0...v2.7.1) (2024-08-09)
 
 
