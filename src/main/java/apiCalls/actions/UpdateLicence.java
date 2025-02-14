@@ -4,13 +4,15 @@ import activesupport.MissingRequiredArgument;
 import activesupport.dates.Dates;
 import activesupport.dates.LocalDateCalendar;
 import activesupport.faker.FakerUtils;
-import apiCalls.Utils.http.RestUtils;
 import activesupport.number.Int;
 import activesupport.system.Properties;
 import apiCalls.Utils.generic.BaseAPI;
 import apiCalls.Utils.generic.Headers;
 import apiCalls.Utils.generic.Utils;
+import apiCalls.Utils.http.RestUtils;
 import apiCalls.Utils.volBuilders.*;
+import apiCalls.enums.LicenceType;
+import apiCalls.enums.OperatorType;
 import apiCalls.enums.UserRoles;
 import io.restassured.response.ValidatableResponse;
 import org.apache.hc.core5.http.HttpException;
@@ -20,8 +22,9 @@ import org.dvsa.testing.lib.url.exceptions.MalformedURLException;
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 import org.joda.time.LocalDate;
 
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class UpdateLicence extends BaseAPI {
@@ -981,4 +984,137 @@ public class UpdateLicence extends BaseAPI {
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
     }
 
+    public synchronized ValidatableResponse surrenderLicence(String licenceId) throws HttpException {
+        var surrenderLicenceResource = URL.build(env, String.format("licence/%s/surrender", licenceId)).toString();
+
+        var surrendersBuilder = new SurrendersBuilder().withLicence(licenceId);
+        apiResponse = RestUtils.post(surrendersBuilder, surrenderLicenceResource, header());
+        Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
+        return apiResponse;
+    }
+
+    public synchronized ValidatableResponse updateSurrender(Integer surrenderId) throws HttpException {
+        var updateSurrender = URL.build(env, String.format("licence/%s/surrender", application.getLicenceId())).toString();
+
+        var surrendersBuilder = new SurrendersBuilder().withLicence(application.getLicenceId())
+                .withId(surrenderId.toString()).withDiscsStolen(getDiscsStolen()).withVersion(version);
+        apiResponse = RestUtils.put(surrendersBuilder, updateSurrender, header());
+        Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
+        return apiResponse;
+    }
+
+    public synchronized ValidatableResponse deleteSurrender(Integer surrenderId) throws HttpException {
+        var deleteSurrender = URL.build(env, String.format("licence/%s/surrender", application.getLicenceId())).toString();
+
+        var genericBuilder = new GenericBuilder().withLicence(application.getLicenceId()).withId(surrenderId.toString());
+
+        apiResponse = RestUtils.delete(genericBuilder, deleteSurrender, header());
+        Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
+        return apiResponse;
+    }
+
+    public synchronized void updateFeatureToggle(String toggleId, String friendlyName, String configName, String status) throws HttpException {
+        var updateFeatureToggleResource = URL.build(env, String.format("feature-toggle/%s/", toggleId)).toString();
+
+        var featureToggleBuilder = new FeatureToggleBuilder().withId(toggleId).withFriendlyName(friendlyName).withConfigName(configName)
+                .withStatus(status);
+
+        apiResponse = RestUtils.put(featureToggleBuilder, updateFeatureToggleResource, header());
+        Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
+        apiResponse.statusCode(HttpStatus.SC_OK);
+    }
+
+    private synchronized void getDiscInformation() throws HttpException {
+        var queryParams = new HashMap<String, String>();
+        {
+            queryParams.put("niFlag", "N");
+            queryParams.put("licenceType", String.valueOf(application.getLicenceType()));
+            queryParams.put("operatorType", String.valueOf(application.getOperatorType()));
+            queryParams.put("discSequence", getDiscSequence());
+        }
+        var discNumberingResource = URL.build(env, "disc-sequence/discs-numbering").toString();
+        apiResponse = RestUtils.getWithQueryParams(discNumberingResource, queryParams, header());
+        Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
+        setStartNumber(apiResponse.extract().jsonPath().get("results.startNumber").toString());
+        setEndNumber(apiResponse.extract().jsonPath().get("results.endNumber").toString());
+    }
+
+    public synchronized void printLicenceDiscs() throws HttpException {
+        var operator = "";
+        getDiscInformation();
+        if (application.getOperatorType().equals(OperatorType.GOODS.asString())) {
+            operator = "goods";
+        } else {
+            operator = "psv";
+        }
+        var discPrintResource = URL.build(env, String.format("%s-disc/print-discs/", operator)).toString();
+        var printDiscBuilder = new PrintDiscBuilder().withDiscSequence(getDiscSequence())
+                .withLicenceType(application.getLicenceType()).withNiFlag(application.getNiFlag()).withStartNumber(getStartNumber());
+        apiResponse = RestUtils.post(printDiscBuilder, discPrintResource, header());
+        Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
+        if (apiResponse.extract().body().jsonPath().get("id.queue").toString() == null) {
+            throw new AssertionError("Queue id is empty");
+        } else {
+            setQueueId(apiResponse.extract().jsonPath().get("id.queue").toString());
+            confirmDiscPrint();
+        }
+    }
+
+    private synchronized void confirmDiscPrint() throws HttpException {
+        var operator = "";
+        if (application.getOperatorType().equals(OperatorType.GOODS.asString())) {
+            operator = "goods";
+        } else {
+            operator = "psv";
+        }
+        var discConfirmResource = URL.build(env, String.format("%s-disc/confirm-printing/", operator)).toString();
+        var confirmPrintBuilder = new ConfirmPrintBuilder().withDiscSequence(getDiscSequence())
+                .withEndNumber(getEndNumber()).withStartNumber(getStartNumber()).withIsSuccessfull(true)
+                .withLicenceType(application.getLicenceType()).withNiFlag(application.getNiFlag()).withQueueId(getQueueId());
+        apiResponse = RestUtils.post(confirmPrintBuilder, discConfirmResource, header());
+        Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
+    }
+
+    public synchronized void submitInterimApplication(String applicationId) throws HttpException {
+        var interimApplicationResource = URL.build(env, String.format("application/%s/interim/", applicationId)).toString();
+        var applicationVersion = Integer.parseInt(fetchApplicationInformation(applicationId, "version", "1"));
+
+        var interimApplicationBuilder = new InterimApplicationBuilder().withAuthHgvVehicles(String.valueOf(application.getNoOfAddedHgvVehicles()))
+                .withAuthTrailers(String.valueOf(application.getNoOfAddedHgvVehicles()))
+                .withRequested("Y").withReason(getInterimReason()).withStartDate(getInterimStartDate()).withEndDate(getInterimEndDate())
+                .withAction("grant").withId(applicationId).withVersion(applicationVersion);
+        apiResponse = RestUtils.put(interimApplicationBuilder, interimApplicationResource, header());
+
+        Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
+    }
+
+    public synchronized void grantInterimApplication(String applicationId) throws HttpException {
+        submitInterimApplication(applicationId);
+        var interimApplicationResource = URL.build(env, String.format("application/%s/interim/grant/", applicationId)).toString();
+
+        var interimApplicationBuilder = new InterimApplicationBuilder().withId(applicationId);
+        apiResponse = RestUtils.post(interimApplicationBuilder, interimApplicationResource, header());
+
+        Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
+    }
+
+    public synchronized ValidatableResponse updateLgvAuthorisationOnVariation(int hgvAuthorisation, int lgvAuthorisation) throws HttpException {
+        if (this.application.getLicenceType().equals(LicenceType.SPECIAL_RESTRICTED.asString())) {
+            return null;
+        } else {
+            var applicationVersion = Integer.parseInt(this.fetchApplicationInformation(this.variationApplicationId, "version", "1"));
+            var updateOperatingCentreResource = URL.build(env, String.format("application/%s/operating-centres", this.variationApplicationId)).toString();
+            var updateOperatingCentre = new OperatingCentreUpdater().withId(this.variationApplicationId)
+                    .withTrafficArea(this.application.getTrafficArea().value())
+                    .withEnforcementArea(this.application.getEnforcementArea().value())
+                    .withVersion(applicationVersion)
+                    .withTotAuthHgvVehicles(hgvAuthorisation)
+                    .withTotCommunityLicences(1)
+                    .withTotAuthTrailers(this.application.getNoOfOperatingCentreTrailerAuthorised())
+                    .withTotAuthLgvVehicles(lgvAuthorisation);
+            this.apiResponse = RestUtils.put(updateOperatingCentre, updateOperatingCentreResource, header());
+            Utils.checkHTTPStatusCode(this.apiResponse, HttpStatus.SC_OK);
+            return this.apiResponse;
+        }
+    }
 }
