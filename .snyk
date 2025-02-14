@@ -57,3 +57,9 @@ ignore:
         reason: HTTPClient directory traversal - Legacy dependency
         expires: 2025-12-30T00:00:00.000Z
         created: 2024-05-31T00:00:00.000Z
+  SNYK-JAVA-IONETTY-8707739:
+    - '*':
+        reason: Netty handler vulnerability - Planning upgrade of AWS SDK
+        expires: 2025-12-30T00:00:00.000Z
+        created: 2024-05-31T00:00:00.000Z
+patch: {}
