@@ -32,6 +32,18 @@ public class GrantLicence extends BaseAPI {
     private int feeId;
     private String dateState;
 
+    private void setFeeId(int feeId) {
+        this.feeId = feeId;
+    }
+
+    public String getDateState() {
+        return dateState;
+    }
+
+    public void setDateState(String dateState) {
+        this.dateState = dateState;
+    }
+
     public GrantLicence(CreateApplication application) {
         this.application = application;
         Dates date = new Dates(LocalDate::new);
