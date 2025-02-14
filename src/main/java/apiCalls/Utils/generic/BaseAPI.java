@@ -1,6 +1,7 @@
 package apiCalls.Utils.generic;
 
-import activesupport.http.RestUtils;
+import apiCalls.Utils.http.RestUtils;
+
 import activesupport.system.Properties;
 import activesupport.aws.s3.SecretsManager;
 import apiCalls.actions.Token;

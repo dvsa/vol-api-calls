@@ -4,7 +4,7 @@ import activesupport.MissingRequiredArgument;
 import activesupport.dates.Dates;
 import activesupport.dates.LocalDateCalendar;
 import activesupport.faker.FakerUtils;
-import activesupport.http.RestUtils;
+import apiCalls.Utils.http.RestUtils;
 import activesupport.number.Int;
 import activesupport.system.Properties;
 import apiCalls.Utils.generic.BaseAPI;

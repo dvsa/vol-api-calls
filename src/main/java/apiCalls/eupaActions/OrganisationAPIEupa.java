@@ -1,6 +1,7 @@
 package apiCalls.eupaActions;
 
-import activesupport.http.RestUtils;
+import apiCalls.Utils.http.RestUtils;
+
 import activesupport.system.Properties;
 import apiCalls.Utils.eupaBuilders.organisation.OrganisationModel;
 import io.restassured.response.ValidatableResponse;

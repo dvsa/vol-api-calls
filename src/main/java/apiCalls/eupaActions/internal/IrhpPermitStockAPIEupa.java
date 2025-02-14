@@ -1,7 +1,8 @@
 package apiCalls.eupaActions.internal;
 
 import activesupport.aws.s3.SecretsManager;
-import activesupport.http.RestUtils;
+import apiCalls.Utils.http.RestUtils;
+
 import activesupport.system.Properties;
 import apiCalls.Utils.eupaBuilders.internal.irhp.permit.stock.AvailableCountriesModel;
 import apiCalls.actions.Token;

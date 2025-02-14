@@ -3,7 +3,7 @@ package apiCalls.actions;
 import activesupport.faker.FakerUtils;
 import apiCalls.Utils.volBuilders.*;
 import apiCalls.Utils.generic.*;
-import activesupport.http.RestUtils;
+import apiCalls.Utils.http.RestUtils;
 import activesupport.number.Int;
 import activesupport.system.Properties;
 import apiCalls.enums.*;

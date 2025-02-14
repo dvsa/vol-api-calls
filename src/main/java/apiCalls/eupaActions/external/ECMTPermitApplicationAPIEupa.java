@@ -1,6 +1,7 @@
 package apiCalls.eupaActions.external;
 
-import activesupport.http.RestUtils;
+import apiCalls.Utils.http.RestUtils;
+
 import activesupport.system.Properties;
 import apiCalls.Utils.eupaBuilders.ECMTApplicationModel;
 import apiCalls.eupaActions.EupaBaseAPI;

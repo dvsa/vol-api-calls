@@ -1,7 +1,8 @@
 package apiCalls.eupaActions.internal;
 
 import activesupport.aws.s3.SecretsManager;
-import activesupport.http.RestUtils;
+import apiCalls.Utils.http.RestUtils;
+
 import activesupport.system.Properties;
 import apiCalls.actions.Token;
 import apiCalls.enums.UserRoles;

@@ -1,6 +1,7 @@
 package apiCalls.eupaActions.external.permits;
 
-import activesupport.http.RestUtils;
+import apiCalls.Utils.http.RestUtils;
+
 import activesupport.system.Properties;
 import apiCalls.Utils.eupaBuilders.external.permits.TypeModel;
 import apiCalls.Utils.eupaBuilders.external.permits.window.WindowsModel;

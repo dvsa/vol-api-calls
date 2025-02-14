@@ -1,6 +1,6 @@
 package apiCalls.actions;
 
-import activesupport.http.RestUtils;
+import apiCalls.Utils.http.RestUtils;
 import activesupport.system.Properties;
 import apiCalls.Utils.generic.BaseAPI;
 import apiCalls.Utils.generic.Headers;
