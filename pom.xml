@@ -19,6 +19,8 @@
         <aws-java-sdk-s3.version>1.12.610</aws-java-sdk-s3.version>
         <aws-secrets-manager.version>1.12.610</aws-secrets-manager.version>
         <rest-assured.version>5.4.0</rest-assured.version>
+        <java.version>17</java.version>
+
     </properties>
 
     <profiles>
@@ -68,7 +70,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven.compiler.version}</version>
                 <configuration>
-                    <release>11</release>
+                    <release>17</release>
                 </configuration>
             </plugin>
         </plugins>

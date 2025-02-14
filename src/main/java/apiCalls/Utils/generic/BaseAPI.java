@@ -1,14 +1,11 @@
 package apiCalls.Utils.generic;
 
-import apiCalls.Utils.http.RestUtils;
-
-import activesupport.system.Properties;
 import activesupport.aws.s3.SecretsManager;
+import activesupport.system.Properties;
+import apiCalls.Utils.http.RestUtils;
 import apiCalls.actions.Token;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import io.restassured.response.ValidatableResponse;
 import org.apache.hc.core5.http.HttpException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +15,7 @@ import org.dvsa.testing.lib.url.utils.EnvironmentType;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class BaseAPI extends Token {
     private static final Logger LOGGER = LogManager.getLogger(BaseAPI.class);
@@ -54,10 +52,10 @@ public class BaseAPI extends Token {
         LOGGER.info("RequestID: {}, Method: {}, Message: {}", requestId, methodName, message);
     }
 
-    public synchronized HashMap<String, String> header(String requestId) throws HttpException {
+    public synchronized ConcurrentHashMap<String, String> header(String requestId) throws HttpException {
         headers.getApiHeader().put("Authorization", "Bearer " + adminJWT());
         logApiCall(requestId, "header", "Authorization header set.");
-        return new HashMap<>(headers.getApiHeader());
+        return new ConcurrentHashMap<>(headers.getApiHeader());
     }
 
     public synchronized String fetchApplicationInformation(String applicationNumber, String jsonPath, String defaultReturn) throws HttpException {
