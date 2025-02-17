@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class EupaBaseAPI {
+public abstract class BaseAPI {
 
     private static final Map<String, String> headers = new HashMap<>();
     protected static SecretsManager secrets;
@@ -35,15 +35,15 @@ public abstract class EupaBaseAPI {
     }
 
     public static void setHeader(@NotNull String header, @NotNull String value) {
-        EupaBaseAPI.headers.put(header, value);
+        BaseAPI.headers.put(header, value);
     }
 
     public static String getHeader(@NotNull String header) {
-        return EupaBaseAPI.headers.get(header);
+        return BaseAPI.headers.get(header);
     }
 
     public static void updateHeader(@NotNull String header, @NotNull String value) {
-        EupaBaseAPI.headers.replace(header, value);
+        BaseAPI.headers.replace(header, value);
     }
 
     protected static void prettyPrintJson(@NotNull String jsonString) {

@@ -1,11 +1,10 @@
 package apiCalls.eupaActions.external.permits;
 
-import apiCalls.Utils.http.RestUtils;
-
+import activesupport.http.RestUtils;
 import activesupport.system.Properties;
 import apiCalls.Utils.eupaBuilders.external.permits.TypeModel;
 import apiCalls.Utils.eupaBuilders.external.permits.window.WindowsModel;
-import apiCalls.eupaActions.EupaBaseAPI;
+import apiCalls.eupaActions.BaseAPI;
 import apiCalls.eupaActions.util.Utils;
 import io.restassured.response.ValidatableResponse;
 import org.apache.http.HttpStatus;
@@ -15,7 +14,7 @@ import org.dvsa.testing.lib.url.utils.EnvironmentType;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class OpenWindowsAPIEupa extends EupaBaseAPI {
+public class OpenWindowsAPI extends BaseAPI {
 
     private static final String baseResource = "permits/open-windows/";
     private static ValidatableResponse response;

@@ -4,13 +4,10 @@ import activesupport.MissingRequiredArgument;
 import activesupport.dates.Dates;
 import activesupport.dates.LocalDateCalendar;
 import activesupport.faker.FakerUtils;
+import activesupport.http.RestUtils;
 import activesupport.number.Int;
-import activesupport.system.Properties;
-import apiCalls.Utils.generic.BaseAPI;
-import apiCalls.Utils.generic.Headers;
-import apiCalls.Utils.generic.Utils;
-import apiCalls.Utils.http.RestUtils;
 import apiCalls.Utils.volBuilders.*;
+import apiCalls.Utils.generic.*;
 import apiCalls.enums.LicenceType;
 import apiCalls.enums.OperatorType;
 import apiCalls.enums.UserRoles;
@@ -20,19 +17,23 @@ import org.apache.http.HttpStatus;
 import org.dvsa.testing.lib.url.api.URL;
 import org.dvsa.testing.lib.url.exceptions.MalformedURLException;
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
+import activesupport.system.Properties;
 import org.joda.time.LocalDate;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+
+import java.util.*;
 
 
 public class UpdateLicence extends BaseAPI {
     private final CreateApplication application;
     private ValidatableResponse apiResponse;
+
     private final Dates date = new Dates(new LocalDateCalendar());
+
     private final FakerUtils faker = new FakerUtils();
+
     private final Headers apiHeaders = new Headers();
+
     private String adminAPIHeader;
     private String variationType;
     private String variationApplicationId;
@@ -95,8 +96,10 @@ public class UpdateLicence extends BaseAPI {
     private String businessType;
     private String licenceType;
     private String licenceStatus;
+
     private final List<String> caseCategories = new ArrayList<>();
     private final List<String> caseOutcomes = new ArrayList<>();
+
     private int caseId;
     private int caseNoteId;
     private int complaintId;
@@ -104,7 +107,16 @@ public class UpdateLicence extends BaseAPI {
     private int conditionUndertaking;
     private int submissionsId;
     private final int version = 1;
+
     private static EnvironmentType env;
+
+    public String getAdminAPIHeader() {
+        return adminAPIHeader;
+    }
+
+    public void setAdminAPIHeader(String adminAPIHeader) {
+        this.adminAPIHeader = adminAPIHeader;
+    }
 
     public String getVariationType() {
         return variationType;
@@ -653,12 +665,16 @@ public class UpdateLicence extends BaseAPI {
     public UpdateLicence(CreateApplication application) {
         this.application = application;
         setVariationType(null);
+
+        // Case Details
         setCaseType("case_t_lic");
         setCaseDescription("Sent through the API");
         caseCategories.add("case_cat_compl_conv");
         caseCategories.add("case_cat_compl_proh");
         caseOutcomes.add("case_o_other");
         caseOutcomes.add("case_o_cur");
+
+        // Conviction Details
         setDefendantType("def_t_dir");
         setDefendantFirstname(faker.generateFirstName());
         setDefendantLastname(faker.generateLastName());
@@ -671,6 +687,8 @@ public class UpdateLicence extends BaseAPI {
         setPenalty("Heavy");
         setCosts("1000");
         setConvictionNotes("This has been submitted");
+
+        // Complainant Details
         setComplainantForename(faker.generateFirstName());
         setComplainantFamilyName(faker.generateLastName());
         setComplaintType("ct_cov");
@@ -682,21 +700,29 @@ public class UpdateLicence extends BaseAPI {
         setComplainantDescription("Driver correcting entry in driver's record book in wrong fashion");
         setDriverForename(faker.generateFirstName());
         setDriverFamilyName(faker.generateLastName());
+
+        // Conditions and Undertaking Details
         setConditionUndertakingType("cdt_con");
         setConditionUndertakingCategory("cu_cat_fin");
         setConditionsUndertakingDescription("This undertaken has not been fulfilled");
         setFulfilled("N");
         setAttachedTo("cat_lic");
+
+        // Submission Details
         setSubmissionType("submission_type_o_env");
+
+        // Case Note Details
         setCaseNoteComment("case note submitted through the API");
         setCaseNotePriority("Y");
+
+        // Internal User Details
         setInternalUserTeam("1");
         setInternalUserForeName(faker.generateFirstName());
         setInternalUserFamilyName(faker.generateLastName());
         setInternalUserLogin(String.format("%s%s%s", getInternalUserForeName(), getInternalUserFamilyName(), Int.random(10000, 99999)));
         setInternalUserEmailAddress(getInternalUserLogin().concat("AsTheAdminUser@dvsavol.org"));
         setInternalUserDOB(date.getFormattedDate(0, 0, -30, "yyyy-MM-dd"));
-        var internalUserAddress = faker.generateAddress();
+        LinkedHashMap<String, String> internalUserAddress = faker.generateAddress();
         setInternalUserAddressLine1(internalUserAddress.get("addressLine1"));
         setInternalUserAddressLine2(internalUserAddress.get("addressLine2"));
         setInternalUserAddressLine3(internalUserAddress.get("addressLine3"));
@@ -704,8 +730,11 @@ public class UpdateLicence extends BaseAPI {
         setInternalUserTown(internalUserAddress.get("town"));
         setInternalUserPostCode("LS28 5LY");
         setCountryCode("GB");
+
         setDiscsStolen("2");
+
         setDiscSequence("6");
+
         setInterimReason("Interim granted through the API");
         setInterimStartDate(date.getFormattedDate(0, 0, 0, "yyyy-MM-dd"));
         setInterimEndDate(date.getFormattedDate(0, 5, 0, "yyyy-MM-dd"));
@@ -713,133 +742,114 @@ public class UpdateLicence extends BaseAPI {
 
     public synchronized HashMap<String, String> header() throws HttpException {
         apiHeaders.getApiHeader().put("Authorization", "Bearer " + adminJWT());
-        return new HashMap<>(apiHeaders.getApiHeader());
+        return (HashMap<String, String>) apiHeaders.getApiHeader();
     }
 
     public synchronized void createVariation() throws HttpException {
-        var licenceHistoryResource = URL.build(env, "licence/%s/variation".formatted(application.getLicenceId())).toString();
-        var variation = new VariationBuilder()
-                .withId(application.getLicenceId())
-                .withFeeRequired("N")
-                .withAppliedVia("applied_via_phone")
-                .withVariationType(getVariationType());
+        String licenceHistoryResource = URL.build(env, String.format("licence/%s/variation", application.getLicenceId())).toString();
+
+        VariationBuilder variation = new VariationBuilder().withId(application.getLicenceId()).withFeeRequired("N").withAppliedVia("applied_via_phone").withVariationType(getVariationType());
         apiResponse = RestUtils.post(variation, licenceHistoryResource, header());
+
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
+
         setVariationApplicationId(String.valueOf(apiResponse.extract().jsonPath().getInt("id.application")));
     }
 
     public synchronized void updateLicenceType() throws HttpException {
-        var typeOfLicenceResource = URL.build(env, "variation/%s/type-of-licence".formatted(application.getLicenceId())).toString();
-        var variationApplicationVersion = Integer.parseInt(fetchApplicationInformation(getVariationApplicationId(), "version", "1"));
-        var genericBuilder = new GenericBuilder()
-                .withId(getVariationApplicationId())
-                .withVersion(variationApplicationVersion)
-                .withLicenceType(application.getLicenceType());
+        String typeOfLicenceResource = URL.build(env, String.format("variation/%s/type-of-licence", application.getLicenceId())).toString();
+        Integer variationApplicationVersion = Integer.parseInt(fetchApplicationInformation(getVariationApplicationId(), "version", "1"));
+
+        GenericBuilder genericBuilder = new GenericBuilder().withId(getVariationApplicationId()).withVersion(variationApplicationVersion).withLicenceType(application.getLicenceType());
         apiResponse = RestUtils.put(genericBuilder, typeOfLicenceResource, header());
+
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
     }
 
     public synchronized void createCase() throws MalformedURLException, HttpException {
-        var caseResource = URL.build(env, "cases").toString();
-        var caseBuilder = new CaseBuilder()
-                .withId(application.getLicenceId())
-                .withCaseType(getCaseType())
-                .withCategorys(caseCategories)
-                .withDescription(getCaseDescription())
-                .withOutcomes(caseOutcomes)
-                .withApplication(application.getApplicationId());
+        String caseResource = URL.build(env, "cases").toString();
+
+        CaseBuilder caseBuilder = new CaseBuilder().withId(application.getLicenceId()).withCaseType(getCaseType()).withCategorys(caseCategories)
+                .withDescription(getCaseDescription()).withOutcomes(caseOutcomes).withApplication(application.getApplicationId());
         apiResponse = RestUtils.post(caseBuilder, caseResource, header());
+
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
+
         setCaseId(apiResponse.extract().body().jsonPath().get("id.case"));
     }
 
     public synchronized void addConviction() throws MalformedURLException, HttpException {
-        var convictionResource = URL.build(env, "conviction").toString();
-        var caseConvictionBuilder = new CaseConvictionBuilder()
-                .withCase(getCaseId())
-                .withConvictionCategory(getConvictionCategory())
-                .withConvictionDate(getConvictionDate())
-                .withBirthDate(getDefendantBirthDate())
-                .withCategoryText(getCategoryText())
-                .withCosts(getCosts())
-                .withCourt(getCourt())
-                .withMsi("Y")
-                .withPenalty(getPenalty())
-                .withNotes(getConvictionNotes())
-                .withTakenIntoConsideration("Y")
-                .withIsDeclared("Y")
-                .withIsDealtWith("Y")
-                .withDefendantType(getDefendantType())
-                .withPersonFirstname(getDefendantFirstname())
-                .withPersonLastname(getDefendantLastname())
-                .withOffenceDate(getOffenceDate());
+
+        String convictionResource = URL.build(env, "conviction").toString();
+
+        CaseConvictionBuilder caseConvictionBuilder = new CaseConvictionBuilder().withCase(getCaseId()).withConvictionCategory(getConvictionCategory())
+                .withConvictionDate(getConvictionDate()).withBirthDate(getDefendantBirthDate()).withCategoryText(getCategoryText()).withCosts(getCosts())
+                .withCourt(getCourt()).withMsi("Y").withPenalty(getPenalty()).withNotes(getConvictionNotes()).withTakenIntoConsideration("Y")
+                .withIsDeclared("Y").withIsDealtWith("Y").withDefendantType(getDefendantType()).withPersonFirstname(getDefendantFirstname())
+                .withPersonLastname(getDefendantLastname()).withOffenceDate(getOffenceDate());
         apiResponse = RestUtils.post(caseConvictionBuilder, convictionResource, header());
+
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
+
         setConvictionId(apiResponse.extract().jsonPath().getInt("id.conviction"));
     }
 
     public synchronized void addComplaint() throws HttpException {
-        var complaintResource = URL.build(env, "complaint").toString();
-        var complaintBuilder = new CaseComplaintBuilder()
-                .withCase(getCaseId())
-                .withComplainantForename(getComplainantForename())
-                .withComplainantFamilyName(getComplainantFamilyName())
-                .withComplaintType(getComplaintType())
-                .withStatus(getComplainantStatus())
-                .withIsCompliance(getIsCompliance())
-                .withComplaintDate(getComplaintDate())
-                .withInfringementDate(getInfringementDate())
-                .withDescription(getComplainantDescription())
-                .withDriverForename(getDriverForename())
-                .withDriverFamilyName(getDriverFamilyName());
+
+        String complaintResource = URL.build(env, "complaint").toString();
+        CaseComplaintBuilder complaintBuilder = new CaseComplaintBuilder().withCase(getCaseId()).withComplainantForename(getComplainantForename())
+                .withComplainantFamilyName(getComplainantFamilyName()).withComplaintType(getComplaintType()).withStatus(getComplainantStatus())
+                .withIsCompliance(getIsCompliance()).withComplaintDate(getComplaintDate()).withInfringementDate(getInfringementDate())
+                .withDescription(getComplainantDescription()).withDriverForename(getDriverForename()).withDriverFamilyName(getDriverFamilyName());
         apiResponse = RestUtils.post(complaintBuilder, complaintResource, header());
+
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
+
         setComplaintId(apiResponse.extract().jsonPath().getInt("id.complaint"));
     }
 
     public synchronized void addConditionsUndertakings() throws MalformedURLException, HttpException {
-        var conditionsUndertakingResource = URL.build(env, "condition-undertaking").toString();
-        var conditionsBuilder = new CaseConditionsBuilder()
-                .withLicence(application.getLicenceId())
-                .withApplication(application.getApplicationId())
-                .withCase(Integer.toString(getCaseId()))
-                .withType(getConditionUndertakingType())
-                .withConditionCategory(getConditionUndertakingCategory())
-                .withFulfilled(getFulfilled())
-                .withAttachedTo(getAttachedTo())
+
+        String conditionsUndertakingResource = URL.build(env, "condition-undertaking").toString();
+        CaseConditionsBuilder conditionsBuilder = new CaseConditionsBuilder().withLicence(application.getLicenceId())
+                .withApplication(application.getApplicationId()).withCase(Integer.toString(getCaseId())).withType(getConditionUndertakingType())
+                .withConditionCategory(getConditionUndertakingCategory()).withFulfilled(getFulfilled()).withAttachedTo(getAttachedTo())
                 .withNotes(getConditionsUndertakingDescription());
         apiResponse = RestUtils.post(conditionsBuilder, conditionsUndertakingResource, header());
+
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
+
         setConditionUndertaking(apiResponse.extract().jsonPath().getInt("id.conditionUndertaking"));
     }
 
     public synchronized void createSubmission() throws MalformedURLException, HttpException {
-        var submissionResource = URL.build(env, "submission").toString();
-        var submissionBuilder = new CaseSubmissionBuilder()
-                .withCase(Integer.toString(getCaseId()))
-                .withSubmissionType(getSubmissionType());
+        String submissionResource = URL.build(env, "submission").toString();
+        CaseSubmissionBuilder submissionBuilder = new CaseSubmissionBuilder().withCase(Integer.toString(getCaseId())).withSubmissionType(getSubmissionType());
         apiResponse = RestUtils.post(submissionBuilder, submissionResource, header());
+
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
+
         setSubmissionsId(apiResponse.extract().jsonPath().getInt("id.submission"));
     }
 
     public synchronized void createCaseNote() throws MalformedURLException, HttpException {
-        var caseNoteResource = URL.build(env, "processing/note").toString();
-        var caseNotesBuilder = new CaseNotesBuilder()
-                .withCase(Integer.toString(getCaseId()))
-                .withLicence(application.getLicenceId())
-                .withApplication(application.getApplicationId())
-                .withComment(getCaseNoteComment())
-                .withPriority(getCaseNotePriority());
+
+        String caseNoteResource = URL.build(env, "processing/note").toString();
+        CaseNotesBuilder caseNotesBuilder = new CaseNotesBuilder().withCase(Integer.toString(getCaseId())).withLicence(application.getLicenceId())
+                .withApplication(application.getApplicationId()).withComment(getCaseNoteComment()).withPriority(getCaseNotePriority());
         apiResponse = RestUtils.post(caseNotesBuilder, caseNoteResource, header());
+
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
+
         setCaseNoteId(apiResponse.extract().jsonPath().getInt("id.note"));
     }
 
     public synchronized ValidatableResponse getCaseDetails(String resource, int id) throws HttpException {
-        var caseDetailsResource = URL.build(env, "%s/%s".formatted(resource, id)).toString();
+        String caseDetailsResource = URL.build(env, String.format("%s/%s", resource, id)).toString();
         apiResponse = RestUtils.get(caseDetailsResource, header());
+
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
+
         return apiResponse;
     }
 
@@ -847,46 +857,32 @@ public class UpdateLicence extends BaseAPI {
         if (application.getLicenceType().equals("special_restricted")) {
             throw new IllegalArgumentException("Cannot update operating centre for special_restricted licence");
         }
-        var updateOperatingCentreResource = URL.build(env, "application/%s/variation-operating-centre/%s".formatted(application.getLicenceId(), getVariationApplicationId())).toString();
-        var updateOperatingCentre = new OperatingCentreVariationBuilder()
-                .withId(getVariationApplicationId())
-                .withApplication(getVariationApplicationId())
-                .withNoOfVehiclesRequired(String.valueOf(application.getNoOfAddedHgvVehicles()))
+        String updateOperatingCentreResource = URL.build(env, String.format("application/%s/variation-operating-centre/%s", application.getLicenceId(), getVariationApplicationId())).toString();
+        OperatingCentreVariationBuilder updateOperatingCentre = new OperatingCentreVariationBuilder().withId(getVariationApplicationId())
+                .withApplication(getVariationApplicationId()).withNoOfVehiclesRequired(String.valueOf(application.getNoOfAddedHgvVehicles()))
                 .withVersion(version);
         apiResponse = RestUtils.put(updateOperatingCentre, updateOperatingCentreResource, header());
+
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
+
         return apiResponse;
     }
 
     public synchronized String createInternalUser(String userRole, String userType) throws HttpException {
-        var roles = new ArrayList<String>();
+        List<String> roles = new ArrayList<>();
         roles.add(userRole);
-        var internalAdminUserResource = URL.build(env, "user/internal").toString();
+        String internalAdminUserResource = URL.build(env, "user/internal").toString();
 
-        var addressBuilder = new AddressBuilder()
-                .withAddressLine1(getInternalUserAddressLine1())
-                .withAddressLine2(getInternalUserAddressLine2())
-                .withAddressLine3(getInternalUserAddressLine3())
-                .withAddressLine4(getInternalUserAddressLine4())
-                .withTown(getInternalUserTown())
-                .withPostcode(getInternalUserPostCode())
-                .withCountryCode(getCountryCode());
-        var personBuilder = new PersonBuilder()
-                .withForename(getInternalUserForeName())
-                .withFamilyName(getInternalUserFamilyName())
-                .withBirthDate(getInternalUserDOB());
+        AddressBuilder addressBuilder = new AddressBuilder().withAddressLine1(getInternalUserAddressLine1())
+                .withAddressLine2(getInternalUserAddressLine2()).withAddressLine3(getInternalUserAddressLine3())
+                .withAddressLine4(getInternalUserAddressLine4()).withTown(getInternalUserTown())
+                .withPostcode(getInternalUserPostCode()).withCountryCode(getCountryCode());
+        PersonBuilder personBuilder = new PersonBuilder().withForename(getInternalUserForeName())
+                .withFamilyName(getInternalUserFamilyName()).withBirthDate(getInternalUserDOB());
 
-        var contactDetails = new ContactDetailsBuilder()
-                .withEmailAddress(getInternalUserEmailAddress())
-                .withAddress(addressBuilder)
-                .withPerson(personBuilder);
-        var internalAdminUser = new CreateInternalAdminUser()
-                .withContactDetails(contactDetails)
-                .withLoginId(getInternalUserLogin())
-                .withRoles(roles)
-                .withTeam(getInternalUserTeam())
-                .withUserType(userType)
-                .withOSType("windows_10");
+        ContactDetailsBuilder contactDetails = new ContactDetailsBuilder().withEmailAddress(getInternalUserEmailAddress()).withAddress(addressBuilder).withPerson(personBuilder);
+        CreateInternalAdminUser internalAdminUser = new CreateInternalAdminUser().withContactDetails(contactDetails)
+                .withLoginId(getInternalUserLogin()).withRoles(roles).withTeam(getInternalUserTeam()).withUserType(userType).withOSType("windows_10");
         apiResponse = RestUtils.post(internalAdminUser, internalAdminUserResource, header());
 
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
@@ -895,50 +891,41 @@ public class UpdateLicence extends BaseAPI {
     }
 
     public synchronized ValidatableResponse updateInternalUserDetails(String userId, String osType) throws HttpException {
-        var version = fetchInternalUserInformation(userId, "version", "1");
-        var internalAdminUserResource = URL.build(env, "user/internal/%s".formatted(userId)).toString();
+        String version = fetchInternalUserInformation(userId, "version", "1");
 
-        var addressBuilder = new AddressBuilder()
-                .withAddressLine1(getInternalUserAddressLine1())
-                .withAddressLine2(getInternalUserAddressLine2())
-                .withAddressLine3(getInternalUserAddressLine3())
-                .withAddressLine4(getInternalUserAddressLine4())
-                .withTown(getInternalUserTown())
-                .withPostcode(getInternalUserPostCode())
-                .withCountryCode(getCountryCode());
-        var personBuilder = new PersonBuilder()
-                .withForename(getInternalUserForeName())
-                .withFamilyName(getInternalUserFamilyName())
-                .withBirthDate(getInternalUserDOB());
+        String internalAdminUserResource = URL.build(env, String.format("user/internal/%s", userId)).toString();
 
-        var contactDetails = new ContactDetailsBuilder()
-                .withEmailAddress(getInternalUserEmailAddress())
-                .withAddress(addressBuilder)
-                .withPerson(personBuilder);
-        var internalAdminUser = new CreateInternalAdminUser()
-                .withContactDetails(contactDetails)
-                .withLoginId(getInternalUserLogin())
-                .withTeam(getInternalUserTeam())
-                .withUserType(UserRoles.INTERNAL.asString())
-                .withVersion(version)
-                .withOSType(osType)
-                .withId(userId);
+        AddressBuilder addressBuilder = new AddressBuilder().withAddressLine1(getInternalUserAddressLine1())
+                .withAddressLine2(getInternalUserAddressLine2()).withAddressLine3(getInternalUserAddressLine3())
+                .withAddressLine4(getInternalUserAddressLine4()).withTown(getInternalUserTown())
+                .withPostcode(getInternalUserPostCode()).withCountryCode(getCountryCode());
+        PersonBuilder personBuilder = new PersonBuilder().withForename(getInternalUserForeName())
+                .withFamilyName(getInternalUserFamilyName()).withBirthDate(getInternalUserDOB());
+
+        ContactDetailsBuilder contactDetails = new ContactDetailsBuilder().withEmailAddress(getInternalUserEmailAddress())
+                .withAddress(addressBuilder).withPerson(personBuilder);
+        CreateInternalAdminUser internalAdminUser = new CreateInternalAdminUser().withContactDetails(contactDetails)
+                .withLoginId(getInternalUserLogin()).withTeam(getInternalUserTeam())
+                .withUserType(UserRoles.INTERNAL.asString()).withVersion(version).withOSType(osType).withId(userId);
         apiResponse = RestUtils.put(internalAdminUser, internalAdminUserResource, header());
 
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
+
         return apiResponse;
     }
 
     public synchronized ValidatableResponse grantVariation(String resource) throws MalformedURLException, HttpException {
-        var grantVariation = URL.build(env, "variation/%s/%s".formatted(getVariationApplicationId(), resource)).toString();
-        var genericBuilder = new GenericBuilder().withId(getVariationApplicationId());
+        String grantVariation = URL.build(env, String.format("variation/%s/%s", getVariationApplicationId(), resource)).toString();
+
+        GenericBuilder genericBuilder = new GenericBuilder().withId(getVariationApplicationId());
         apiResponse = RestUtils.put(genericBuilder, grantVariation, header());
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
         return apiResponse;
     }
 
     public synchronized String getLicenceTrafficArea() throws HttpException {
-        var getApplicationResource = URL.build(env, "licence/%s".formatted(application.getLicenceId())).toString();
+        String getApplicationResource = URL.build(env, String.format("licence/%s", application.getLicenceId())).toString();
+
         apiResponse = RestUtils.get(getApplicationResource, header());
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
         setTrafficAreaName(apiResponse.extract().jsonPath().getString("trafficArea.name"));
@@ -946,7 +933,8 @@ public class UpdateLicence extends BaseAPI {
     }
 
     public synchronized String getLicenceStatusDetails() throws HttpException {
-        var getApplicationResource = URL.build(env, "licence/%s".formatted(application.getLicenceId())).toString();
+        String getApplicationResource = URL.build(env, String.format("licence/%s", application.getLicenceId())).toString();
+
         apiResponse = RestUtils.get(getApplicationResource, header());
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
         setLicenceStatus(apiResponse.extract().jsonPath().getString("status.description"));
@@ -954,7 +942,8 @@ public class UpdateLicence extends BaseAPI {
     }
 
     public synchronized String getOperatorTypeDetails() throws HttpException {
-        var getApplicationResource = URL.build(env, "licence/%s".formatted(application.getLicenceId())).toString();
+        String getApplicationResource = URL.build(env, String.format("licence/%s", application.getLicenceId())).toString();
+
         apiResponse = RestUtils.get(getApplicationResource, header());
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
         setGoodOrPsv(apiResponse.extract().jsonPath().getString("goodsOrPsv.description"));
@@ -962,15 +951,18 @@ public class UpdateLicence extends BaseAPI {
     }
 
     public synchronized String getBusinessTypeDetails() throws HttpException {
-        var getApplicationResource = URL.build(env, "licence/%s".formatted(application.getLicenceId())).toString();
+        String getApplicationResource = URL.build(env, String.format("licence/%s", application.getLicenceId())).toString();
+
         apiResponse = RestUtils.get(getApplicationResource, header());
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
         setBusinessType(apiResponse.extract().jsonPath().getString("organisation.type.description"));
+
         return getBusinessType();
     }
 
     public synchronized String getLicenceTypeDetails() throws HttpException {
-        var getApplicationResource = URL.build(env, "licence/%s".formatted(application.getLicenceId())).toString();
+        String getApplicationResource = URL.build(env, String.format("licence/%s", application.getLicenceId())).toString();
+
         apiResponse = RestUtils.get(getApplicationResource, header());
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
         setLicenceType(apiResponse.extract().jsonPath().getString("licenceType.description"));
@@ -978,25 +970,26 @@ public class UpdateLicence extends BaseAPI {
     }
 
     public synchronized void updateLicenceStatus(String status) throws HttpException {
-        var typeOfLicenceResource = URL.build(env, "licence/%s/decisions/%s".formatted(application.getLicenceId(), status)).toString();
-        var genericBuilder = new GenericBuilder().withId(application.getLicenceId());
+        String typeOfLicenceResource = URL.build(env, String.format("licence/%s/decisions/%s", application.getLicenceId(), status)).toString();
+
+        GenericBuilder genericBuilder = new GenericBuilder().withId(application.getLicenceId());
         apiResponse = RestUtils.post(genericBuilder, typeOfLicenceResource, header());
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
     }
 
     public synchronized ValidatableResponse surrenderLicence(String licenceId) throws HttpException {
-        var surrenderLicenceResource = URL.build(env, String.format("licence/%s/surrender", licenceId)).toString();
+        String surrenderLicenceResource = URL.build(env, String.format("licence/%s/surrender", licenceId)).toString();
 
-        var surrendersBuilder = new SurrendersBuilder().withLicence(licenceId);
+        SurrendersBuilder surrendersBuilder = new SurrendersBuilder().withLicence(licenceId);
         apiResponse = RestUtils.post(surrendersBuilder, surrenderLicenceResource, header());
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
         return apiResponse;
     }
 
     public synchronized ValidatableResponse updateSurrender(Integer surrenderId) throws HttpException {
-        var updateSurrender = URL.build(env, String.format("licence/%s/surrender", application.getLicenceId())).toString();
+        String updateSurrender = URL.build(env, String.format("licence/%s/surrender", application.getLicenceId())).toString();
 
-        var surrendersBuilder = new SurrendersBuilder().withLicence(application.getLicenceId())
+        SurrendersBuilder surrendersBuilder = new SurrendersBuilder().withLicence(application.getLicenceId())
                 .withId(surrenderId.toString()).withDiscsStolen(getDiscsStolen()).withVersion(version);
         apiResponse = RestUtils.put(surrendersBuilder, updateSurrender, header());
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
@@ -1004,9 +997,9 @@ public class UpdateLicence extends BaseAPI {
     }
 
     public synchronized ValidatableResponse deleteSurrender(Integer surrenderId) throws HttpException {
-        var deleteSurrender = URL.build(env, String.format("licence/%s/surrender", application.getLicenceId())).toString();
+        String deleteSurrender = URL.build(env, String.format("licence/%s/surrender", application.getLicenceId())).toString();
 
-        var genericBuilder = new GenericBuilder().withLicence(application.getLicenceId()).withId(surrenderId.toString());
+        GenericBuilder genericBuilder = new GenericBuilder().withLicence(application.getLicenceId()).withId(surrenderId.toString());
 
         apiResponse = RestUtils.delete(genericBuilder, deleteSurrender, header());
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
@@ -1014,9 +1007,9 @@ public class UpdateLicence extends BaseAPI {
     }
 
     public synchronized void updateFeatureToggle(String toggleId, String friendlyName, String configName, String status) throws HttpException {
-        var updateFeatureToggleResource = URL.build(env, String.format("feature-toggle/%s/", toggleId)).toString();
+        String updateFeatureToggleResource = URL.build(env, String.format("feature-toggle/%s/", toggleId)).toString();
 
-        var featureToggleBuilder = new FeatureToggleBuilder().withId(toggleId).withFriendlyName(friendlyName).withConfigName(configName)
+        FeatureToggleBuilder featureToggleBuilder = new FeatureToggleBuilder().withId(toggleId).withFriendlyName(friendlyName).withConfigName(configName)
                 .withStatus(status);
 
         apiResponse = RestUtils.put(featureToggleBuilder, updateFeatureToggleResource, header());
@@ -1025,14 +1018,14 @@ public class UpdateLicence extends BaseAPI {
     }
 
     private synchronized void getDiscInformation() throws HttpException {
-        var queryParams = new HashMap<String, String>();
+        Map<String, String> queryParams = new HashMap<>();
         {
             queryParams.put("niFlag", "N");
             queryParams.put("licenceType", String.valueOf(application.getLicenceType()));
             queryParams.put("operatorType", String.valueOf(application.getOperatorType()));
             queryParams.put("discSequence", getDiscSequence());
         }
-        var discNumberingResource = URL.build(env, "disc-sequence/discs-numbering").toString();
+        String discNumberingResource = URL.build(env, "disc-sequence/discs-numbering").toString();
         apiResponse = RestUtils.getWithQueryParams(discNumberingResource, queryParams, header());
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
         setStartNumber(apiResponse.extract().jsonPath().get("results.startNumber").toString());
@@ -1040,15 +1033,15 @@ public class UpdateLicence extends BaseAPI {
     }
 
     public synchronized void printLicenceDiscs() throws HttpException {
-        var operator = "";
+        String operator;
         getDiscInformation();
         if (application.getOperatorType().equals(OperatorType.GOODS.asString())) {
             operator = "goods";
         } else {
             operator = "psv";
         }
-        var discPrintResource = URL.build(env, String.format("%s-disc/print-discs/", operator)).toString();
-        var printDiscBuilder = new PrintDiscBuilder().withDiscSequence(getDiscSequence())
+        String discPrintResource = URL.build(env, String.format("%s-disc/print-discs/", operator)).toString();
+        PrintDiscBuilder printDiscBuilder = new PrintDiscBuilder().withDiscSequence(getDiscSequence())
                 .withLicenceType(application.getLicenceType()).withNiFlag(application.getNiFlag()).withStartNumber(getStartNumber());
         apiResponse = RestUtils.post(printDiscBuilder, discPrintResource, header());
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
@@ -1057,18 +1050,19 @@ public class UpdateLicence extends BaseAPI {
         } else {
             setQueueId(apiResponse.extract().jsonPath().get("id.queue").toString());
             confirmDiscPrint();
+
         }
     }
 
     private synchronized void confirmDiscPrint() throws HttpException {
-        var operator = "";
+        String operator;
         if (application.getOperatorType().equals(OperatorType.GOODS.asString())) {
             operator = "goods";
         } else {
             operator = "psv";
         }
-        var discConfirmResource = URL.build(env, String.format("%s-disc/confirm-printing/", operator)).toString();
-        var confirmPrintBuilder = new ConfirmPrintBuilder().withDiscSequence(getDiscSequence())
+        String discConfirmResource = URL.build(env, String.format("%s-disc/confirm-printing/", operator)).toString();
+        ConfirmPrintBuilder confirmPrintBuilder = new ConfirmPrintBuilder().withDiscSequence(getDiscSequence())
                 .withEndNumber(getEndNumber()).withStartNumber(getStartNumber()).withIsSuccessfull(true)
                 .withLicenceType(application.getLicenceType()).withNiFlag(application.getNiFlag()).withQueueId(getQueueId());
         apiResponse = RestUtils.post(confirmPrintBuilder, discConfirmResource, header());
@@ -1076,11 +1070,11 @@ public class UpdateLicence extends BaseAPI {
     }
 
     public synchronized void submitInterimApplication(String applicationId) throws HttpException {
-        var interimApplicationResource = URL.build(env, String.format("application/%s/interim/", applicationId)).toString();
-        var applicationVersion = Integer.parseInt(fetchApplicationInformation(applicationId, "version", "1"));
 
-        var interimApplicationBuilder = new InterimApplicationBuilder().withAuthHgvVehicles(String.valueOf(application.getNoOfAddedHgvVehicles()))
-                .withAuthTrailers(String.valueOf(application.getNoOfAddedHgvVehicles()))
+        String interimApplicationResource = URL.build(env, String.format("application/%s/interim/", applicationId)).toString();
+        int applicationVersion = Integer.parseInt(fetchApplicationInformation(applicationId, "version", "1"));
+
+        InterimApplicationBuilder interimApplicationBuilder = new InterimApplicationBuilder().withAuthHgvVehicles(String.valueOf(application.getNoOfAddedHgvVehicles())).withAuthTrailers(String.valueOf(application.getNoOfAddedHgvVehicles()))
                 .withRequested("Y").withReason(getInterimReason()).withStartDate(getInterimStartDate()).withEndDate(getInterimEndDate())
                 .withAction("grant").withId(applicationId).withVersion(applicationVersion);
         apiResponse = RestUtils.put(interimApplicationBuilder, interimApplicationResource, header());
@@ -1090,9 +1084,9 @@ public class UpdateLicence extends BaseAPI {
 
     public synchronized void grantInterimApplication(String applicationId) throws HttpException {
         submitInterimApplication(applicationId);
-        var interimApplicationResource = URL.build(env, String.format("application/%s/interim/grant/", applicationId)).toString();
+        String interimApplicationResource = URL.build(env, String.format("application/%s/interim/grant/", applicationId)).toString();
 
-        var interimApplicationBuilder = new InterimApplicationBuilder().withId(applicationId);
+        InterimApplicationBuilder interimApplicationBuilder = new InterimApplicationBuilder().withId(applicationId);
         apiResponse = RestUtils.post(interimApplicationBuilder, interimApplicationResource, header());
 
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
@@ -1102,18 +1096,11 @@ public class UpdateLicence extends BaseAPI {
         if (this.application.getLicenceType().equals(LicenceType.SPECIAL_RESTRICTED.asString())) {
             return null;
         } else {
-            var applicationVersion = Integer.parseInt(this.fetchApplicationInformation(this.variationApplicationId, "version", "1"));
-            var updateOperatingCentreResource = URL.build(env, String.format("application/%s/operating-centres", this.variationApplicationId)).toString();
-            var updateOperatingCentre = new OperatingCentreUpdater().withId(this.variationApplicationId)
-                    .withTrafficArea(this.application.getTrafficArea().value())
-                    .withEnforcementArea(this.application.getEnforcementArea().value())
-                    .withVersion(applicationVersion)
-                    .withTotAuthHgvVehicles(hgvAuthorisation)
-                    .withTotCommunityLicences(1)
-                    .withTotAuthTrailers(this.application.getNoOfOperatingCentreTrailerAuthorised())
-                    .withTotAuthLgvVehicles(lgvAuthorisation);
+            int applicationVersion = Integer.parseInt(this.fetchApplicationInformation(this.variationApplicationId, "version", "1"));
+            String updateOperatingCentreResource = URL.build(env, String.format("application/%s/operating-centres", this.variationApplicationId)).toString();
+            OperatingCentreUpdater updateOperatingCentre = (new OperatingCentreUpdater()).withId(this.variationApplicationId).withTrafficArea(this.application.getTrafficArea().value()).withEnforcementArea(this.application.getEnforcementArea().value()).withVersion(applicationVersion).withTotAuthHgvVehicles(hgvAuthorisation).withTotCommunityLicences(1).withTotAuthTrailers(this.application.getNoOfOperatingCentreTrailerAuthorised()).withTotAuthLgvVehicles(lgvAuthorisation);
             this.apiResponse = RestUtils.put(updateOperatingCentre, updateOperatingCentreResource, header());
-            Utils.checkHTTPStatusCode(this.apiResponse, HttpStatus.SC_OK);
+            Utils.checkHTTPStatusCode(this.apiResponse, 200);
             return this.apiResponse;
         }
     }

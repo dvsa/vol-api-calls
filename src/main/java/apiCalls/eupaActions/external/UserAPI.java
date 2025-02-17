@@ -1,15 +1,15 @@
 package apiCalls.eupaActions.external;
 
 import activesupport.aws.s3.SecretsManager;
-import apiCalls.Utils.http.RestUtils;
-
+import activesupport.http.RestUtils;
 import activesupport.system.Properties;
 import apiCalls.Utils.eupaBuilders.external.PersonModel;
 import apiCalls.Utils.eupaBuilders.external.UserModel;
 import apiCalls.Utils.eupaBuilders.external.UserRegistrationDetailsModel;
+import apiCalls.Utils.generic.Utils;
 import apiCalls.actions.Token;
 import apiCalls.enums.UserRoles;
-import apiCalls.eupaActions.EupaBaseAPI;
+import apiCalls.eupaActions.BaseAPI;
 import io.restassured.response.ValidatableResponse;
 import org.apache.hc.core5.http.HttpException;
 import org.apache.http.HttpStatus;
@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.TimeUnit;
 
-public class UserAPIEupa extends EupaBaseAPI {
+public class UserAPI extends BaseAPI {
 
     private static String baseResource = "user/selfserve/";
     private static ValidatableResponse response;
@@ -32,7 +32,7 @@ public class UserAPIEupa extends EupaBaseAPI {
      */
     public static PersonModel register(@NotNull UserRegistrationDetailsModel userRegistrationDetailsModel) throws HttpException {
         Token accessToken = new Token();
-        EupaBaseAPI.setHeader("Authorization", "Bearer " + accessToken.getToken(SecretsManager.getSecretValue("adminUser"), SecretsManager.getSecretValue("adminPassword"), UserRoles.INTERNAL.asString()));
+        BaseAPI.setHeader("Authorization", "Bearer " + accessToken.getToken(SecretsManager.getSecretValue("adminUser"), SecretsManager.getSecretValue("adminPassword"), UserRoles.INTERNAL.asString()));
         URL.build(EnvironmentType.getEnum(Properties.get("env", true)), baseResource + "register");
         int maxTries = 5;
 
@@ -72,7 +72,7 @@ public class UserAPIEupa extends EupaBaseAPI {
      * @return the information associated with the person passed in as an argument.
      */
     public static UserModel get(@NotNull PersonModel personModel) {
-        EupaBaseAPI.getHeaders().put("x-pid", SecretsManager.getSecretValue("apiHeader"));
+        BaseAPI.getHeaders().put("x-pid", SecretsManager.getSecretValue("apiHeader"));
         URL.build(EnvironmentType.getEnum(Properties.get("env", true)), baseResource + personModel.getUserId());
 
         response = RestUtils.get(String.valueOf(URL.getURL()), getHeaders());
