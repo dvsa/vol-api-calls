@@ -3,7 +3,7 @@ package apiCalls.actions;
 import activesupport.faker.FakerUtils;
 import apiCalls.Utils.volBuilders.*;
 import apiCalls.Utils.generic.*;
-import apiCalls.Utils.http.RestUtils;
+import activesupport.http.RestUtils;
 import activesupport.number.Int;
 import activesupport.system.Properties;
 import apiCalls.enums.*;
@@ -1082,12 +1082,12 @@ public class CreateApplication extends BaseAPI{
     }
 
     public synchronized ValidatableResponse startApplication() throws HttpException {
-        var createApplicationResource = URL.build(env, "application").toString();
+        String createApplicationResource = URL.build(env, "application").toString();
 
         synchronized (this) {
             apiHeaders.getApiHeader().put("Authorization", "Bearer " + getUserDetails().getJwtToken());
 
-            var applicationBuilder = new ApplicationBuilder()
+            ApplicationBuilder applicationBuilder = new ApplicationBuilder()
                     .withOperatorType(getOperatorType())
                     .withLicenceType(getLicenceType())
                     .withNiFlag(getNiFlag())
@@ -1113,9 +1113,9 @@ public class CreateApplication extends BaseAPI{
     }
 
     public synchronized ValidatableResponse addBusinessType() throws HttpException {
-        var organisationVersion = fetchApplicationInformation(getApplicationId(), "licence.organisation.version", "1");
+        String organisationVersion = fetchApplicationInformation(getApplicationId(), "licence.organisation.version", "1");
         LOGGER.info("AP Version Number: " + organisationVersion);
-        var updateBusinessTypeResource = URL.build(env, String.format("organisation/%s/business-type/", getUserDetails().getOrganisationId())).toString();
+        String updateBusinessTypeResource = URL.build(env, String.format("organisation/%s/business-type/", getUserDetails().getOrganisationId())).toString();
 
         BusinessTypeBuilder businessTypeBuilder = new BusinessTypeBuilder().withBusinessType(getUser().getBusinessType()).withVersion(organisationVersion)
                 .withId(getUserDetails().getOrganisationId()).withApplication(getApplicationId());
@@ -1128,8 +1128,8 @@ public class CreateApplication extends BaseAPI{
     }
 
     public synchronized ValidatableResponse addBusinessDetails() throws HttpException {
-        var organisationVersion = fetchApplicationInformation(getApplicationId(), "licence.organisation.version", "1");
-        var updateBusinessDetailsResource = URL.build(env, String.format("organisation/business-details/application/%s", getApplicationId())).toString();
+        String organisationVersion = fetchApplicationInformation(getApplicationId(), "licence.organisation.version", "1");
+        String updateBusinessDetailsResource = URL.build(env, String.format("organisation/business-details/application/%s", getApplicationId())).toString();
 
         AddressBuilder address = new AddressBuilder().withAddressLine1(registeredAddressLine1).withAddressLine2(registeredAddressLine2).withAddressLine3(registeredAddressLine3)
                 .withAddressLine4(registeredAddressLine4).withTown(registeredTown).withPostcode(getPostCodeByTrafficArea());
@@ -1145,7 +1145,7 @@ public class CreateApplication extends BaseAPI{
     }
 
     public synchronized ValidatableResponse addAddressDetails() throws HttpException {
-        var applicationAddressResource = URL.build(env, String.format("application/%s/addresses/", getApplicationId())).toString();
+        String applicationAddressResource = URL.build(env, String.format("application/%s/addresses/", getApplicationId())).toString();
 
         ContactDetailsBuilder contactDetailsBuilder = new ContactDetailsBuilder().withPhoneNumber(getPhoneNumber()).withEmailAddress(getOrganisationEmailAddress());
 
@@ -1174,7 +1174,7 @@ public class CreateApplication extends BaseAPI{
     }
 
     public synchronized ValidatableResponse addDirectors() throws HttpException {
-        var addPersonResource = URL.build(env, String.format("application/%s/people/", getApplicationId())).toString();
+        String addPersonResource = URL.build(env, String.format("application/%s/people/", getApplicationId())).toString();
         PersonBuilder addPerson = new PersonBuilder().withId(getApplicationId()).withTitle(getDirectorTitle())
                 .withForename(getDirectorForeName()).withFamilyName(getDirectorFamilyName()).withBirthDate(getDirectorDOB());
         apiResponse = RestUtils.post(addPerson, addPersonResource, apiHeaders.getApiHeader());
@@ -1188,8 +1188,8 @@ public class CreateApplication extends BaseAPI{
         if (licenceType.equals(LicenceType.SPECIAL_RESTRICTED.asString())) {
             return null;
         }
-        var operatingCentreResource = URL.build(env, String.format("application/%s/operating-centre/", getApplicationId())).toString();
-        var permissionOption = "Y";
+        String operatingCentreResource = URL.build(env, String.format("application/%s/operating-centre/", getApplicationId())).toString();
+        String permissionOption = "Y";
 
         AddressBuilder address = new AddressBuilder().withAddressLine1(getOperatingCentreAddressLine1()).withAddressLine2(getOperatingCentreAddressLine2()).
                 withAddressLine3(getOperatingCentreAddressLine3()).withAddressLine4(getOperatingCentreAddressLine4()).withTown(getOperatingCentreTown())
@@ -1220,7 +1220,7 @@ public class CreateApplication extends BaseAPI{
             return null;
         }
         int applicationVersion = Integer.parseInt(fetchApplicationInformation(getApplicationId(), "version", "1"));
-        var updateOperatingCentreResource = URL.build(env, String.format("application/%s/operating-centres", getApplicationId())).toString();
+        String updateOperatingCentreResource = URL.build(env, String.format("application/%s/operating-centres", getApplicationId())).toString();
         OperatingCentreUpdater updateOperatingCentre = new OperatingCentreUpdater().withId(getApplicationId())
                 .withTrafficArea(getTrafficArea().value()).withEnforcementArea(getEnforcementArea().value()).withVersion(applicationVersion);
 
@@ -1256,7 +1256,7 @@ public class CreateApplication extends BaseAPI{
             return null;
         }
 
-        var financialEvidenceResource = URL.build(env, String.format("application/%s/financial-evidence", getApplicationId())).toString();
+        String financialEvidenceResource = URL.build(env, String.format("application/%s/financial-evidence", getApplicationId())).toString();
         int applicationVersion = Integer.parseInt(fetchApplicationInformation(getApplicationId(), "version", "1"));
 
         FinancialEvidenceBuilder financialEvidenceBuilder = new FinancialEvidenceBuilder().withId(getApplicationId())
@@ -1280,8 +1280,8 @@ public class CreateApplication extends BaseAPI{
                 .replace(" ", "_").replace(",", "").concat(".volTransportManager@dvsa.com"));
         setHours(2.0);
         setIsOwner(getIsOwner() == null ? "Y" : getIsOwner());
-        var hasEmail = "Y";
-        var addTransportManager = URL.build(env, "transport-manager/create-new-user/").toString();
+        String hasEmail = "Y";
+        String addTransportManager = URL.build(env, "transport-manager/create-new-user/").toString();
         TransportManagerBuilder transportManagerBuilder = new TransportManagerBuilder().withApplication(getApplicationId()).withFirstName(getTransportManagerFirstName())
                 .withFamilyName(getTransportManagerLastName()).withHasEmail(hasEmail).withUsername(getTransportManagerUserName()).withEmailAddress(getTransportManagerEmailAddress())
                 .withBirthDate(getTransportManagerDOB());
@@ -1298,7 +1298,7 @@ public class CreateApplication extends BaseAPI{
             return null;
         }
         int TMApplicationVersion = Integer.parseInt(fetchTMApplicationInformation(getTransportManagerApplicationId(), "version", "1"));
-        var submitTransportManager = URL.build(env, String.format("transport-manager-application/%s/submit", getTransportManagerApplicationId())).toString();
+        String submitTransportManager = URL.build(env, String.format("transport-manager-application/%s/submit", getTransportManagerApplicationId())).toString();
         GenericBuilder genericBuilder = new GenericBuilder().withId(transportManagerApplicationId).withVersion(TMApplicationVersion);
         apiResponse = RestUtils.put(genericBuilder, submitTransportManager, apiHeaders.getApiHeader());
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
@@ -1310,7 +1310,7 @@ public class CreateApplication extends BaseAPI{
         if (getOperatorType().equals(OperatorType.GOODS.asString()) && (getLicenceType().equals(LicenceType.SPECIAL_RESTRICTED.asString()))) {
             return null;
         }
-        var addTMresp = URL.build(env, String.format("transport-manager-application/%s/update-details/", getTransportManagerApplicationId())).toString();
+        String addTMresp = URL.build(env, String.format("transport-manager-application/%s/update-details/", getTransportManagerApplicationId())).toString();
         int TMApplicationVersion = Integer.parseInt(fetchTMApplicationInformation(getTransportManagerApplicationId(), "version", "1"));
         AddressBuilder Address = new AddressBuilder().withAddressLine1(getTransportManagerAddressLine1()).withAddressLine2(getTransportManagerAddressLine2()).withAddressLine3(getTransportManagerAddressLine3())
                 .withAddressLine4(getTransportManagerAddressLine4()).withTown(getTransportManagerTown()).withPostcode(postCodeByTrafficArea).withCountryCode(getCountryCode());
@@ -1329,7 +1329,7 @@ public class CreateApplication extends BaseAPI{
         if (getOperatorType().equals(OperatorType.PUBLIC.asString()) && (getLicenceType().equals(LicenceType.SPECIAL_RESTRICTED.asString()))) {
             return null;
         }
-        var  submitTmResp = URL.build(env, String.format("transport-manager-application/%s/submit", getTransportManagerApplicationId())).toString();
+        String submitTmResp = URL.build(env, String.format("transport-manager-application/%s/submit", getTransportManagerApplicationId())).toString();
         int TMApplicationVersion = Integer.parseInt(fetchTMApplicationInformation(getTransportManagerApplicationId(), "version", "1"));
 
         GenericBuilder genericBuilder = new GenericBuilder().withId(transportManagerApplicationId).withVersion(TMApplicationVersion);
@@ -1351,12 +1351,12 @@ public class CreateApplication extends BaseAPI{
         }
         String[] hgvVRMs = new String[getNoOfAddedHgvVehicles()];
 
-        var operatorType = getOperatorType().equals(OperatorType.GOODS.asString()) ? "goods" : "psv";
-        var vehiclesResource = URL.build(env, String.format("application/%s/%s-vehicles", getApplicationId(), operatorType)).toString();
+        String operatorType = getOperatorType().equals(OperatorType.GOODS.asString()) ? "goods" : "psv";
+        String vehiclesResource = URL.build(env, String.format("application/%s/%s-vehicles", getApplicationId(), operatorType)).toString();
 
         // TODO: Might need to add 'make' to the API builder because DVLA pulls this as well
         for (int i = 0; i < getNoOfAddedHgvVehicles(); i++) {
-            var vrm = VehiclesBuilder.generateRandomVRM();
+            String vrm = VehiclesBuilder.generateRandomVRM();
             VehiclesBuilder vehiclesDetails = new VehiclesBuilder().withId(getApplicationId()).withApplication(getApplicationId()).withHasEnteredReg("Y").withVrm(vrm)
                     .withPlatedWeight(String.valueOf(Int.random(3500, 7500))).withVersion(version);
             apiResponse = RestUtils.post(vehiclesDetails, vehiclesResource, apiHeaders.getApiHeader());
@@ -1370,7 +1370,7 @@ public class CreateApplication extends BaseAPI{
         String[] lgvVRMs = new String[getNoOfAddedLgvVehicles()];
         if (getNoOfAddedLgvVehicles() != 0 && !operatorType.equals(OperatorType.PUBLIC.asString())) {
             for (int i = 0; i < getNoOfAddedLgvVehicles(); i++) {
-                var vrm = VehiclesBuilder.generateRandomVRM();
+                String vrm = VehiclesBuilder.generateRandomVRM();
                 VehiclesBuilder vehiclesDetails = new VehiclesBuilder().withId(getApplicationId()).withApplication(getApplicationId()).withHasEnteredReg("Y").withVrm(vrm)
                         .withPlatedWeight(String.valueOf(Int.random(2500, 3000))).withVersion(version);
                 apiResponse = RestUtils.post(vehiclesDetails, vehiclesResource, apiHeaders.getApiHeader());
@@ -1389,7 +1389,7 @@ public class CreateApplication extends BaseAPI{
             return null;
         }
 
-        var vehicleDeclarationResource = URL.build(env, String.format(String.format("application/%s/vehicle-declaration", applicationId))).toString();
+        String vehicleDeclarationResource = URL.build(env, String.format(String.format("application/%s/vehicle-declaration", applicationId))).toString();
         int applicationVersion = Integer.parseInt(fetchApplicationInformation(getApplicationId(), "version", "1"));
 
         VehicleDeclarationBuilder vehicleDeclarationBuilder = new VehicleDeclarationBuilder().withId(getApplicationId()
@@ -1407,9 +1407,9 @@ public class CreateApplication extends BaseAPI{
         if (operatorType.equals(OperatorType.PUBLIC.asString()) && (licenceType.equals(LicenceType.SPECIAL_RESTRICTED.asString()))) {
             return null;
         }
-        var financialHistoryAnswer = "N";
-        var insolvencyAnswer = "false";
-        var financialHistoryResource = URL.build(env, String.format("application/%s/financial-history", getApplicationId())).toString();
+        String financialHistoryAnswer = "N";
+        String insolvencyAnswer = "false";
+        String financialHistoryResource = URL.build(env, String.format("application/%s/financial-history", getApplicationId())).toString();
         int applicationVersion = Integer.parseInt(fetchApplicationInformation(getApplicationId(), "version", "1"));
 
         FinancialHistoryBuilder financialHistoryBuilder = new FinancialHistoryBuilder().withId(getApplicationId()).withVersion(String.valueOf(applicationVersion)).withBankrupt(financialHistoryAnswer)
@@ -1426,10 +1426,10 @@ public class CreateApplication extends BaseAPI{
         if (operatorType.equals(OperatorType.PUBLIC.asString()) && (licenceType.equals(LicenceType.SPECIAL_RESTRICTED.asString()))) {
             return null;
         }
-        var tachographIns = "tach_na";
-        var safetyInsVaries = "N";
-        var safetyConfirmationOption = "Y";
-        var applicationSafetyResource = URL.build(env, String.format("application/%s/safety", getApplicationId())).toString();
+        String tachographIns = "tach_na";
+        String safetyInsVaries = "N";
+        String safetyConfirmationOption = "Y";
+        String applicationSafetyResource = URL.build(env, String.format("application/%s/safety", getApplicationId())).toString();
         int applicationVersion = Integer.parseInt(fetchApplicationInformation(getApplicationId(), "version", "1"));
         int numberOfWeeksUntilInspection = Int.random(1, 13);
 
@@ -1448,7 +1448,7 @@ public class CreateApplication extends BaseAPI{
         if (operatorType.equals(OperatorType.PUBLIC.asString()) && (licenceType.equals(LicenceType.SPECIAL_RESTRICTED.asString()))) {
             return null;
         }
-        var safetyInspectorResource = URL.build(env, String.format("application/%s/workshop", getApplicationId())).toString();
+        String safetyInspectorResource = URL.build(env, String.format("application/%s/workshop", getApplicationId())).toString();
         AddressBuilder addressBuilder = new AddressBuilder().withAddressLine1(safetyInspectorAddressLine1).withAddressLine2(safetyInspectorAddressLine2).withAddressLine3(safetyInspectorAddressLine3)
                 .withAddressLine4(safetyInspectorAddressLine4).withTown(safetyInspectorTown).withPostcode(safetyInspectorPostCode).withCountryCode(getCountryCode());
         ContactDetailsBuilder contactDetailsBuilder = new ContactDetailsBuilder().withFullName(String.format("%s %s", safetyInspectorForeName, safetyInspectorFamilyName)).withAddress(addressBuilder);
@@ -1464,7 +1464,7 @@ public class CreateApplication extends BaseAPI{
         if (operatorType.equals(OperatorType.PUBLIC.asString()) && (licenceType.equals(LicenceType.SPECIAL_RESTRICTED.asString()))) {
             return null;
         }
-        var previousConvictionsResource = URL.build(env, String.format("application/%s/previous-convictions", applicationId)).toString();
+        String previousConvictionsResource = URL.build(env, String.format("application/%s/previous-convictions", applicationId)).toString();
         int applicationVersion = Integer.parseInt(fetchApplicationInformation(applicationId, "version", "1"));
 
         CaseConvictionsPenaltiesBuilder convictionsPenaltiesBuilder = new CaseConvictionsPenaltiesBuilder().withId(applicationId).withConvictionsConfirmation("Y")
@@ -1480,8 +1480,8 @@ public class CreateApplication extends BaseAPI{
         if (operatorType.equals(OperatorType.PUBLIC.asString()) && (licenceType.equals(LicenceType.SPECIAL_RESTRICTED.asString()))) {
             return null;
         }
-        var optionResponse = "N";
-        var licenceHistoryResource = URL.build(env, String.format("application/%s/licence-history", applicationId)).toString();
+        String optionResponse = "N";
+        String licenceHistoryResource = URL.build(env, String.format("application/%s/licence-history", applicationId)).toString();
         int applicationVersion = Integer.parseInt(fetchApplicationInformation(applicationId, "version", "1"));
 
         LicenceHistoryBuilder licenceHistoryBuilder = new LicenceHistoryBuilder().withId(applicationId).withPrevHadLicence(optionResponse).withPrevHasLicence(optionResponse)
@@ -1495,8 +1495,8 @@ public class CreateApplication extends BaseAPI{
     }
 
     public synchronized ValidatableResponse submitTaxiPhv() throws HttpException {
-        var phLicenceNumber = "phv".concat(String.valueOf(Int.random(100000, 999999)));
-        var councilName = "Volhampton";
+        String phLicenceNumber = "phv".concat(String.valueOf(Int.random(100000, 999999)));
+        String councilName = "Volhampton";
         if (operatorType.equals(OperatorType.PUBLIC.asString()) && (licenceType.equals(LicenceType.SPECIAL_RESTRICTED.asString()))) {
             String submitResource = URL.build(env, String.format("application/%s/taxi-phv", getApplicationId())).toString();
             AddressBuilder addressBuilder = new AddressBuilder().withAddressLine1(getTaxiPhvAddressLine1()).withAddressLine2(getTaxiPhvAddressLine2())
@@ -1514,7 +1514,7 @@ public class CreateApplication extends BaseAPI{
     public synchronized ValidatableResponse applicationReviewAndDeclare() throws HttpException {
 
         int applicationVersion = Integer.parseInt(fetchApplicationInformation(getApplicationId(), "version", "1"));
-        var reviewResource = URL.build(env, String.format("application/%s/declaration/", getApplicationId())).toString();
+        String reviewResource = URL.build(env, String.format("application/%s/declaration/", getApplicationId())).toString();
         DeclarationsAndUndertakings undertakings = new DeclarationsAndUndertakings().withId(getApplicationId()).withVersion(String.valueOf(applicationVersion))
                 .withSignatureType("sig_physical_signature").withDeclarationConfirmation("Y");
 
@@ -1527,7 +1527,7 @@ public class CreateApplication extends BaseAPI{
     }
 
     public synchronized ValidatableResponse submitApplication() throws HttpException {
-        var submitResource = URL.build(env, String.format("application/%s/submit", applicationId)).toString();
+        String submitResource = URL.build(env, String.format("application/%s/submit", applicationId)).toString();
         int applicationVersion = Integer.parseInt(fetchApplicationInformation(applicationId, "version", "1"));
 
         GenericBuilder genericBuilder = new GenericBuilder().withId(applicationId).withVersion(applicationVersion);

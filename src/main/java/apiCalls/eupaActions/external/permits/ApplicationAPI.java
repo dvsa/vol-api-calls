@@ -1,11 +1,10 @@
 package apiCalls.eupaActions.external.permits;
 
-import apiCalls.Utils.http.RestUtils;
-
+import activesupport.http.RestUtils;
 import activesupport.system.Properties;
 import apiCalls.Utils.eupaBuilders.external.permits.PermitApplicationModel;
 import apiCalls.Utils.eupaBuilders.external.permits.TypeModel;
-import apiCalls.eupaActions.EupaBaseAPI;
+import apiCalls.eupaActions.BaseAPI;
 import apiCalls.eupaActions.util.Utils;
 import io.restassured.response.ValidatableResponse;
 import org.apache.http.HttpStatus;
@@ -17,7 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-public class ApplicationAPIEupa extends EupaBaseAPI {
+public class ApplicationAPI extends BaseAPI {
 
     private static final String baseResource = "irhp-application/";
     private static ValidatableResponse response;

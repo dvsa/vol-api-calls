@@ -1,6 +1,6 @@
 package apiCalls.actions;
 
-import apiCalls.Utils.http.RestUtils;
+import activesupport.http.RestUtils;
 import activesupport.system.Properties;
 import apiCalls.Utils.generic.BaseAPI;
 import apiCalls.Utils.generic.Headers;
@@ -14,19 +14,21 @@ import org.dvsa.testing.lib.url.utils.EnvironmentType;
 import java.util.HashMap;
 
 public class InternalDetails extends BaseAPI {
-    private final Headers apiHeaders = new Headers();
-    private final EnvironmentType env = EnvironmentType.getEnum(Properties.get("env", true));
 
+    private final Headers apiHeaders = new Headers();
+
+    EnvironmentType env = EnvironmentType.getEnum(Properties.get("env", true));
     public HashMap<String, String> header() throws HttpException {
-        var header = new HashMap<>(apiHeaders.getApiHeader());
-        header.put("Authorization", "Bearer " + adminJWT());
-        return header;
+        apiHeaders.getApiHeader().put("Authorization", "Bearer " + adminJWT());
+        return (HashMap<String, String>) apiHeaders.getApiHeader();
     }
 
-    public synchronized ValidatableResponse getFinancialStandingRates() throws HttpException {
-        var financialStandingRateEndpoint = URL.build(env, "financial-standing-rate").toString();
-        var apiResponse = RestUtils.get(financialStandingRateEndpoint, header());
+    public synchronized ValidatableResponse getFinancialStandingRates () throws HttpException {
+        String financialStandingRateEndpoint = URL.build(env, "financial-standing-rate").toString();
+        ValidatableResponse apiResponse = RestUtils.get(financialStandingRateEndpoint, header());
+
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
+
         return apiResponse;
     }
 }
