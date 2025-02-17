@@ -1,6 +1,7 @@
 package apiCalls.actions;
 
-import activesupport.http.RestUtils;
+import apiCalls.Utils.http.RestUtils;
+
 import activesupport.system.Properties;
 import apiCalls.Utils.generic.Headers;
 import apiCalls.Utils.generic.Utils;
@@ -39,16 +40,16 @@ public class RegisterConsultantAndOperator {
 
     @Nonnull
     public synchronized ValidatableResponse register() throws HttpException {
-        String registerResource = URL.build(env, "user/selfserve/register/register-consultant-operator").toString();
+        var registerResource = URL.build(env, "user/selfserve/register/register-consultant-operator").toString();
 
-        Map<String, Object> consultantPayload = buildUserRegistrationDetails(consultantDetails);
-        Map<String, Object> operatorPayload = buildUserRegistrationDetails(operatorDetails);
+        var consultantPayload = buildUserRegistrationDetails(consultantDetails);
+        var operatorPayload = buildUserRegistrationDetails(operatorDetails);
 
-        Map<String, Object> payload = new HashMap<>();
+        var payload = new HashMap<String, Object>();
         payload.put("consultantDetails", consultantPayload);
         payload.put("operatorDetails", operatorPayload);
 
-        ValidatableResponse apiResponse = RestUtils.post(payload, registerResource, apiHeaders.getApiHeader());
+        var apiResponse = RestUtils.post(payload, registerResource, apiHeaders.getApiHeader());
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
 
         consultantDetails.setUserId(apiResponse.extract().jsonPath().getString("id.user"));
@@ -58,17 +59,17 @@ public class RegisterConsultantAndOperator {
     }
 
     private Map<String, Object> buildUserRegistrationDetails(RegisterUser user) {
-        Map<String, Object> person = new HashMap<>();
+        var person = new HashMap<String, Object>();
         person.put("title", user.getTitle());
         person.put("forename", user.getForeName());
         person.put("familyName", user.getFamilyName());
         person.put("birthDate", user.getBirthDate());
 
-        Map<String, Object> contactDetails = new HashMap<>();
+        var contactDetails = new HashMap<String, Object>();
         contactDetails.put("emailAddress", user.getEmailAddress());
         contactDetails.put("person", person);
 
-        Map<String, Object> registrationDetails = new HashMap<>();
+        var registrationDetails = new HashMap<String, Object>();
         registrationDetails.put("loginId", user.getUserName());
         registrationDetails.put("contactDetails", contactDetails);
         registrationDetails.put("organisationName", user.getOrganisationName());

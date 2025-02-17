@@ -1,14 +1,15 @@
 package apiCalls.eupaActions.internal;
 
 import activesupport.aws.s3.SecretsManager;
-import activesupport.http.RestUtils;
+import apiCalls.Utils.http.RestUtils;
+
 import activesupport.system.Properties;
 import apiCalls.Utils.eupaBuilders.external.StandardResponseModel;
 import apiCalls.Utils.eupaBuilders.internal.GrantApplicationModel;
 import apiCalls.Utils.eupaBuilders.internal.OverviewModel;
 import apiCalls.actions.Token;
 import apiCalls.enums.UserRoles;
-import apiCalls.eupaActions.BaseAPI;
+import apiCalls.eupaActions.EupaBaseAPI;
 import io.restassured.response.ValidatableResponse;
 import org.apache.hc.core5.http.HttpException;
 import org.apache.http.HttpStatus;
@@ -16,7 +17,7 @@ import org.dvsa.testing.lib.url.api.URL;
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 import org.jetbrains.annotations.NotNull;
 
-public class CaseWorkerAPI extends BaseAPI {
+public class CaseWorkerAPIEupa extends EupaBaseAPI {
 
     private static ValidatableResponse response;
     private static Token accessToken = new Token();
