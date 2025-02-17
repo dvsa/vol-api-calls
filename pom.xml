@@ -16,11 +16,8 @@
         <apache-http.version>5.3.1</apache-http.version>
         <maven.compiler.version>3.8.1</maven.compiler.version>
         <github.url>https://maven.pkg.github.com/dvsa/vol-api-calls</github.url>
-        <aws-java-sdk-s3.version>1.12.610</aws-java-sdk-s3.version>
-        <aws-secrets-manager.version>1.12.610</aws-secrets-manager.version>
         <rest-assured.version>5.4.0</rest-assured.version>
         <java.version>17</java.version>
-
     </properties>
 
     <profiles>
@@ -110,16 +107,6 @@
             <groupId>org.apache.httpcomponents.client5</groupId>
             <artifactId>httpclient5</artifactId>
             <version>${apache-http.version}</version>
-        </dependency>
-         <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-secretsmanager</artifactId>
-            <version>${aws-secrets-manager.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk</artifactId>
-            <version>${aws-java-sdk-s3.version}</version>
         </dependency>
         <dependency>
             <groupId>com.amazon.ion</groupId>
