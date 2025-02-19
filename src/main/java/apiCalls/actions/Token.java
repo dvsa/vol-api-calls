@@ -1,6 +1,6 @@
 package apiCalls.actions;
 
-import activesupport.http.RestUtils;
+import apiCalls.Utils.http.RestUtils;
 import activesupport.system.Properties;
 import apiCalls.Utils.generic.Utils;
 import apiCalls.Utils.volBuilders.TokenRequestBuilder;
@@ -39,7 +39,7 @@ public class Token {
     }
 
     public synchronized String getToken(String username, String password, String realm) throws HttpException {
-        String jwtTokenResource = URL.build(env).toString().concat("auth/login");
+        var jwtTokenResource = URL.build(env).toString().concat("auth/login");
         tokenBody.withUsername(username).withPassword(password).withRealm(realm);
 
         LOGGER.info("Requesting token from URL: " + jwtTokenResource);
