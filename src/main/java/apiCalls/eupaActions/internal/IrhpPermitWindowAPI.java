@@ -1,7 +1,8 @@
 package apiCalls.eupaActions.internal;
 
 import activesupport.aws.s3.SecretsManager;
-import activesupport.http.RestUtils;
+import apiCalls.Utils.http.RestUtils;
+
 import activesupport.system.Properties;
 import apiCalls.Utils.eupaBuilders.internal.irhp.permit.stock.OpenByCountryModel;
 import apiCalls.Utils.generic.Headers;
@@ -42,7 +43,7 @@ public class IrhpPermitWindowAPI {
     }
 
     public static OpenByCountryModel openByCountry() throws HttpException {
-        List<String> countryIds = IrhpPermitStockAPI.availableCountries().getAllCountryIds();
+        List<String> countryIds = IrhpPermitStockAPIEupa.availableCountries().getAllCountryIds();
         return openByCountry(countryIds.toArray(new String[0]));
     }
 }

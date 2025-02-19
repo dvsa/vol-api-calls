@@ -1,17 +1,18 @@
 package apiCalls.eupaActions.external.permits;
 
-import activesupport.http.RestUtils;
+import apiCalls.Utils.http.RestUtils;
+
 import activesupport.system.Properties;
 import apiCalls.Utils.eupaBuilders.external.permits.PermitTypeModel;
 import apiCalls.Utils.eupaBuilders.external.permits.TypeModel;
-import apiCalls.eupaActions.BaseAPI;
+import apiCalls.eupaActions.EupaBaseAPI;
 import apiCalls.eupaActions.util.Utils;
 import io.restassured.response.ValidatableResponse;
 import org.apache.http.HttpStatus;
 import org.dvsa.testing.lib.url.api.URL;
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 
-public class PermitTypeAPI extends BaseAPI {
+public class PermitTypeAPIEupa extends EupaBaseAPI {
 
     private static final String baseResource = "irhp-permit-type/";
 

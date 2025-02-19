@@ -1,6 +1,7 @@
 package apiCalls.eupaActions;
 
-import activesupport.http.RestUtils;
+import apiCalls.Utils.http.RestUtils;
+
 import activesupport.system.Properties;
 import apiCalls.Utils.eupaBuilders.organisation.OrganisationModel;
 import io.restassured.response.ValidatableResponse;
@@ -9,7 +10,7 @@ import org.dvsa.testing.lib.url.api.URL;
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 import org.jetbrains.annotations.NotNull;
 
-public class OrganisationAPI extends BaseAPI {
+public class OrganisationAPIEupa extends EupaBaseAPI {
 
     private static String baseResource = "organisation/";
     private static ValidatableResponse response;

@@ -1,35 +1,34 @@
 package apiCalls.eupaActions.internal;
 
 import activesupport.aws.s3.SecretsManager;
-import activesupport.http.RestUtils;
+import apiCalls.Utils.http.RestUtils;
+
 import activesupport.system.Properties;
-import apiCalls.Utils.generic.Utils;
+import apiCalls.Utils.eupaBuilders.internal.irhp.permit.stock.AvailableCountriesModel;
 import apiCalls.actions.Token;
 import apiCalls.enums.UserRoles;
-import apiCalls.eupaActions.BaseAPI;
+import apiCalls.eupaActions.EupaBaseAPI;
 import io.restassured.response.ValidatableResponse;
 import org.apache.hc.core5.http.HttpException;
 import org.apache.http.HttpStatus;
 import org.dvsa.testing.lib.url.api.URL;
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
-import org.jetbrains.annotations.NotNull;
 
-public class LicenceAPI extends BaseAPI {
+public class IrhpPermitStockAPIEupa extends EupaBaseAPI {
 
-    private static final String baseResource = "licence/";
+    private static final String baseResource = "irhp-permit-stock/";
 
-    public static String licenceNumber(@NotNull String licenceId) throws HttpException {
+    public static AvailableCountriesModel availableCountries() throws HttpException {
         Token accessToken = new Token();
         updateHeader( "Authorization", "Bearer " + accessToken.getToken(SecretsManager.getSecretValue("adminUser"), SecretsManager.getSecretValue("adminPassword"), UserRoles.INTERNAL.asString()));
 
-        String env = Properties.get("env", true);
-        URL.build(EnvironmentType.getEnum(env), baseResource.concat(licenceId));
+        URL.build(EnvironmentType.getEnum(Properties.get("env", true)), baseResource.concat("available-countries/?dto=Dvsa%5COlcs%5CTransfer%5CQuery%5CIrhpPermitStock%5CAvailableCountries"));
 
         ValidatableResponse response = RestUtils.get(String.valueOf(URL.getURL()), getHeaders());
 
+        response.statusCode(HttpStatus.SC_OK);
         prettyPrintJson(response.extract().asString());
 
-        response.statusCode(HttpStatus.SC_OK);
-        return response.extract().path("licNo");
+        return response.extract().as(AvailableCountriesModel.class);
     }
 }
