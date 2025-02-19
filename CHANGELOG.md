@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1](https://github.com/dvsa/vol-api-calls/compare/v3.0.0...v3.0.1) (2025-02-19)
+
+
+### Miscellaneous Chores
+
+* bump to 3.0.1 ([552a6d2](https://github.com/dvsa/vol-api-calls/commit/552a6d29d811c6db8176edc1a09886e3d2346a10))
+
 ## [3.0.0](https://github.com/dvsa/vol-api-calls/compare/v2.8.1...v3.0.0) (2025-02-17)
 
 
