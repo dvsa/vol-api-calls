@@ -2,7 +2,7 @@
 This library consists of helper methods that call the VOL backend API and is to be used as a toolkit of support libraries in the [VOL Functional test suite.](https://github.com/dvsa/vol-functional-tests)
 
 ## Requirements
-- Java 11
+- Java 17
 - Maven 3.6.3 or greater
 
 
