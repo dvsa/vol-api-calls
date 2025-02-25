@@ -8,7 +8,8 @@ import apiCalls.Utils.generic.Utils;
 import io.restassured.response.ValidatableResponse;
 import org.apache.hc.core5.http.HttpException;
 import org.apache.http.HttpStatus;
-import org.dvsa.testing.lib.url.api.URL;
+import org.dvsa.testing.lib.url.api.ApiUrl;
+
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 
 public class GetApplicationDetails extends BaseAPI {
@@ -36,7 +37,7 @@ public class GetApplicationDetails extends BaseAPI {
     }
 
     public synchronized ValidatableResponse getApplicationLicenceDetails() throws HttpException {
-        var getApplicationResource = URL.build(env, "application/%s".formatted(application.getApplicationId())).toString();
+        var getApplicationResource = ApiUrl.build(env, "application/%s".formatted(application.getApplicationId())).toString();
         apiHeaders.getApiHeader().put("Authorization", "Bearer " + adminJWT());
 
         var apiResponse = RestUtils.get(getApplicationResource, apiHeaders.getApiHeader());

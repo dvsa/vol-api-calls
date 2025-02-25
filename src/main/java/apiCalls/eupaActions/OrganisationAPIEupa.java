@@ -6,7 +6,8 @@ import activesupport.system.Properties;
 import apiCalls.Utils.eupaBuilders.organisation.OrganisationModel;
 import io.restassured.response.ValidatableResponse;
 import org.apache.http.HttpStatus;
-import org.dvsa.testing.lib.url.api.URL;
+import org.dvsa.testing.lib.url.api.ApiUrl;
+
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,8 +26,9 @@ public class OrganisationAPIEupa extends EupaBaseAPI {
 
     private static OrganisationModel getOrganisationModel(String path, Class<OrganisationModel> modelClass, int expectedResponseCode) {
         String env = Properties.get("env", true);
-        URL.build(EnvironmentType.getEnum(env), path);
-        response = RestUtils.get(String.valueOf(URL.getURL()), getHeaders());
+        ApiUrl.build(EnvironmentType.getEnum(env), path);
+        response = RestUtils.get(String.valueOf(ApiUrl.getURL()),
+ getHeaders());
 
         prettyPrintJson(response.extract().asString());
 

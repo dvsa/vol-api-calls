@@ -9,7 +9,8 @@ import apiCalls.enums.BusinessType;
 import io.restassured.response.ValidatableResponse;
 import org.apache.hc.core5.http.HttpException;
 import org.apache.http.HttpStatus;
-import org.dvsa.testing.lib.url.api.URL;
+import org.dvsa.testing.lib.url.api.ApiUrl;
+
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -40,7 +41,7 @@ public class RegisterConsultantAndOperator {
 
     @Nonnull
     public synchronized ValidatableResponse register() throws HttpException {
-        var registerResource = URL.build(env, "user/selfserve/register/register-consultant-operator").toString();
+        var registerResource = ApiUrl.build(env, "user/selfserve/register/register-consultant-operator").toString();
 
         var consultantPayload = buildUserRegistrationDetails(consultantDetails);
         var operatorPayload = buildUserRegistrationDetails(operatorDetails);

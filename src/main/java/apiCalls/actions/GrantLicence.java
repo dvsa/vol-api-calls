@@ -13,7 +13,8 @@ import org.apache.hc.core5.http.HttpException;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.dvsa.testing.lib.url.api.URL;
+import org.dvsa.testing.lib.url.api.ApiUrl;
+
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 import org.joda.time.LocalDate;
 
@@ -71,7 +72,7 @@ public class GrantLicence extends BaseAPI {
      */
 
     public synchronized void createOverview() throws HttpException {
-        var overviewResource = URL.build(env, "application/%s/overview/".formatted(application.getApplicationId())).toString();
+        var overviewResource = ApiUrl.build(env, "application/%s/overview/".formatted(application.getApplicationId())).toString();
         var status = "1";
         var overrideOption = "Y";
         var transportArea = "D";
@@ -118,7 +119,7 @@ public class GrantLicence extends BaseAPI {
     }
 
     public synchronized void getOutstandingFees() throws HttpException {
-        var getOutstandingFeesResource = URL.build(env, "application/%s/outstanding-fees/".formatted(application.getApplicationId())).toString();
+        var getOutstandingFeesResource = ApiUrl.build(env, "application/%s/outstanding-fees/".formatted(application.getApplicationId())).toString();
         apiResponse = RestUtils.get(getOutstandingFeesResource, header());
         if (apiResponse.extract().statusCode() != HttpStatus.SC_OK) {
             LOGGER.info(apiResponse.extract().statusCode());
@@ -142,7 +143,7 @@ public class GrantLicence extends BaseAPI {
         var paymentMethod = "fpm_cash";
         var slipNo = "123456";
 
-        var payOutstandingFeesResource = URL.build(env, "transaction/pay-outstanding-fees/").toString();
+        var payOutstandingFeesResource = ApiUrl.build(env, "transaction/pay-outstanding-fees/").toString();
         var feesBuilder = new FeesBuilder()
                 .withFeeIds(outstandingFeesIds)
                 .withOrganisationId(application.getUserDetails().getOrganisationId())
@@ -157,7 +158,7 @@ public class GrantLicence extends BaseAPI {
     }
 
     public synchronized void grant() throws HttpException {
-        var grantApplicationResource = URL.build(env, "application/%s/grant/".formatted(application.getApplicationId())).toString();
+        var grantApplicationResource = ApiUrl.build(env, "application/%s/grant/".formatted(application.getApplicationId())).toString();
         var grantApplication = new GrantApplicationBuilder()
                 .withId(application.getApplicationId())
                 .withDuePeriod("9")
@@ -184,7 +185,7 @@ public class GrantLicence extends BaseAPI {
         var paymentMethod = "fpm_cash";
         var slipNo = "123456";
 
-        var payOutstandingFeesResource = URL.build(env, "transaction/pay-outstanding-fees/").toString();
+        var payOutstandingFeesResource = ApiUrl.build(env, "transaction/pay-outstanding-fees/").toString();
 
         var feesBuilder = new FeesBuilder()
                 .withFeeIds(List.of(feeId))
@@ -203,7 +204,7 @@ public class GrantLicence extends BaseAPI {
     }
 
     private synchronized void variationGrant() throws HttpException {
-        var grantApplicationResource = URL.build(env, "variation/%s/grant/".formatted(application.getApplicationId())).toString();
+        var grantApplicationResource = ApiUrl.build(env, "variation/%s/grant/".formatted(application.getApplicationId())).toString();
         var grantVariationBuilder = new GenericBuilder().withId(application.getApplicationId());
         apiResponse = RestUtils.put(grantVariationBuilder, grantApplicationResource, header());
 
@@ -211,7 +212,7 @@ public class GrantLicence extends BaseAPI {
     }
 
     public synchronized void refuse(String applicationId) throws HttpException {
-        var grantApplicationResource = URL.build(env, "application/%s/refuse/".formatted(applicationId)).toString();
+        var grantApplicationResource = ApiUrl.build(env, "application/%s/refuse/".formatted(applicationId)).toString();
         var grantApplication = new GrantApplicationBuilder()
                 .withId(applicationId)
                 .withCaseworkerNotes("This notes are from the API");
@@ -227,7 +228,7 @@ public class GrantLicence extends BaseAPI {
     }
 
     public synchronized void withdraw(String applicationId) throws HttpException {
-        var grantApplicationResource = URL.build(env, "application/%s/withdraw/".formatted(applicationId)).toString();
+        var grantApplicationResource = ApiUrl.build(env, "application/%s/withdraw/".formatted(applicationId)).toString();
         var grantApplication = new GrantApplicationBuilder()
                 .withId(applicationId)
                 .withReason("reg_in_error");

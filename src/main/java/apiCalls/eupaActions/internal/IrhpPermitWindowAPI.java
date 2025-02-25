@@ -12,7 +12,8 @@ import apiCalls.enums.UserRoles;
 import io.restassured.response.ValidatableResponse;
 import org.apache.hc.core5.http.HttpException;
 import org.apache.http.HttpStatus;
-import org.dvsa.testing.lib.url.api.URL;
+import org.dvsa.testing.lib.url.api.ApiUrl;
+
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 
 import java.util.HashMap;
@@ -28,7 +29,7 @@ public class IrhpPermitWindowAPI {
     public static OpenByCountryModel openByCountry(String[] countryIds) throws HttpException {
         Token accessToken = new Token();
         apiHeaders.getApiHeader().put( "Authorization", "Bearer " + accessToken.getToken(SecretsManager.getSecretValue("adminUser"), SecretsManager.getSecretValue("adminPassword"), UserRoles.INTERNAL.asString()));
-        String openCountries = URL.build(env,"irhp-permit-window/open-by-country").toString();
+        String openCountries = ApiUrl.build(env,"irhp-permit-window/open-by-country").toString();
 
         Map<String, String> map = new HashMap<>();
         for (int i = 0; i < countryIds.length; i++) {

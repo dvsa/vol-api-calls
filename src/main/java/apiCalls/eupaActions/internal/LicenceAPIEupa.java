@@ -10,7 +10,8 @@ import apiCalls.eupaActions.EupaBaseAPI;
 import io.restassured.response.ValidatableResponse;
 import org.apache.hc.core5.http.HttpException;
 import org.apache.http.HttpStatus;
-import org.dvsa.testing.lib.url.api.URL;
+import org.dvsa.testing.lib.url.api.ApiUrl;
+
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,9 +24,10 @@ public class LicenceAPIEupa extends EupaBaseAPI {
         updateHeader( "Authorization", "Bearer " + accessToken.getToken(SecretsManager.getSecretValue("adminUser"), SecretsManager.getSecretValue("adminPassword"), UserRoles.INTERNAL.asString()));
 
         String env = Properties.get("env", true);
-        URL.build(EnvironmentType.getEnum(env), baseResource.concat(licenceId));
+        ApiUrl.build(EnvironmentType.getEnum(env), baseResource.concat(licenceId));
 
-        ValidatableResponse response = RestUtils.get(String.valueOf(URL.getURL()), getHeaders());
+        ValidatableResponse response = RestUtils.get(String.valueOf(ApiUrl.getURL()),
+ getHeaders());
 
         prettyPrintJson(response.extract().asString());
 

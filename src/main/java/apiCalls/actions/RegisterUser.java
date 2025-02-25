@@ -13,7 +13,8 @@ import apiCalls.enums.UserTitle;
 import io.restassured.response.ValidatableResponse;
 import org.apache.hc.core5.http.HttpException;
 import org.apache.http.HttpStatus;
-import org.dvsa.testing.lib.url.api.URL;
+import org.dvsa.testing.lib.url.api.ApiUrl;
+
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -72,7 +73,7 @@ public class RegisterUser {
     public synchronized String getUserId() { return userId; }
 
     public synchronized ValidatableResponse registerUser() throws HttpException {
-        var registerResource = URL.build(env, "user/selfserve/register").toString();
+        var registerResource = ApiUrl.build(env, "user/selfserve/register").toString();
 
         var personBuilder = new PersonBuilder()
                 .withTitle(getTitle())

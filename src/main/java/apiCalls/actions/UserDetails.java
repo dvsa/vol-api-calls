@@ -10,7 +10,8 @@ import apiCalls.enums.UserType;
 import io.restassured.response.ValidatableResponse;
 import org.apache.hc.core5.http.HttpException;
 import org.apache.http.HttpStatus;
-import org.dvsa.testing.lib.url.api.URL;
+import org.dvsa.testing.lib.url.api.ApiUrl;
+
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -40,7 +41,7 @@ public class UserDetails extends BaseAPI {
     }
 
     private ValidatableResponse handleExternalUser(String userId, String username, String password) throws HttpException {
-        var userDetailsResource = URL.build(env, "user/%s/%s".formatted(UserType.EXTERNAL.asString(), userId)).toString();
+        var userDetailsResource = ApiUrl.build(env, "user/%s/%s".formatted(UserType.EXTERNAL.asString(), userId)).toString();
         apiResponse = RestUtils.get(userDetailsResource, apiHeaders.getApiHeader());
 
         setJwtToken(getToken(username, password, Realm.SELF_SERVE.asString()));
@@ -54,7 +55,7 @@ public class UserDetails extends BaseAPI {
     }
 
     private ValidatableResponse handleInternalUser(String userId, String username, String password) throws HttpException {
-        var userDetailsResource = URL.build(env, "user/%s/%s".formatted(UserType.INTERNAL.asString(), userId)).toString();
+        var userDetailsResource = ApiUrl.build(env, "user/%s/%s".formatted(UserType.INTERNAL.asString(), userId)).toString();
         apiResponse = RestUtils.get(userDetailsResource, apiHeaders.getApiHeader());
 
         setJwtToken(getToken(username, password, Realm.INTERNAL.asString()));

@@ -8,7 +8,8 @@ import apiCalls.enums.UserType;
 import io.restassured.response.ValidatableResponse;
 import org.apache.hc.core5.http.HttpException;
 import org.apache.http.HttpStatus;
-import org.dvsa.testing.lib.url.api.URL;
+import org.dvsa.testing.lib.url.api.ApiUrl;
+
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,7 +40,7 @@ public class Token {
     }
 
     public synchronized String getToken(String username, String password, String realm) throws HttpException {
-        var jwtTokenResource = URL.build(env).toString().concat("auth/login");
+        var jwtTokenResource = ApiUrl.build(env).toString().concat("auth/login");
         tokenBody.withUsername(username).withPassword(password).withRealm(realm);
 
         LOGGER.info("Requesting token from URL: " + jwtTokenResource);

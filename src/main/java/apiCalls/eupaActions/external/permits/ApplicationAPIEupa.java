@@ -9,7 +9,8 @@ import apiCalls.eupaActions.EupaBaseAPI;
 import apiCalls.eupaActions.util.Utils;
 import io.restassured.response.ValidatableResponse;
 import org.apache.http.HttpStatus;
-import org.dvsa.testing.lib.url.api.URL;
+import org.dvsa.testing.lib.url.api.ApiUrl;
+
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 
 import java.util.HashMap;
@@ -28,9 +29,9 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
                 "IrhpApplication%5CActiveApplication&licence=";
         path += String.format("%s&irhpPermitType=%s", licenceID, type.getId());
 
-        URL.build(EnvironmentType.getEnum(Properties.get("env")), baseResource + path);
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), baseResource + path);
 
-        response = RestUtils.get(Utils.removeLastSlash(URL.getURL()), getHeaders());
+        response = RestUtils.get(Utils.removeLastSlash(ApiUrl.getURL()), getHeaders());
 
         prettyPrintJson(response.extract().asString());
 
@@ -47,7 +48,7 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
         String path = "fee-per-permit/?dto=Dvsa%5COlcs%5CTransfer%5CQuery%5CIrhpApplication%5CFeePerPermit&id=" +
                 permitID;
 
-        response = RestUtils.get(Utils.removeLastSlash(URL.build(EnvironmentType.getEnum(Properties.get("env")), baseResource + path)), getHeaders());
+        response = RestUtils.get(Utils.removeLastSlash(ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), baseResource + path)), getHeaders());
 
         prettyPrintJson(response.extract().asString());
 

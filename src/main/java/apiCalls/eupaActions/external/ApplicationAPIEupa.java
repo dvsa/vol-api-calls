@@ -11,7 +11,8 @@ import apiCalls.Utils.eupaBuilders.internal.FeesModel;
 import apiCalls.eupaActions.EupaBaseAPI;
 import io.restassured.response.ValidatableResponse;
 import org.apache.http.HttpStatus;
-import org.dvsa.testing.lib.url.api.URL;
+import org.dvsa.testing.lib.url.api.ApiUrl;
+
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,9 +23,9 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
 
     public static StandardResponseModel create(@NotNull ApplicationModel applicationModel) {
         String baseResource = "application";
-        URL.build(EnvironmentType.getEnum(Properties.get("env")), baseResource);
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), baseResource);
 
-        response = RestUtils.post(applicationModel, String.valueOf(URL.getURL()), getHeaders());
+        response = RestUtils.post(applicationModel, String.valueOf(ApiUrl.getURL()), getHeaders());
 
         System.out.print("\n\nRESPONSE:\n\n");
         prettyPrintJson(response.extract().asString());
@@ -35,10 +36,10 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
     }
 
     public static void businessType(@NotNull BusinessTypeModel businessType) {
-        URL.build(EnvironmentType.getEnum(Properties.get("env")), String.format("organisation/%s/business-type/", businessType.getOrganisationId()));
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), String.format("organisation/%s/business-type/", businessType.getOrganisationId()));
 
         do {
-            response = RestUtils.put(businessType, String.valueOf(URL.getURL()), getHeaders());
+            response = RestUtils.put(businessType, String.valueOf(ApiUrl.getURL()), getHeaders());
 
             if (response.extract().statusCode() == HttpStatus.SC_OK)
                 break;
@@ -53,10 +54,10 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
     }
 
     public static StandardResponseModel businessDetails(@NotNull BusinessDetailsModel businessDetails) {
-        URL.build(EnvironmentType.getEnum(Properties.get("env")), String.format("organisation/business-details/application/%s", businessDetails.getLicenceId()));
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), String.format("organisation/business-details/application/%s", businessDetails.getLicenceId()));
 
         do {
-            response = RestUtils.put(businessDetails, String.valueOf(URL.getURL()), getHeaders());
+            response = RestUtils.put(businessDetails, String.valueOf(ApiUrl.getURL()), getHeaders());
 
             if (response.extract().statusCode() == HttpStatus.SC_OK)
                 break;
@@ -73,9 +74,9 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
     }
 
     public static StandardResponseModel address(@NotNull ApplicationContactDetailsModel applicationContactDetails){
-        URL.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/addresses/", applicationContactDetails.getApplicationNumber()));
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/addresses/", applicationContactDetails.getApplicationNumber()));
 
-        response = RestUtils.put(applicationContactDetails, String.valueOf(URL.getURL()), getHeaders());
+        response = RestUtils.put(applicationContactDetails, String.valueOf(ApiUrl.getURL()), getHeaders());
 
         System.out.print("\n\nRESPONSE:\n\n");
         prettyPrintJson(response.extract().asString());
@@ -86,9 +87,9 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
     }
 
     public static void partner(PersonModel person) {
-        URL.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/people/", person.getApplicationId()));
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/people/", person.getApplicationId()));
 
-        response = RestUtils.post(person, String.valueOf(URL.getURL()), getHeaders());
+        response = RestUtils.post(person, String.valueOf(ApiUrl.getURL()), getHeaders());
 
         System.out.print("\n\nRESPONSE:\n\n");
         prettyPrintJson(response.extract().asString());
@@ -97,7 +98,7 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
     }
 
     public static void operatingCentre(OperatingCentreModel operatingCentre) {
-        URL.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/operating-centre/", operatingCentre.getApplicationId()));
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/operating-centre/", operatingCentre.getApplicationId()));
         int maxTries = 2;
         boolean firstEval = true;
 
@@ -112,7 +113,7 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
                 maxTries--;
             }
 
-            response = RestUtils.post(operatingCentre, String.valueOf(URL.getURL()), getHeaders());
+            response = RestUtils.post(operatingCentre, String.valueOf(ApiUrl.getURL()), getHeaders());
 
             System.out.print("\n\nRESPONSE:\n\n");
             prettyPrintJson(response.extract().asString());
@@ -125,7 +126,7 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
     }
 
     public static void operatingCentreDetails(OperatingCentreDetailsModel operatingCentreDetailsModel) {
-        URL.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/operating-centres", operatingCentreDetailsModel.getApplicationNumber()));
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/operating-centres", operatingCentreDetailsModel.getApplicationNumber()));
         int version = 1;
 
         do {
@@ -134,7 +135,7 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
 
             response = RestUtils.put(
                     operatingCentreDetailsModel,
-                    String.valueOf(URL.getURL()),
+                    String.valueOf(ApiUrl.getURL()),
                     getHeaders()
             );
 
@@ -152,14 +153,14 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
     }
 
     public static void financialEvidence(@NotNull FinancialEvidenceModel financialEvidence) {
-        URL.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/financial-evidence", financialEvidence.getApplicationNumber()));
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/financial-evidence", financialEvidence.getApplicationNumber()));
         int version = 1;
 
         do {
             if (financialEvidence.getVersion() == null)
                     financialEvidence.setVersion(version);
 
-            response = RestUtils.put(financialEvidence, String.valueOf(URL.getURL()), getHeaders());
+            response = RestUtils.put(financialEvidence, String.valueOf(ApiUrl.getURL()), getHeaders());
 
             if (response.extract().statusCode() == HttpStatus.SC_OK)
                 break;
@@ -174,9 +175,9 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
     }
 
     public static StandardResponseModel transportManager(@NotNull TransportManagerModel transportManager) {
-        URL.build(EnvironmentType.getEnum(Properties.get("env")), "transport-manager/create-new-user/");
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), "transport-manager/create-new-user/");
 
-        response = RestUtils.post(transportManager, String.valueOf(URL.getURL()), getHeaders());
+        response = RestUtils.post(transportManager, String.valueOf(ApiUrl.getURL()), getHeaders());
 
         System.out.print("\n\nRESPONSE:\n\n");
         prettyPrintJson(response.extract().asString());
@@ -187,11 +188,11 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
     }
 
     public static void submitTransport(int applicationNumber, int transportManagerApplicationId){
-        URL.build(EnvironmentType.getEnum(Properties.get("env")), String.format("transport-manager-application/%d/submit", applicationNumber));
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), String.format("transport-manager-application/%d/submit", applicationNumber));
 
         GenericModel genericModel = new GenericModel().withId(transportManagerApplicationId).withVersion(1);
 
-        response = RestUtils.put(genericModel, String.valueOf(URL.getURL()), getHeaders());
+        response = RestUtils.put(genericModel, String.valueOf(ApiUrl.getURL()), getHeaders());
 
         System.out.print("\n\nRESPONSE:\n\n");
         prettyPrintJson(response.extract().asString());
@@ -200,13 +201,13 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
     }
 
     public static void psvVehicles(@NotNull VehiclesModel vehiclesModel) {
-        URL.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/psv-vehicles", vehiclesModel.getApplicationNumber()));
-        vehicle(URL.getURL(), vehiclesModel);
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/psv-vehicles", vehiclesModel.getApplicationNumber()));
+        vehicle(ApiUrl.getURL(), vehiclesModel);
     }
 
     public static void goodsVehicles(@NotNull VehiclesModel vehiclesModel) {
-        URL.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/vehicles", vehiclesModel.getApplicationNumber()));
-        vehicle(URL.getURL(), vehiclesModel);
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/vehicles", vehiclesModel.getApplicationNumber()));
+        vehicle(ApiUrl.getURL(), vehiclesModel);
     }
 
     private static void vehicle(@NotNull java.net.URL url, @NotNull VehiclesModel vehiclesModel) {
@@ -230,7 +231,7 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
     }
 
     public static void vehicleDeclaration(@NotNull VehicleDeclarationModel vehicleDeclarationModel){
-        URL.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/vehicle-declaration", vehicleDeclarationModel.getId()));
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/vehicle-declaration", vehicleDeclarationModel.getId()));
 
         int version = 1;
 
@@ -239,7 +240,7 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
                 vehicleDeclarationModel.setVersion(version);
             }
 
-            response = RestUtils.put(vehicleDeclarationModel, String.valueOf(URL.getURL()), getHeaders());
+            response = RestUtils.put(vehicleDeclarationModel, String.valueOf(ApiUrl.getURL()), getHeaders());
 
             if (response.extract().statusCode() == HttpStatus.SC_OK)
                 return;
@@ -255,7 +256,7 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
     }
 
     public static void financialHistory(@NotNull FinancialHistoryModel financialHistoryModel) {
-        URL.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/financial-history", financialHistoryModel.getApplicationNumber()));
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/financial-history", financialHistoryModel.getApplicationNumber()));
         int version = 1;
 
         do {
@@ -263,7 +264,7 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
                 financialHistoryModel.setVersion(version);
             }
 
-            response = RestUtils.put(financialHistoryModel, String.valueOf(URL.getURL()), getHeaders());
+            response = RestUtils.put(financialHistoryModel, String.valueOf(ApiUrl.getURL()), getHeaders());
 
             if(response.extract().statusCode() == HttpStatus.SC_OK)
                 return;
@@ -279,7 +280,7 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
     }
 
     public static void safetyAndCompliance(@NotNull SafetyModel safetyModel) {
-        URL.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/safety", safetyModel.getApplicationNumber()));
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/safety", safetyModel.getApplicationNumber()));
         int version = 1;
 
         do {
@@ -291,7 +292,7 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
                 safetyModel.getLicenceModel().setVersion(Int.random(0, 20));
             }
 
-            response = RestUtils.put(safetyModel, String.valueOf(URL.getURL()), getHeaders());
+            response = RestUtils.put(safetyModel, String.valueOf(ApiUrl.getURL()), getHeaders());
 
             if (response.extract().statusCode() == HttpStatus.SC_OK)
                 return;
@@ -307,9 +308,9 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
     }
 
     public static void safetyInspector(@NotNull SafetyInspectorModel safetyInspectorModel) {
-        URL.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/workshop", safetyInspectorModel.getApplicationNumber()));
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/workshop", safetyInspectorModel.getApplicationNumber()));
 
-        response = RestUtils.post(safetyInspectorModel, String.valueOf(URL.getURL()), getHeaders());
+        response = RestUtils.post(safetyInspectorModel, String.valueOf(ApiUrl.getURL()), getHeaders());
 
         System.out.print("\n\nRESPONSE:\n\n");
         prettyPrintJson(response.extract().asString());
@@ -318,14 +319,14 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
     }
 
     public static void convictions(@NotNull ConvictionsModel convictionsModel) {
-        URL.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/previous-convictions", convictionsModel.getApplicationNumber()));
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/previous-convictions", convictionsModel.getApplicationNumber()));
         int version = 1;
 
         do {
             if (convictionsModel.getVersion() == null)
                 convictionsModel.setVersion(version);
 
-            response = RestUtils.put(convictionsModel, String.valueOf(URL.getURL()), getHeaders());
+            response = RestUtils.put(convictionsModel, String.valueOf(ApiUrl.getURL()), getHeaders());
 
             if (response.extract().statusCode() == HttpStatus.SC_OK)
                 return;
@@ -340,14 +341,14 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
     }
 
     public static void licenceHistory(@NotNull LicenceHistoryModel licenceHistoryModel) {
-        URL.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/licence-history", licenceHistoryModel.getApplicationNumber()));
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/licence-history", licenceHistoryModel.getApplicationNumber()));
         int version = 1;
 
         do {
             if (licenceHistoryModel.getVersion() == null)
                 licenceHistoryModel.setVersion(version);
 
-            response = RestUtils.put(licenceHistoryModel, String.valueOf(URL.getURL()), getHeaders());
+            response = RestUtils.put(licenceHistoryModel, String.valueOf(ApiUrl.getURL()), getHeaders());
 
             if (response.extract().statusCode() == HttpStatus.SC_OK)
                 break;
@@ -362,14 +363,14 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
     }
 
     public static StandardResponseModel declaration(@NotNull DeclarationModel declarationModel) {
-        URL.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/declaration/", declarationModel.getApplicationNumber()));
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/declaration/", declarationModel.getApplicationNumber()));
         int version = 1;
 
         do {
             if (declarationModel.getVersion() == null)
                 declarationModel.setVersion(version);
 
-            response = RestUtils.put(declarationModel, String.valueOf(URL.getURL()), getHeaders());
+            response = RestUtils.put(declarationModel, String.valueOf(ApiUrl.getURL()), getHeaders());
 
             if (response.extract().statusCode() == HttpStatus.SC_OK)
                 break;
@@ -386,14 +387,14 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
     }
 
     public static StandardResponseModel submit(@NotNull GenericModel genericModel) {
-        URL.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/submit", genericModel.getId()));
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/submit", genericModel.getId()));
         int version = 1;
 
         do {
             if (genericModel.getVersion() == null)
                 genericModel.setVersion(version);
 
-            response = RestUtils.put(genericModel, String.valueOf(URL.getURL()), getHeaders());
+            response = RestUtils.put(genericModel, String.valueOf(ApiUrl.getURL()), getHeaders());
 
             if (response.extract().statusCode() == HttpStatus.SC_OK)
                 break;
@@ -410,9 +411,10 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
     }
 
     public static ApplicationFeesModel outstandingFees(@NotNull String applicationId) {
-        URL.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/outstanding-fees/", applicationId));
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), String.format("application/%s/outstanding-fees/", applicationId));
 
-        response = RestUtils.get(String.valueOf(URL.getURL()), getHeaders());
+        response = RestUtils.get(String.valueOf(ApiUrl.getURL()),
+ getHeaders());
 
         System.out.print("\n\nRESPONSE:\n\n");
         prettyPrintJson(response.extract().asString());
@@ -423,9 +425,9 @@ public class ApplicationAPIEupa extends EupaBaseAPI {
     }
 
     public static void payOutstandingFee(@NotNull FeesModel fees){
-        URL.build(EnvironmentType.getEnum(Properties.get("env")), "transaction/pay-outstanding-fees/");
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), "transaction/pay-outstanding-fees/");
 
-        response = RestUtils.post(fees, String.valueOf(URL.getURL()), getHeaders());
+        response = RestUtils.post(fees, String.valueOf(ApiUrl.getURL()), getHeaders());
 
         System.out.print("\n\nRESPONSE:\n\n");
         prettyPrintJson(response.extract().asString());
