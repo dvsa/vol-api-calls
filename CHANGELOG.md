@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.2](https://github.com/dvsa/vol-api-calls/compare/v3.0.1...v3.0.2) (2025-02-25)
+
+
+### Bug Fixes
+
+* refactor for refactored uri constructor ([f60da49](https://github.com/dvsa/vol-api-calls/commit/f60da49f6257a2f8149690ea59c8e15a02cbb67a))
+
 ## [3.0.1](https://github.com/dvsa/vol-api-calls/compare/v3.0.0...v3.0.1) (2025-02-19)
 
 
