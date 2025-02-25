@@ -9,7 +9,8 @@ import apiCalls.eupaActions.EupaBaseAPI;
 import apiCalls.eupaActions.util.Utils;
 import io.restassured.response.ValidatableResponse;
 import org.apache.http.HttpStatus;
-import org.dvsa.testing.lib.url.api.URL;
+import org.dvsa.testing.lib.url.api.ApiUrl;
+
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 
 import java.time.LocalDateTime;
@@ -27,9 +28,9 @@ public class OpenWindowsAPIEupa extends EupaBaseAPI {
                 type.getId(),
                 LocalDateTime.now().format(format)
         );
-        URL.build(EnvironmentType.getEnum(Properties.get("env")), baseResource + path);
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env")), baseResource + path);
 
-        response = RestUtils.get(Utils.removeLastSlash(URL.getURL()), getHeaders());
+        response = RestUtils.get(Utils.removeLastSlash(ApiUrl.getURL()), getHeaders());
 
         prettyPrintJson(response.extract().asString());
 

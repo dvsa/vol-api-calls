@@ -8,7 +8,7 @@ import apiCalls.Utils.generic.Utils;
 import io.restassured.response.ValidatableResponse;
 import org.apache.hc.core5.http.HttpException;
 import org.apache.http.HttpStatus;
-import org.dvsa.testing.lib.url.api.URL;
+import org.dvsa.testing.lib.url.api.ApiUrl;
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 
 import java.util.HashMap;
@@ -24,7 +24,7 @@ public class InternalDetails extends BaseAPI {
     }
 
     public synchronized ValidatableResponse getFinancialStandingRates() throws HttpException {
-        var financialStandingRateEndpoint = URL.build(env, "financial-standing-rate").toString();
+        var financialStandingRateEndpoint = ApiUrl.build(env, "financial-standing-rate").toString();
         var apiResponse = RestUtils.get(financialStandingRateEndpoint, header());
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
         return apiResponse;

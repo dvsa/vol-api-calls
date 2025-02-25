@@ -9,7 +9,7 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import org.apache.hc.core5.http.HttpException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.dvsa.testing.lib.url.api.URL;
+import org.dvsa.testing.lib.url.api.ApiUrl;
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 
 import java.util.Date;
@@ -60,19 +60,19 @@ public class BaseAPI extends Token {
 
     public synchronized String fetchApplicationInformation(String applicationNumber, String jsonPath, String defaultReturn) throws HttpException {
         var requestId = UUID.randomUUID().toString();
-        var url = URL.build(env, "application/%s/overview/".formatted(applicationNumber)).toString();
+        var url = ApiUrl.build(env, "application/%s/overview/".formatted(applicationNumber)).toString();
         return retrieveAPIData(url, jsonPath, defaultReturn, requestId);
     }
 
     public synchronized String fetchTMApplicationInformation(String applicationNumber, String jsonPath, String defaultReturn) throws HttpException {
         var requestId = UUID.randomUUID().toString();
-        var url = URL.build(env, "transport-manager-application/%s".formatted(applicationNumber)).toString();
+        var url = ApiUrl.build(env, "transport-manager-application/%s".formatted(applicationNumber)).toString();
         return retrieveAPIData(url, jsonPath, defaultReturn, requestId);
     }
 
     public synchronized String fetchInternalUserInformation(String userId, String jsonPath, String defaultReturn) throws HttpException {
         var requestId = UUID.randomUUID().toString();
-        var url = URL.build(env, "user/internal/%s".formatted(userId)).toString();
+        var url = ApiUrl.build(env, "user/internal/%s".formatted(userId)).toString();
         return retrieveAPIData(url, jsonPath, defaultReturn, requestId);
     }
 

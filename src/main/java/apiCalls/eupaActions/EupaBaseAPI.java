@@ -8,7 +8,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 import org.apache.hc.core5.http.HttpException;
-import org.dvsa.testing.lib.url.api.URL;
+import org.dvsa.testing.lib.url.api.ApiUrl;
+
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,7 +23,7 @@ public abstract class EupaBaseAPI {
     static {
          secrets = new SecretsManager();
         Token token = new Token();
-        URL.build(EnvironmentType.getEnum(Properties.get("env", true)));
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env", true)));
         try {
             setHeader( "Authorization", "Bearer " + token.getToken(SecretsManager.getSecretValue("adminUser"), SecretsManager.getSecretValue("adminPassword"), UserRoles.INTERNAL.asString()));
         } catch (HttpException e) {

@@ -13,7 +13,8 @@ import apiCalls.eupaActions.EupaBaseAPI;
 import io.restassured.response.ValidatableResponse;
 import org.apache.hc.core5.http.HttpException;
 import org.apache.http.HttpStatus;
-import org.dvsa.testing.lib.url.api.URL;
+import org.dvsa.testing.lib.url.api.ApiUrl;
+
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,14 +25,14 @@ public class CaseWorkerAPIEupa extends EupaBaseAPI {
 
     public static void overview(@NotNull OverviewModel overview) throws HttpException {
         updateHeader("Authorization", "Bearer " + accessToken.getToken(SecretsManager.getSecretValue("adminUser"), SecretsManager.getSecretValue("adminPassword"), UserRoles.INTERNAL.asString()));
-        URL.build(EnvironmentType.getEnum(Properties.get("env", true)), String.format("application/%s/overview/", overview.getApplicationId()));
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env", true)), String.format("application/%s/overview/", overview.getApplicationId()));
         int version = 1;
 
         do {
             if (overview.getVersion() == null)
                 overview.setVersion(version);
 
-            response = RestUtils.put(overview, URL.getURL().toString(), getHeaders());
+            response = RestUtils.put(overview, ApiUrl.getURL().toString(), getHeaders());
 
             if (response.extract().statusCode() == HttpStatus.SC_CONFLICT)
                 overview.setVersion(++version);
@@ -45,9 +46,9 @@ public class CaseWorkerAPIEupa extends EupaBaseAPI {
 
     public static StandardResponseModel grantApplication(@NotNull GrantApplicationModel grantApplication) throws HttpException {
         updateHeader( "Authorization", "Bearer " + accessToken.getToken(SecretsManager.getSecretValue("adminUser"), SecretsManager.getSecretValue("adminPassword"), UserRoles.INTERNAL.asString()));
-        URL.build(EnvironmentType.getEnum(Properties.get("env", true)), String.format("application/%s/grant/", grantApplication.getId()));
+        ApiUrl.build(EnvironmentType.getEnum(Properties.get("env", true)), String.format("application/%s/grant/", grantApplication.getId()));
 
-        response = RestUtils.put(grantApplication, String.valueOf(URL.getURL()), getHeaders());
+        response = RestUtils.put(grantApplication, String.valueOf(ApiUrl.getURL()), getHeaders());
 
         prettyPrintJson(response.extract().asString());
 
