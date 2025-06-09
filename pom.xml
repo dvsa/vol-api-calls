@@ -4,7 +4,7 @@
 
     <groupId>org.dvsa.testing.framework</groupId>
     <artifactId>vol-api-calls</artifactId>
-    <version>3.0.7</version>
+    <version>3.0.8-SNAPSHOT</version>
 
 
     <properties>
