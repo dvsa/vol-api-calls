@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.9](https://github.com/dvsa/vol-api-calls/compare/v3.0.8...v3.0.9) (2025-07-14)
+
+
+### Bug Fixes
+
+* bump up lang3 ([eaf666b](https://github.com/dvsa/vol-api-calls/commit/eaf666bbd98df7200239e7587cbcc28e89ed871b))
+* bump up lang3 ([03f9ca8](https://github.com/dvsa/vol-api-calls/commit/03f9ca8f80d3e3d43f7d43294c34ff5e30120af8))
+
 ## [3.0.8](https://github.com/dvsa/vol-api-calls/compare/v3.0.7...v3.0.8) (2025-06-09)
 
 
