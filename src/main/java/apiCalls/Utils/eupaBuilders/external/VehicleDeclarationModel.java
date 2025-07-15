@@ -11,6 +11,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
         "id",
         "psvVehicleSize",
         "psvNoSmallVhlConfirmation",
+        "psvSmallVhlConfirmation",
+        "evidenceUploadType",
         "psvOperateSmallVhl",
         "psvSmallVhlNotes",
         "psvLimousines",
@@ -26,6 +28,10 @@ public class VehicleDeclarationModel {
     private String psvVehicleSize;
     @JsonProperty("psvNoSmallVhlConfirmation")
     private String psvNoSmallVhlConfirmation;
+    @JsonProperty("eidenceUploadType")
+    private String evidenceUploadType;
+    @JsonProperty("psvSmallVhlConfirmation")
+    private String psvSmallVhlConfirmation;
     @JsonProperty("psvOperateSmallVhl")
     private String psvOperateSmallVhl;
     @JsonProperty("psvSmallVhlNotes")
@@ -81,6 +87,36 @@ public class VehicleDeclarationModel {
 
     public VehicleDeclarationModel withPsvNoSmallVhlConfirmation(String psvNoSmallVhlConfirmation) {
         this.psvNoSmallVhlConfirmation = psvNoSmallVhlConfirmation;
+        return this;
+    }
+
+    @JsonProperty("psvSmallVhlConfirmation")
+    public String getPsvSmallVhlConfirmation() {
+        return psvSmallVhlConfirmation;
+    }
+
+    @JsonProperty("psvSmallVhlConfirmation")
+    public void setPsvSmallVhlConfirmation(String psvSmallVhlConfirmation) {
+        this.psvSmallVhlConfirmation = psvSmallVhlConfirmation;
+    }
+
+    public VehicleDeclarationModel withPsvSmallVhlConfirmation(String psvSmallVhlConfirmation) {
+        this.psvSmallVhlConfirmation = psvSmallVhlConfirmation;
+        return this;
+    }
+
+    @JsonProperty("evidenceUploadType")
+    public String getEvidenceUploadType() {
+        return evidenceUploadType;
+    }
+
+    @JsonProperty("evidenceUploadType")
+    public void setEvidenceUploadType(String evidenceUploadType) {
+        this.evidenceUploadType = evidenceUploadType;
+    }
+
+    public VehicleDeclarationModel withEvidenceUploadType(String evidenceUploadType) {
+        this.evidenceUploadType = evidenceUploadType;
         return this;
     }
 
@@ -180,8 +216,10 @@ public class VehicleDeclarationModel {
                 .append("id", getId()) //
                 .append("psvVehicleSize", getPsvVehicleSize())
                 .append("psvNoSmallVhlConfirmation", getPsvNoSmallVhlConfirmation())
+                .append("psvSmallVhlConfirmation()", getPsvSmallVhlConfirmation())
+                .append("evidenceUploadType()", getEvidenceUploadType())
                 .append("psvOperateSmallVhl", getPsvOperateSmallVhl())
-                .append("psvSmallVhlNotes", getPsvOperateSmallVhl())
+                .append("psvSmallVhlNotes", getPsvSmallVhlNotes())
                 .append("psvLimousines:", getPsvLimousines())
                 .append("psvNoLimousineConfirmation", getPsvNoLimousineConfirmation())
                 .append("psvOnlyLimousinesConfirmation", getPsvOnlyLimousinesConfirmation())

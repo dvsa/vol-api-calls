@@ -140,6 +140,8 @@ public class CreateApplication extends BaseAPI{
     private final EnvironmentType env = EnvironmentType.getEnum(Properties.get("env", true));
 
     private ValidatableResponse apiResponse;
+    private String psvSmallVhlConfirmation;
+    private String evidenceUploadType;
 
     public RegisterUser getUser() {
         return user;
@@ -295,6 +297,22 @@ public class CreateApplication extends BaseAPI{
 
     public void setPsvNoSmallVhlConfirmation(String psvNoSmallVhlConfirmation) {
         this.psvNoSmallVhlConfirmation = psvNoSmallVhlConfirmation;
+    }
+
+    public String getPsvSmallVhlConfirmation() {
+        return psvSmallVhlConfirmation;
+    }
+
+    public void setPsvSmallVhlConfirmation(String psvSmallVhlConfirmation) {
+        this.psvSmallVhlConfirmation = psvSmallVhlConfirmation;
+    }
+
+    public String getEvidenceUploadType() {
+        return evidenceUploadType;
+    }
+
+    public void setEvidenceUploadType(String evidenceUploadType) {
+        this.evidenceUploadType = evidenceUploadType;
     }
 
     public String getPsvOperateSmallVhl() {
@@ -974,8 +992,10 @@ public class CreateApplication extends BaseAPI{
         setCountryCode("GB");
 
         // PSV details
-        setPsvVehicleSize("psvvs_both");
+        setPsvVehicleSize("psvvs_small");
         setPsvNoSmallVhlConfirmation("Y");
+        setPsvSmallVhlConfirmation("Y");
+        setEvidenceUploadType("2");
         setPsvOperateSmallVhl("Y");
         setPsvSmallVhlNotes("submitted through the API");
         setPsvLimousines("Y");
@@ -1389,13 +1409,63 @@ public class CreateApplication extends BaseAPI{
             return null;
         }
 
-        var vehicleDeclarationResource = ApiUrl.build(env, String.format(String.format("application/%s/vehicle-declaration", applicationId))).toString();
+        var vehicleDeclarationResource = ApiUrl.build(env, String.format(String.format("application/%s/vehicle-size", applicationId))).toString();
         int applicationVersion = Integer.parseInt(fetchApplicationInformation(getApplicationId(), "version", "1"));
 
         VehicleDeclarationBuilder vehicleDeclarationBuilder = new VehicleDeclarationBuilder().withId(getApplicationId()
                 ).withPsvVehicleSize(psvVehicleSize)
-                .withPsvLimousines(psvLimousines).withPsvNoSmallVhlConfirmation(psvNoSmallVhlConfirmation).withPsvOperateSmallVhl(psvOperateSmallVhl).withPsvSmallVhlNotes(psvSmallVhlNotes)
-                .withPsvNoLimousineConfirmation(psvNoLimousineConfirmation).withPsvOnlyLimousinesConfirmation(psvOnlyLimousinesConfirmation).withVersion(applicationVersion);
+               .withVersion(applicationVersion);
+        apiResponse = RestUtils.put(vehicleDeclarationBuilder, vehicleDeclarationResource, apiHeaders.getApiHeader());
+
+        Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
+
+        return apiResponse;
+    }
+
+    public synchronized ValidatableResponse selectSmallVehicle() throws HttpException {
+        if (licenceType.equals(LicenceType.SPECIAL_RESTRICTED.asString())) {
+            return null;
+        }
+
+        var vehicleDeclarationResource = ApiUrl.build(env, String.format(String.format("application/%s/small-vehicle-conditions", applicationId))).toString();
+        int applicationVersion = Integer.parseInt(fetchApplicationInformation(getApplicationId(), "version", "1"));
+
+        VehicleDeclarationBuilder vehicleDeclarationBuilder = new VehicleDeclarationBuilder().withId(getApplicationId()
+                ).withPsvSmallVhlConfirmation(psvSmallVhlConfirmation).withVersion(applicationVersion);
+        apiResponse = RestUtils.put(vehicleDeclarationBuilder, vehicleDeclarationResource, apiHeaders.getApiHeader());
+
+        Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
+
+        return apiResponse;
+    }
+
+    public synchronized ValidatableResponse selectDocumentaryEvidenceSmall() throws HttpException {
+        if (licenceType.equals(LicenceType.SPECIAL_RESTRICTED.asString())) {
+            return null;
+        }
+
+        var vehicleDeclarationResource = ApiUrl.build(env, String.format(String.format("application/%s/small-vehicle-evidence", applicationId))).toString();
+        int applicationVersion = Integer.parseInt(fetchApplicationInformation(getApplicationId(), "version", "1"));
+
+        VehicleDeclarationBuilder vehicleDeclarationBuilder = new VehicleDeclarationBuilder().withId(getApplicationId()
+        ).withEvidenceUploadType(evidenceUploadType).withVersion(applicationVersion);
+        apiResponse = RestUtils.put(vehicleDeclarationBuilder, vehicleDeclarationResource, apiHeaders.getApiHeader());
+
+        Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
+
+        return apiResponse;
+    }
+
+    public synchronized ValidatableResponse selectPsvOperateNovelty() throws HttpException {
+        if (licenceType.equals(LicenceType.SPECIAL_RESTRICTED.asString())) {
+            return null;
+        }
+
+        var vehicleDeclarationResource = ApiUrl.build(env, String.format(String.format("application/%s/novelty-vehicles", applicationId))).toString();
+        int applicationVersion = Integer.parseInt(fetchApplicationInformation(getApplicationId(), "version", "1"));
+
+        VehicleDeclarationBuilder vehicleDeclarationBuilder = new VehicleDeclarationBuilder().withId(getApplicationId()
+        ).withPsvLimousines(psvLimousines).withVersion(applicationVersion);
         apiResponse = RestUtils.put(vehicleDeclarationBuilder, vehicleDeclarationResource, apiHeaders.getApiHeader());
 
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
@@ -1537,4 +1607,5 @@ public class CreateApplication extends BaseAPI{
 
         return apiResponse;
     }
+
 }
