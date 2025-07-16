@@ -104,7 +104,17 @@ public class GrantLicence extends BaseAPI {
                 .withVehiclesDeclarationsStatus(status)
                 .withVehiclesStatus(status)
                 .withVehiclesPsvStatus(status)
-                .withTaxiPhvStatus(status);
+                .withTaxiPhvStatus(status)
+                .withVehiclesSizeStatus(status)
+                .withPsvOperateSmallStatus(status)
+                .withPsvOperateLargeStatus(status)
+                .withPsvSmallConditionsStatus(status)
+                .withPsvOperateNoveltyStatus(status)
+                .withPsvSmallPartWrittenStatus(status)
+                .withPsvDocumentaryEvidenceSmallStatus(status)
+                .withPsvDocumentaryEvidenceLargeStatus(status)
+                .withPsvMainOccupationUndertakingsStatus(status);
+
 
         var overview = new OverviewBuilder()
                 .withId(application.getApplicationId())

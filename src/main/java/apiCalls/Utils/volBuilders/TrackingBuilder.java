@@ -28,7 +28,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "vehiclesDeclarationsStatus",
         "vehiclesPsvStatus",
         "vehiclesStatus",
-        "taxiPhvStatus"
+        "taxiPhvStatus",
+        "vehiclesSizeStatus",
+        "psvOperateSmallStatus",
+        "psvOperateLargeStatus",
+        "psvSmallConditionsStatus",
+        "psvOperateNoveltyStatus",
+        "psvSmallPartWrittenStatus",
+        "psvDocumentaryEvidenceSmallStatus",
+        "psvDocumentaryEvidenceLargeStatus",
+        "psvMainOccupationUndertakingsStatus"
 })
 public class TrackingBuilder {
     @JsonProperty("id")
@@ -75,6 +84,26 @@ public class TrackingBuilder {
     private String vehiclesStatus;
     @JsonProperty("taxiPhvStatus")
     private String taxiPhvStatus;
+
+    @JsonProperty("vehiclesSizeStatus")
+    private String vehiclesSizeStatus;
+    @JsonProperty("psvOperateSmallStatus")
+    private String psvOperateSmallStatus;
+    @JsonProperty("psvOperateLargeStatus")
+    private String psvOperateLargeStatus;
+    @JsonProperty("psvSmallConditionsStatus")
+    private String psvSmallConditionsStatus;
+    @JsonProperty("psvOperateNoveltyStatus")
+    private String psvOperateNoveltyStatus;
+    @JsonProperty("psvSmallPartWrittenStatus")
+    private String psvSmallPartWrittenStatus;
+    @JsonProperty("psvDocumentaryEvidenceSmallStatus")
+    private String psvDocumentaryEvidenceSmallStatus;
+    @JsonProperty("psvDocumentaryEvidenceLargeStatus")
+    private String psvDocumentaryEvidenceLargeStatus;
+    @JsonProperty("psvMainOccupationUndertakingsStatus")
+    private String psvMainOccupationUndertakingsStatus;
+
 
     @JsonProperty("id")
     public String getId() {
@@ -406,16 +435,174 @@ public class TrackingBuilder {
         return this;
     }
 
-
-    @Override
-    public String toString() {
-        return "id:" + getId() + ",version:" + getVersion() + ",addressesStatus:" + getAddressesStatus() + ",businessDetailsStatus:"
-                + getBusinessDetailsStatus() + ",businessTypeStatus:" + getBusinessTypeStatus() + ",communityLicencesStatus:" + getCommunityLicencesStatus() + ",conditionsUndertakingsStatus:" + getConditionsUndertakingsStatus()
-                + "convictionsPenaltiesStatus:" + getConvictionsPenaltiesStatus() + ",discsStatus:" + getDiscsStatus() + ",financialEvidenceStatus:" + getFinancialEvidenceStatus() + ",financialHistoryStatus:" + getFinancialEvidenceStatus()
-                + ",licenceHistoryStatus:" + getLicenceHistoryStatus() + ",operatingCentresStatus:" + getOperatingCentresStatus() + ",peopleStatus:" + getPeopleStatus()
-                + ",safetyStatus:" + getSafetyStatus() + ",taxiPhvStatus:" + getTaxiPhvStatus() + ",transportManagersStatus:" + getTransportManagersStatus()
-                + "typeOfLicenceStatus:" + getTypeOfLicenceStatus() + ",declarationsInternalStatus:" + getDeclarationsInternalStatus() + ",vehiclesDeclarationsStatus:" + getVehiclesDeclarationsStatus() + ",vehiclesPsvStatus:" + getVehiclesPsvStatus()
-                + ",vehiclesStatus:" + getVehiclesStatus() + "taxiPhvStatus:" + getTaxiPhvStatus();
+    @JsonProperty("vehiclesSizeStatus")
+    public String getVehiclesSizeStatus() {
+        return vehiclesSizeStatus;
     }
 
+    @JsonProperty("vehiclesSizeStatus")
+    public void setVehiclesSizeStatus(String vehiclesSizeStatus) {
+        this.vehiclesSizeStatus = vehiclesSizeStatus;
+    }
+
+    public TrackingBuilder withVehiclesSizeStatus(String vehiclesSizeStatus) {
+        this.vehiclesSizeStatus = vehiclesSizeStatus;
+        return this;
+    }
+
+    @JsonProperty("psvOperateSmallStatus")
+    public String getPsvOperateSmallStatus() {
+        return psvOperateSmallStatus;
+    }
+
+    @JsonProperty("psvOperateSmallStatus")
+    public void setPsvOperateSmallStatus(String psvOperateSmallStatus) {
+        this.psvOperateSmallStatus = psvOperateSmallStatus;
+    }
+
+    public TrackingBuilder withPsvOperateSmallStatus(String psvOperateSmallStatus) {
+        this.psvOperateSmallStatus = psvOperateSmallStatus;
+        return this;
+    }
+
+    @JsonProperty("psvOperateLargeStatus")
+    public String getPsvOperateLargeStatus() {
+        return psvOperateLargeStatus;
+    }
+
+    @JsonProperty("psvOperateLargeStatus")
+    public void setPsvOperateLargeStatus(String psvOperateLargeStatus) {
+        this.psvOperateLargeStatus = psvOperateLargeStatus;
+    }
+
+    public TrackingBuilder withPsvOperateLargeStatus(String psvOperateLargeStatus) {
+        this.psvOperateLargeStatus = psvOperateLargeStatus;
+        return this;
+    }
+
+    @JsonProperty("psvSmallConditionsStatus")
+    public String getPsvSmallConditionsStatus() {
+        return psvSmallConditionsStatus;
+    }
+
+    @JsonProperty("psvSmallConditionsStatus")
+    public void setPsvSmallConditionsStatus(String psvSmallConditionsStatus) {
+        this.psvSmallConditionsStatus = psvSmallConditionsStatus;
+    }
+
+    public TrackingBuilder withPsvSmallConditionsStatus(String psvSmallConditionsStatus) {
+        this.psvSmallConditionsStatus = psvSmallConditionsStatus;
+        return this;
+    }
+
+    @JsonProperty("psvOperateNoveltyStatus")
+    public String getPsvOperateNoveltyStatus() {
+        return psvOperateNoveltyStatus;
+    }
+
+    @JsonProperty("psvOperateNoveltyStatus")
+    public void setPsvOperateNoveltyStatus(String psvOperateNoveltyStatus) {
+        this.psvOperateNoveltyStatus = psvOperateNoveltyStatus;
+    }
+
+    public TrackingBuilder withPsvOperateNoveltyStatus(String psvOperateNoveltyStatus) {
+        this.psvOperateNoveltyStatus = psvOperateNoveltyStatus;
+        return this;
+    }
+
+    @JsonProperty("psvSmallPartWrittenStatus")
+    public String getPsvSmallPartWrittenStatus() {
+        return psvSmallPartWrittenStatus;
+    }
+
+    @JsonProperty("psvSmallPartWrittenStatus")
+    public void setPsvSmallPartWrittenStatus(String psvSmallPartWrittenStatus) {
+        this.psvSmallPartWrittenStatus = psvSmallPartWrittenStatus;
+    }
+
+    public TrackingBuilder withPsvSmallPartWrittenStatus(String psvSmallPartWrittenStatus) {
+        this.psvSmallPartWrittenStatus = psvSmallPartWrittenStatus;
+        return this;
+    }
+
+    @JsonProperty("psvDocumentaryEvidenceSmallStatus")
+    public String getPsvDocumentaryEvidenceSmallStatus() {
+        return psvDocumentaryEvidenceSmallStatus;
+    }
+
+    @JsonProperty("psvDocumentaryEvidenceSmallStatus")
+    public void setPsvDocumentaryEvidenceSmallStatus(String psvDocumentaryEvidenceSmallStatus) {
+        this.psvDocumentaryEvidenceSmallStatus = psvDocumentaryEvidenceSmallStatus;
+    }
+
+    public TrackingBuilder withPsvDocumentaryEvidenceSmallStatus(String psvDocumentaryEvidenceSmallStatus) {
+        this.psvDocumentaryEvidenceSmallStatus = psvDocumentaryEvidenceSmallStatus;
+        return this;
+    }
+
+    @JsonProperty("psvDocumentaryEvidenceLargeStatus")
+    public String getPsvDocumentaryEvidenceLargeStatus() {
+        return psvDocumentaryEvidenceLargeStatus;
+    }
+
+    @JsonProperty("psvDocumentaryEvidenceLargeStatus")
+    public void setPsvDocumentaryEvidenceLargeStatus(String psvDocumentaryEvidenceLargeStatus) {
+        this.psvDocumentaryEvidenceLargeStatus = psvDocumentaryEvidenceLargeStatus;
+    }
+
+    public TrackingBuilder withPsvDocumentaryEvidenceLargeStatus(String psvDocumentaryEvidenceLargeStatus) {
+        this.psvDocumentaryEvidenceLargeStatus = psvDocumentaryEvidenceLargeStatus;
+        return this;
+    }
+
+    @JsonProperty("psvMainOccupationUndertakingsStatus")
+    public String getPsvMainOccupationUndertakingsStatus() {
+        return psvMainOccupationUndertakingsStatus;
+    }
+
+    @JsonProperty("psvMainOccupationUndertakingsStatus")
+    public void setPsvMainOccupationUndertakingsStatus(String psvMainOccupationUndertakingsStatus) {
+        this.psvMainOccupationUndertakingsStatus = psvMainOccupationUndertakingsStatus;
+    }
+
+    public TrackingBuilder withPsvMainOccupationUndertakingsStatus(String psvMainOccupationUndertakingsStatus) {
+        this.psvMainOccupationUndertakingsStatus = psvMainOccupationUndertakingsStatus;
+        return this;
+    }
+    @Override
+    public String toString() {
+        return "TrackingBuilder{" +
+                "id='" + id + '\'' +
+                ", version=" + version +
+                ", addressesStatus='" + addressesStatus + '\'' +
+                ", businessDetailsStatus='" + businessDetailsStatus + '\'' +
+                ", businessTypeStatus='" + businessTypeStatus + '\'' +
+                ", communityLicencesStatus='" + communityLicencesStatus + '\'' +
+                ", conditionsUndertakingsStatus='" + conditionsUndertakingsStatus + '\'' +
+                ", convictionsPenaltiesStatus='" + convictionsPenaltiesStatus + '\'' +
+                ", discsStatus=" + discsStatus +
+                ", financialEvidenceStatus='" + financialEvidenceStatus + '\'' +
+                ", financialHistoryStatus='" + financialHistoryStatus + '\'' +
+                ", licenceHistoryStatus='" + licenceHistoryStatus + '\'' +
+                ", operatingCentresStatus='" + operatingCentresStatus + '\'' +
+                ", peopleStatus='" + peopleStatus + '\'' +
+                ", safetyStatus='" + safetyStatus + '\'' +
+                ", transportManagersStatus='" + transportManagersStatus + '\'' +
+                ", typeOfLicenceStatus='" + typeOfLicenceStatus + '\'' +
+                ", declarationsInternalStatus='" + declarationsInternalStatus + '\'' +
+                ", vehiclesDeclarationsStatus='" + vehiclesDeclarationsStatus + '\'' +
+                ", vehiclesPsvStatus=" + vehiclesPsvStatus +
+                ", vehiclesStatus='" + vehiclesStatus + '\'' +
+                ", taxiPhvStatus='" + taxiPhvStatus + '\'' +
+                ", vehiclesSizeStatus=" + vehiclesSizeStatus +
+                ", psvOperateSmallStatus=" + psvOperateSmallStatus +
+                ", psvOperateLargeStatus=" + psvOperateLargeStatus +
+                ", psvSmallConditionsStatus=" + psvSmallConditionsStatus +
+                ", psvOperateNoveltyStatus=" + psvOperateNoveltyStatus +
+                ", psvSmallPartWrittenStatus=" + psvSmallPartWrittenStatus +
+                ", psvDocumentaryEvidenceSmallStatus=" + psvDocumentaryEvidenceSmallStatus +
+                ", psvDocumentaryEvidenceLargeStatus=" + psvDocumentaryEvidenceLargeStatus +
+                ", psvMainOccupationUndertakingsStatus=" + psvMainOccupationUndertakingsStatus +
+                '}';
+    }
 }
