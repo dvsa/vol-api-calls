@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.10](https://github.com/dvsa/vol-api-calls/compare/v3.0.9...v3.0.10) (2025-07-16)
+
+
+### Bug Fixes
+
+* new psv params ([0530614](https://github.com/dvsa/vol-api-calls/commit/0530614f510dc15b78c7ead16f78a6c7cb5131bc))
+* new psv params ([95b4466](https://github.com/dvsa/vol-api-calls/commit/95b4466e977869db5f98c8b4685431b29c498498))
+
 ## [3.0.9](https://github.com/dvsa/vol-api-calls/compare/v3.0.8...v3.0.9) (2025-07-14)
 
 
