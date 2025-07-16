@@ -11,7 +11,7 @@
         <active-support.version>2.7.5</active-support.version>
         <log4j.version>2.22.0</log4j.version>
         <log4j12.version>2.22.0</log4j12.version>
-        <commons-lang3.version>3.14.0</commons-lang3.version>
+        <commons-lang3.version>3.18.0</commons-lang3.version>
         <uri-constructor.version>2.1.0</uri-constructor.version>
         <apache-http.version>5.3.1</apache-http.version>
         <maven.compiler.version>3.8.1</maven.compiler.version>
