@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.11](https://github.com/dvsa/vol-api-calls/compare/v3.0.10...v3.0.11) (2025-07-24)
+
+
+### Bug Fixes
+
+* remove old object ([0f5c64e](https://github.com/dvsa/vol-api-calls/commit/0f5c64ed6df6065674daff2ab7f20149407d0aaf))
+* remove old object ([c20c608](https://github.com/dvsa/vol-api-calls/commit/c20c6086012041f1a36ce559a5c068246f1c9d83))
+
 ## [3.0.10](https://github.com/dvsa/vol-api-calls/compare/v3.0.9...v3.0.10) (2025-07-16)
 
 
