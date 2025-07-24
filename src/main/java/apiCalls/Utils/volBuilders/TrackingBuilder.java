@@ -25,7 +25,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "transportManagersStatus",
         "typeOfLicenceStatus",
         "declarationsInternalStatus",
-        "vehiclesDeclarationsStatus",
         "vehiclesPsvStatus",
         "vehiclesStatus",
         "taxiPhvStatus",
@@ -76,8 +75,6 @@ public class TrackingBuilder {
     private String typeOfLicenceStatus;
     @JsonProperty("declarationsInternalStatus")
     private String declarationsInternalStatus;
-    @JsonProperty("vehiclesDeclarationsStatus")
-    private String vehiclesDeclarationsStatus;
     @JsonProperty("vehiclesPsvStatus")
     private Object vehiclesPsvStatus;
     @JsonProperty("vehiclesStatus")
@@ -390,21 +387,6 @@ public class TrackingBuilder {
         return this;
     }
 
-    @JsonProperty("vehiclesDeclarationsStatus")
-    public String getVehiclesDeclarationsStatus() {
-        return vehiclesDeclarationsStatus;
-    }
-
-    @JsonProperty("vehiclesDeclarationsStatus")
-    public void setVehiclesDeclarationsStatus(String vehiclesDeclarationsStatus) {
-        this.vehiclesDeclarationsStatus = vehiclesDeclarationsStatus;
-    }
-
-    public TrackingBuilder withVehiclesDeclarationsStatus(String vehiclesDeclarationsStatus) {
-        this.vehiclesDeclarationsStatus = vehiclesDeclarationsStatus;
-        return this;
-    }
-
     @JsonProperty("vehiclesPsvStatus")
     public Object getVehiclesPsvStatus() {
         return vehiclesPsvStatus;
@@ -590,7 +572,6 @@ public class TrackingBuilder {
                 ", transportManagersStatus='" + transportManagersStatus + '\'' +
                 ", typeOfLicenceStatus='" + typeOfLicenceStatus + '\'' +
                 ", declarationsInternalStatus='" + declarationsInternalStatus + '\'' +
-                ", vehiclesDeclarationsStatus='" + vehiclesDeclarationsStatus + '\'' +
                 ", vehiclesPsvStatus=" + vehiclesPsvStatus +
                 ", vehiclesStatus='" + vehiclesStatus + '\'' +
                 ", taxiPhvStatus='" + taxiPhvStatus + '\'' +
