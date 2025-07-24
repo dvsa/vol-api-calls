@@ -101,7 +101,6 @@ public class GrantLicence extends BaseAPI {
                 .withTransportManagersStatus(status)
                 .withTypeOfLicenceStatus(status)
                 .withDeclarationsInternalStatus(status)
-                .withVehiclesDeclarationsStatus(status)
                 .withVehiclesStatus(status)
                 .withVehiclesPsvStatus(status)
                 .withTaxiPhvStatus(status)
