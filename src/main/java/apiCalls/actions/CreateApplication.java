@@ -1384,24 +1384,25 @@ public class CreateApplication extends BaseAPI{
         return apiResponse;
     }
 
-    public synchronized ValidatableResponse submitVehicleDeclaration() throws HttpException {
-        if (licenceType.equals(LicenceType.SPECIAL_RESTRICTED.asString())) {
-            return null;
-        }
-
-        var vehicleDeclarationResource = ApiUrl.build(env, String.format(String.format("application/%s/vehicle-declaration", applicationId))).toString();
-        int applicationVersion = Integer.parseInt(fetchApplicationInformation(getApplicationId(), "version", "1"));
-
-        VehicleDeclarationBuilder vehicleDeclarationBuilder = new VehicleDeclarationBuilder().withId(getApplicationId()
-                ).withPsvVehicleSize(psvVehicleSize)
-                .withPsvLimousines(psvLimousines).withPsvNoSmallVhlConfirmation(psvNoSmallVhlConfirmation).withPsvOperateSmallVhl(psvOperateSmallVhl).withPsvSmallVhlNotes(psvSmallVhlNotes)
-                .withPsvNoLimousineConfirmation(psvNoLimousineConfirmation).withPsvOnlyLimousinesConfirmation(psvOnlyLimousinesConfirmation).withVersion(applicationVersion);
-        apiResponse = RestUtils.put(vehicleDeclarationBuilder, vehicleDeclarationResource, apiHeaders.getApiHeader());
-
-        Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
-
-        return apiResponse;
-    }
+    // NO LONGER USED
+//    public synchronized ValidatableResponse submitVehicleDeclaration() throws HttpException {
+//        if (licenceType.equals(LicenceType.SPECIAL_RESTRICTED.asString())) {
+//            return null;
+//        }
+//
+//        var vehicleDeclarationResource = ApiUrl.build(env, String.format(String.format("application/%s/vehicle-declaration/submit", applicationId))).toString();
+//        int applicationVersion = Integer.parseInt(fetchApplicationInformation(getApplicationId(), "version", "1"));
+//
+//        VehicleDeclarationBuilder vehicleDeclarationBuilder = new VehicleDeclarationBuilder().withId(getApplicationId()
+//                ).withPsvVehicleSize(psvVehicleSize)
+//                .withPsvLimousines(psvLimousines).withPsvNoSmallVhlConfirmation(psvNoSmallVhlConfirmation).withPsvOperateSmallVhl(psvOperateSmallVhl).withPsvSmallVhlNotes(psvSmallVhlNotes)
+//                .withPsvNoLimousineConfirmation(psvNoLimousineConfirmation).withPsvOnlyLimousinesConfirmation(psvOnlyLimousinesConfirmation).withVersion(applicationVersion);
+//        apiResponse = RestUtils.post(vehicleDeclarationBuilder, vehicleDeclarationResource, apiHeaders.getApiHeader());
+//
+//        Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
+//
+//        return apiResponse;
+//    }
 
     public synchronized ValidatableResponse addFinancialHistory() throws HttpException {
         if (operatorType.equals(OperatorType.PUBLIC.asString()) && (licenceType.equals(LicenceType.SPECIAL_RESTRICTED.asString()))) {
