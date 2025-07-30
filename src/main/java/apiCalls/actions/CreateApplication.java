@@ -1280,7 +1280,7 @@ public class CreateApplication extends BaseAPI{
         int applicationVersion = Integer.parseInt(fetchApplicationInformation(getApplicationId(), "version", "1"));
 
         FinancialEvidenceBuilder financialEvidenceBuilder = new FinancialEvidenceBuilder().withId(getApplicationId())
-                .withVersion(applicationVersion).withFinancialEvidenceUploaded(0);
+                .withVersion(applicationVersion).withFinancialEvidenceUploaded(2);
         apiResponse = RestUtils.put(financialEvidenceBuilder, financialEvidenceResource, apiHeaders.getApiHeader());
 
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_OK);
