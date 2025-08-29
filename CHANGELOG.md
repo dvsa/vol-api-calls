@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.0.12](https://github.com/dvsa/vol-api-calls/compare/v3.0.11...v3.0.12) (2025-08-29)
+
+
+### Bug Fixes
+
+* better postcode formatting ([1e29110](https://github.com/dvsa/vol-api-calls/commit/1e29110c7b9250df3b64b6199e4859337bdf9e98))
+* better postcode formatting ([8b5cc87](https://github.com/dvsa/vol-api-calls/commit/8b5cc87e837bd03c3add0f3f0de60ddd6e4e4180))
+* comment out ([c2a3dfb](https://github.com/dvsa/vol-api-calls/commit/c2a3dfb9840f2737888e0dd5841e06fdce8daf3e))
+* comment out ([b0d57c6](https://github.com/dvsa/vol-api-calls/commit/b0d57c648c443cd3280454d6e013aaf6b74941b2))
+
 ## [3.0.11](https://github.com/dvsa/vol-api-calls/compare/v3.0.10...v3.0.11) (2025-07-24)
 
 
