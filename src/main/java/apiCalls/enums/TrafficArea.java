@@ -29,31 +29,49 @@ public enum TrafficArea {
         String postCode;
         switch (trafficArea) {
             case NORTH_EAST:
-                postCode = "BD".concat(String.format("%s%s%s", randomTwoDigitInt(), randomOneDigitInt(), randomString()));
+                int district = random.nextInt(24) + 1;
+                int sector = random.nextInt(9) + 1;
+                postCode = String.format("BD%d %d%s", district, sector, randomString());
                 break;
             case NORTH_WEST:
-                postCode = "M".concat(String.format("%s%s%s", randomTwoDigitInt(), randomOneDigitInt(), randomString()));
+                district = random.nextInt(50) + 1;
+                sector = random.nextInt(9) + 1;
+                postCode = String.format("M%d %d%s", district, sector, randomString());
                 break;
             case MIDLANDS:
-                postCode = "B".concat(String.format("%s%s%s", randomTwoDigitInt(), randomOneDigitInt(), randomString()));
+                district = random.nextInt(98) + 1;
+                sector = random.nextInt(9) + 1;
+                postCode = String.format("B%d %d%s", district, sector, randomString());
                 break;
             case EAST:
-                postCode = "IP".concat(String.format("%s%s%s", randomTwoDigitInt(), randomOneDigitInt(), randomString()));
+                district = random.nextInt(33) + 1;
+                sector = random.nextInt(9) + 1;
+                postCode = String.format("IP%d %d%s", district, sector, randomString());
                 break;
             case WALES:
-                postCode = "CF".concat(String.format("%s%s%s", randomTwoDigitInt(), randomOneDigitInt(), randomString()));
+                district = random.nextInt(48) + 1;
+                sector = random.nextInt(9) + 1;
+                postCode = String.format("CF%d %d%s", district, sector, randomString());
                 break;
             case WEST:
-                postCode = "OX".concat(String.format("%s%s%s", randomTwoDigitInt(), randomOneDigitInt(), randomString()));
+                district = random.nextInt(49) + 1;
+                sector = random.nextInt(9) + 1;
+                postCode = String.format("OX%d %d%s", district, sector, randomString());
                 break;
             case LONDON:
-                postCode = "E".concat(String.format("%s%s%s", randomTwoDigitInt(), randomOneDigitInt(), randomString()));
+                district = random.nextInt(20) + 1;
+                sector = random.nextInt(9) + 1;
+                postCode = String.format("E%d %d%s", district, sector, randomString());
                 break;
             case SCOTLAND:
-                postCode = "EH".concat(String.format("%s%s%s", randomTwoDigitInt(), randomOneDigitInt(), randomString()));
+                district = random.nextInt(55) + 1;
+                sector = random.nextInt(9) + 1;
+                postCode = String.format("EH%d %d%s", district, sector, randomString());
                 break;
             case NORTHERN_IRELAND:
-                postCode = "BT".concat(String.format("%s%s%s", randomTwoDigitInt(), randomOneDigitInt(), randomString()));
+                district = random.nextInt(94) + 1;
+                sector = random.nextInt(9) + 1;
+                postCode = String.format("BT%d %d%s", district, sector, randomString());
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + trafficArea);
