@@ -114,6 +114,11 @@
             <version>1.11.9</version>
         </dependency>
         <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-codec-http</artifactId>
+            <version>4.1.125.Final</version>
+        </dependency>
+        <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
             <version>4.4.0</version>
