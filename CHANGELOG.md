@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.13](https://github.com/dvsa/vol-api-calls/compare/v3.0.12...v3.0.13) (2025-09-08)
+
+
+### Bug Fixes
+
+* netty ([176ae4e](https://github.com/dvsa/vol-api-calls/commit/176ae4e4d9680b60ef3ae84c190a5023c29c43dd))
+* netty ([1b59c2b](https://github.com/dvsa/vol-api-calls/commit/1b59c2b0bbde3f7cff45401826934e961d9f05e9))
+
 ## [3.0.12](https://github.com/dvsa/vol-api-calls/compare/v3.0.11...v3.0.12) (2025-08-29)
 
 
