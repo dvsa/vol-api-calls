@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.1.0](https://github.com/dvsa/vol-api-calls/compare/v3.0.13...v3.1.0) (2025-11-07)
+
+
+### Features
+
+* add validation loop to prevent postcode errors ([aada079](https://github.com/dvsa/vol-api-calls/commit/aada0798aa187aa0442d44b3761ad6b3a25bae8f))
+* add validation loop to prevent postcode errors ([cd953aa](https://github.com/dvsa/vol-api-calls/commit/cd953aa4906fb8a9ec8ac5723a51bb43507e3c12))
+
 ## [3.0.13](https://github.com/dvsa/vol-api-calls/compare/v3.0.12...v3.0.13) (2025-09-08)
 
 
