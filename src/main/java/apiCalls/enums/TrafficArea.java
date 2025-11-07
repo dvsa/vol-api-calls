@@ -2,6 +2,7 @@ package apiCalls.enums;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 public enum TrafficArea {
     NORTH_EAST("B"),
@@ -16,6 +17,8 @@ public enum TrafficArea {
 
     private final String trafficAreas;
     static Random random = new Random();
+    private static final Pattern POSTCODE_VALIDATION_PATTERN = Pattern.compile("^[a-zA-Z0-9 ]+$");
+    private static final int MAX_POSTCODE_GENERATION_ATTEMPTS = 3;
 
     private TrafficArea(String trafficAreas) {
         this.trafficAreas = trafficAreas;
@@ -26,6 +29,37 @@ public enum TrafficArea {
     }
 
     public static String getPostCode(TrafficArea trafficArea) {
+        String postCode;
+        int attempts = 0;
+
+        while (attempts < MAX_POSTCODE_GENERATION_ATTEMPTS) {
+            postCode = generatePostCodeInternal(trafficArea);
+
+            if (isValidPostcode(postCode)) {
+                return postCode;
+            }
+
+            attempts++;
+            System.err.println(String.format(
+                    "Generated postcode '%s' failed validation (attempt %d/%d). Retrying...",
+                    postCode, attempts, MAX_POSTCODE_GENERATION_ATTEMPTS
+            ));
+        }
+
+        throw new IllegalStateException(
+                String.format("Failed to generate valid postcode for %s after %d attempts",
+                        trafficArea, MAX_POSTCODE_GENERATION_ATTEMPTS)
+        );
+    }
+
+    public static boolean isValidPostcode(String postcode) {
+        if (postcode == null || postcode.isEmpty()) {
+            return false;
+        }
+        return POSTCODE_VALIDATION_PATTERN.matcher(postcode).matches();
+    }
+
+    private static String generatePostCodeInternal(TrafficArea trafficArea) {
         String postCode;
         switch (trafficArea) {
             case NORTH_EAST:
