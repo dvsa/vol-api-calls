@@ -25,8 +25,12 @@ public class BaseAPI extends Token {
     private static final Headers headers = new Headers();
 
     public synchronized String adminJWT() throws HttpException {
-        var adminUser = SecretsManager.getSecretValue("adminUser");
-        var adminPassword = SecretsManager.getSecretValue("adminPassword");
+        var adminUser = env == EnvironmentType.LOCAL
+                ? SecretsManager.getSecretValue("adminLocalUser")
+                : SecretsManager.getSecretValue("adminUser");
+        var adminPassword = env == EnvironmentType.LOCAL
+                ? SecretsManager.getSecretValue("adminLocalPassword")
+                : SecretsManager.getSecretValue("adminUserPassword");
 
         if (getAdminToken() == null || isTokenExpired(getAdminToken())) {
             LOGGER.info("Generating new admin token");
