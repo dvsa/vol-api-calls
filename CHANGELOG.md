@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.0](https://github.com/dvsa/vol-api-calls/compare/v3.1.0...v3.2.0) (2025-11-20)
+
+
+### Features
+
+* local admin user ([62ac0d3](https://github.com/dvsa/vol-api-calls/commit/62ac0d3d398a201fe14cc162ddf79ef4a978eaf1))
+
 ## [3.1.0](https://github.com/dvsa/vol-api-calls/compare/v3.0.13...v3.1.0) (2025-11-07)
 
 
