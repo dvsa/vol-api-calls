@@ -30,7 +30,7 @@ public class BaseAPI extends Token {
                 : SecretsManager.getSecretValue("adminUser");
         var adminPassword = env == EnvironmentType.LOCAL
                 ? SecretsManager.getSecretValue("adminLocalPassword")
-                : SecretsManager.getSecretValue("adminUserPassword");
+                : SecretsManager.getSecretValue("adminPassword");
 
         if (getAdminToken() == null || isTokenExpired(getAdminToken())) {
             LOGGER.info("Generating new admin token");
