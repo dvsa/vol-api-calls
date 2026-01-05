@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.2.2](https://github.com/dvsa/vol-api-calls/compare/v3.2.1...v3.2.2) (2026-01-05)
+
+
+### Bug Fixes
+
+* dep cleanup ([3ba7d06](https://github.com/dvsa/vol-api-calls/commit/3ba7d06fa3d1bcaded49fff969daf5d997f61315))
+* dep cleanup ([e3d56a6](https://github.com/dvsa/vol-api-calls/commit/e3d56a671de041a1aa306a474a370dcad251a0af))
+
 ## [3.2.1](https://github.com/dvsa/vol-api-calls/compare/v3.2.0...v3.2.1) (2025-12-01)
 
 
