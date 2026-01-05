@@ -7,7 +7,7 @@ import apiCalls.Utils.generic.Headers;
 import apiCalls.Utils.generic.Utils;
 import io.restassured.response.ValidatableResponse;
 import org.apache.hc.core5.http.HttpException;
-import org.apache.http.HttpStatus;
+import org.apache.hc.core5.http.HttpStatus;
 import org.dvsa.testing.lib.url.api.ApiUrl;
 
 import org.dvsa.testing.lib.url.utils.EnvironmentType;

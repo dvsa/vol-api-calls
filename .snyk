@@ -1,65 +1,18 @@
-# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
 version: v1.25.0
-# ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
-  SNYK-JAVA-ORGYAML-6056527:
+  snyk:lic:maven:org.dbunit:dbunit:LGPL-2.1:
     - '*':
-        reason: None Given
-        expires: 2025-12-07T14:31:51.386Z
-        created: 2024-05-08T14:31:51.388Z
-  SNYK-JAVA-SOFTWAREAMAZONION-6153869:
+        reason: Test framework dependency from active-support library, LGPL-2.1 acceptable for test-only usage
+        expires: 2026-12-31T00:00:00.000Z
+        created: 2026-01-05T00:00:00.000Z
+  snyk:lic:maven:net.sf.jacob-project:jacob:LGPL-2.1:
     - '*':
-        reason: None Given
-        expires: 2025-12-07T14:34:11.840Z
-        created: 2024-05-08T14:34:11.846Z
-  SNYK-JAVA-DOM4J-2812975:
+        reason: Windows COM bridge dependency from active-support library, LGPL-2.1 acceptable for test automation
+        expires: 2026-12-31T00:00:00.000Z
+        created: 2026-01-05T00:00:00.000Z
+  snyk:lic:maven:de.openkeyword:autoit:GPL-3.0:
     - '*':
-        reason: None Given
-        expires: 2025-12-07T14:38:10.419Z
-        created: 2024-05-08T14:38:10.424Z
-  SNYK-JAVA-DOM4J-174153:
-    - '*':
-        reason: None Given
-        expires: 2025-12-07T14:38:48.420Z
-        created: 2024-05-08T14:38:48.425Z
-  SNYK-JAVA-ORGYAML-2806360:
-    - '*':
-        reason: None Given
-        expires: 2025-12-07T14:51:31.152Z
-        created: 2024-05-08T14:51:31.158Z
-  SNYK-JAVA-ORGYAML-537645:
-    - '*':
-        reason: None Given
-        expires: 2025-12-30T15:24:50.162Z
-        created: 2024-05-31T15:24:50.169Z
-  SNYK-JAVA-IONETTY-6483812:
-    - '*':
-        reason: Netty HTTP vulnerability - Planning upgrade of AWS SDK
-        expires: 2025-12-30T00:00:00.000Z
-        created: 2024-05-31T00:00:00.000Z
-  SNYK-JAVA-COMGOOGLEPROTOBUF-8055227:
-    - '*':
-        reason: Protobuf vulnerability - Dependency through MySQL connector
-        expires: 2025-12-30T00:00:00.000Z
-        created: 2024-05-31T00:00:00.000Z
-  SNYK-JAVA-COMMONSIO-8161190:
-    - '*':
-        reason: Commons IO vulnerability - Upgrade planned
-        expires: 2025-12-30T00:00:00.000Z
-        created: 2024-05-31T00:00:00.000Z
-  SNYK-JAVA-ORGAPACHEHTTPCOMPONENTS-1048058:
-    - '*':
-        reason: HTTPClient vulnerability - Legacy dependency through jenkins-client
-        expires: 2025-12-30T00:00:00.000Z
-        created: 2024-05-31T00:00:00.000Z
-  SNYK-JAVA-ORGAPACHEHTTPCOMPONENTS-31517:
-    - '*':
-        reason: HTTPClient directory traversal - Legacy dependency
-        expires: 2025-12-30T00:00:00.000Z
-        created: 2024-05-31T00:00:00.000Z
-  SNYK-JAVA-IONETTY-8707739:
-    - '*':
-        reason: Netty handler vulnerability - Planning upgrade of AWS SDK
-        expires: 2025-12-30T00:00:00.000Z
-        created: 2024-05-31T00:00:00.000Z
+        reason: Windows automation dependency from active-support library, GPL-3.0 acceptable for internal test tooling
+        expires: 2026-12-31T00:00:00.000Z
+        created: 2026-01-05T00:00:00.000Z
 patch: {}

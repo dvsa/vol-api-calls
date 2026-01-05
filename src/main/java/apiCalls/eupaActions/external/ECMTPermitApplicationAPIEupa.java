@@ -6,7 +6,7 @@ import activesupport.system.Properties;
 import apiCalls.Utils.eupaBuilders.ECMTApplicationModel;
 import apiCalls.eupaActions.EupaBaseAPI;
 import io.restassured.response.ValidatableResponse;
-import org.apache.http.HttpStatus;
+import org.apache.hc.core5.http.HttpStatus;
 import org.dvsa.testing.lib.url.api.ApiUrl;
 
 import org.dvsa.testing.lib.url.utils.EnvironmentType;

@@ -1,127 +1,302 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- ========================================== -->
+    <!-- Project Coordinates                        -->
+    <!-- ========================================== -->
     <groupId>org.dvsa.testing.framework</groupId>
     <artifactId>vol-api-calls</artifactId>
-    <version>3.2.2-SNAPSHOT</version>
+    <version>3.0.14-SNAPSHOT</version>
 
-
+    <!-- ========================================== -->
+    <!-- Properties                                 -->
+    <!-- ========================================== -->
     <properties>
-        <active-support.version>2.7.5</active-support.version>
-        <log4j.version>2.22.0</log4j.version>
-        <log4j12.version>2.22.0</log4j12.version>
-        <commons-lang3.version>3.18.0</commons-lang3.version>
-        <uri-constructor.version>2.1.0</uri-constructor.version>
-        <apache-http.version>5.3.1</apache-http.version>
-        <maven.compiler.version>3.8.1</maven.compiler.version>
-        <github.url>https://maven.pkg.github.com/dvsa/vol-api-calls</github.url>
-        <rest-assured.version>5.4.0</rest-assured.version>
+        <!-- Build Configuration -->
         <java.version>17</java.version>
+        <maven.compiler.release>17</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.version>3.8.1</maven.compiler.version>
+
+        <!-- DVSA Internal Libraries -->
+        <active-support.version>2.11.2</active-support.version>
+        <uri-constructor.version>2.1.0</uri-constructor.version>
+
+        <!-- Testing & API Libraries -->
+        <rest-assured.version>5.4.0</rest-assured.version>
+
+        <!-- HTTP Client -->
+        <apache-http.version>5.3.1</apache-http.version>
+
+        <!-- Security & Authentication -->
+        <java-jwt.version>4.4.0</java-jwt.version>
+
+        <!-- Utilities -->
+        <commons-lang3.version>3.18.0</commons-lang3.version>
+
+        <!-- Logging - Updated to fix security vulnerability -->
+        <log4j-api.version>2.25.3</log4j-api.version>
+        <log4j-core.version>2.25.3</log4j-core.version>
+
+        <!-- AWS Maven Extension -->
+        <aws-maven.version>5.0.0.RELEASE</aws-maven.version>
+
+        <!-- Repository Configuration -->
+        <github.url>https://maven.pkg.github.com/dvsa/vol-api-calls</github.url>
     </properties>
 
+    <!-- ========================================== -->
+    <!-- Dependency Management (Security Overrides) -->
+    <!-- ========================================== -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- ================================== -->
+            <!-- Security Fixes - Override Transitive Dependencies -->
+            <!-- ================================== -->
+
+            <!-- Fix Netty vulnerabilities from AWS SDK -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-codec-http2</artifactId>
+                <version>4.1.125.Final</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-codec-http</artifactId>
+                <version>4.1.129.Final</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-common</artifactId>
+                <version>4.1.129.Final</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-handler</artifactId>
+                <version>4.1.129.Final</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-transport</artifactId>
+                <version>4.1.129.Final</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-buffer</artifactId>
+                <version>4.1.129.Final</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-codec</artifactId>
+                <version>4.1.129.Final</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-resolver</artifactId>
+                <version>4.1.129.Final</version>
+            </dependency>
+
+            <!-- Fix Commons IO vulnerability -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.15.1</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- ========================================== -->
+    <!-- Profiles                                   -->
+    <!-- ========================================== -->
     <profiles>
         <profile>
             <id>github</id>
+
+            <!-- ================================== -->
+            <!-- Repositories                       -->
+            <!-- ================================== -->
             <repositories>
+                <!-- Maven Central Repository -->
                 <repository>
                     <id>central</id>
                     <url>https://repo1.maven.org/maven2</url>
-                    <releases><enabled>true</enabled></releases>
-                    <snapshots><enabled>true</enabled></snapshots>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
                 </repository>
+
+                <!-- DVSA GitHub Packages -->
                 <repository>
                     <id>dvsa-github-packages</id>
-                    <name>GitHub dvsa Apache Maven Packages</name>
+                    <name>GitHub DVSA Apache Maven Packages</name>
                     <url>https://maven.pkg.github.com/dvsa/*</url>
-                    <snapshots><enabled>true</enabled></snapshots>
-                    <releases><enabled>true</enabled></releases>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
                 </repository>
             </repositories>
+
+            <!-- ================================== -->
+            <!-- Distribution Management            -->
+            <!-- ================================== -->
             <distributionManagement>
                 <repository>
                     <id>github-publish</id>
-                    <name>GitHub dvsa Apache Maven Packages</name>
+                    <name>GitHub DVSA Apache Maven Packages</name>
                     <url>${github.url}</url>
-                    <snapshots><enabled>true</enabled></snapshots>
-                    <releases><enabled>true</enabled></releases>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
                 </repository>
             </distributionManagement>
+
+            <!-- ================================== -->
+            <!-- Profile Activation                 -->
+            <!-- ================================== -->
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
         </profile>
     </profiles>
 
+    <!-- ========================================== -->
+    <!-- Build Configuration                        -->
+    <!-- ========================================== -->
     <build>
+        <!-- ================================== -->
+        <!-- Build Extensions                   -->
+        <!-- ================================== -->
         <extensions>
+            <!-- AWS Maven Extension for S3 Deploy -->
             <extension>
                 <groupId>org.springframework.build</groupId>
                 <artifactId>aws-maven</artifactId>
-                <version>5.0.0.RELEASE</version>
+                <version>${aws-maven.version}</version>
             </extension>
         </extensions>
+
+        <!-- ================================== -->
+        <!-- Build Plugins                      -->
+        <!-- ================================== -->
         <plugins>
+            <!-- Java Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven.compiler.version}</version>
                 <configuration>
-                    <release>17</release>
+                    <release>${maven.compiler.release}</release>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
+    <!-- ========================================== -->
+    <!-- Dependencies                               -->
+    <!-- ========================================== -->
     <dependencies>
+
+        <!-- ====================================== -->
+        <!-- DVSA Internal Libraries                -->
+        <!-- ====================================== -->
+
+        <!-- Active Support - DVSA Test Framework -->
         <dependency>
             <groupId>org.dvsa.testing.lib</groupId>
             <artifactId>active-support</artifactId>
             <version>${active-support.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>${log4j12.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>${log4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>${rest-assured.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${commons-lang3.version}</version>
-        </dependency>
+
+        <!-- VOL URI Constructor - DVSA Internal -->
         <dependency>
             <groupId>org.dvsa.testing.lib</groupId>
             <artifactId>vol-uri-constructor</artifactId>
             <version>${uri-constructor.version}</version>
         </dependency>
+
+        <!-- ====================================== -->
+        <!-- Testing & API Libraries                -->
+        <!-- ====================================== -->
+
+        <!-- REST Assured - API Testing Framework -->
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${rest-assured.version}</version>
+        </dependency>
+
+        <!-- ====================================== -->
+        <!-- HTTP Client                            -->
+        <!-- ====================================== -->
+
+        <!-- Apache HTTP Client 5 - Modern HTTP -->
         <dependency>
             <groupId>org.apache.httpcomponents.client5</groupId>
             <artifactId>httpclient5</artifactId>
             <version>${apache-http.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.amazon.ion</groupId>
-            <artifactId>ion-java</artifactId>
-            <version>1.11.9</version>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-codec-http</artifactId>
-            <version>4.1.125.Final</version>
-        </dependency>
+
+        <!-- ====================================== -->
+        <!-- Security & Authentication              -->
+        <!-- ====================================== -->
+
+        <!-- Auth0 Java JWT - Token Handling -->
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
-            <version>4.4.0</version>
+            <version>${java-jwt.version}</version>
         </dependency>
+
+        <!-- ====================================== -->
+        <!-- Utilities                              -->
+        <!-- ====================================== -->
+
+        <!-- Apache Commons Lang3 - String Utils -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+
+        <!-- ====================================== -->
+        <!-- Logging                                -->
+        <!-- ====================================== -->
+
+        <!-- Log4j API - Logging Interface -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j-api.version}</version>
+        </dependency>
+
+        <!-- Log4j Core - Logging Implementation -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j-core.version}</version>
+        </dependency>
+
     </dependencies>
+
 </project>
