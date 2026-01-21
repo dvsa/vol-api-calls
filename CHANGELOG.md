@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.2.3](https://github.com/dvsa/vol-api-calls/compare/v3.2.2...v3.2.3) (2026-01-21)
+
+
+### Bug Fixes
+
+* bump up uri const ([0e5a4a7](https://github.com/dvsa/vol-api-calls/commit/0e5a4a75eeebe7ff328152f806b046c6b1acd5bf))
+* bump up uri const ([c809c0e](https://github.com/dvsa/vol-api-calls/commit/c809c0ee5f8780fa3c0df430587c7b74b2fb1a07))
+
 ## [3.2.2](https://github.com/dvsa/vol-api-calls/compare/v3.2.1...v3.2.2) (2026-01-05)
 
 
