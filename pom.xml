@@ -21,7 +21,7 @@
 
         <!-- DVSA Internal Libraries -->
         <active-support.version>2.11.2</active-support.version>
-        <uri-constructor.version>2.1.0</uri-constructor.version>
+        <uri-constructor.version>2.4.0</uri-constructor.version>
 
         <!-- Testing & API Libraries -->
         <rest-assured.version>5.4.0</rest-assured.version>
