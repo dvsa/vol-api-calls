@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.3.0](https://github.com/dvsa/vol-api-calls/compare/v3.2.3...v3.3.0) (2026-02-20)
+
+
+### Features
+
+* compile in 21 ([5c07b42](https://github.com/dvsa/vol-api-calls/commit/5c07b42c968e72d033f92da3320185ddc9a9b4fa))
+* compile in 21 ([2427f03](https://github.com/dvsa/vol-api-calls/commit/2427f0393d4d6364c00ab3d95c54e756f4433178))
+* compile in 21 ([015aff4](https://github.com/dvsa/vol-api-calls/commit/015aff44816d95b5a8232765e038b2dc83e06c71))
+
 ## [3.2.3](https://github.com/dvsa/vol-api-calls/compare/v3.2.2...v3.2.3) (2026-01-21)
 
 
