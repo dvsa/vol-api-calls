@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.3.1](https://github.com/dvsa/vol-api-calls/compare/v3.3.0...v3.3.1) (2026-02-27)
+
+
+### Bug Fixes
+
+* jackson ([edc2173](https://github.com/dvsa/vol-api-calls/commit/edc21730cd111c1aae2cd529e0702c425a51b858))
+* revert code ([96a6f2d](https://github.com/dvsa/vol-api-calls/commit/96a6f2d6d70498c6b541590a14d0a9940b38654c))
+* swich to jjwt lib ([6900689](https://github.com/dvsa/vol-api-calls/commit/69006890a685a8745f986eb71563375f2a85ccce))
+* swich to jjwt lib ([adc1534](https://github.com/dvsa/vol-api-calls/commit/adc153478a48a0718599f5e82b74f8f1add2a74d))
+* switch to native JWT handling ([f5a6ce2](https://github.com/dvsa/vol-api-calls/commit/f5a6ce2387e76a5cedda53c7f8904ba6a9a858f1))
+
 ## [3.3.0](https://github.com/dvsa/vol-api-calls/compare/v3.2.3...v3.3.0) (2026-02-20)
 
 
