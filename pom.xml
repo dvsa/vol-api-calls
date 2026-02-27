@@ -29,11 +29,11 @@
         <!-- HTTP Client -->
         <apache-http.version>5.3.1</apache-http.version>
 
-        <!-- Security & Authentication -->
-        <java-jwt.version>4.4.0</java-jwt.version>
-
         <!-- Utilities -->
         <commons-lang3.version>3.18.0</commons-lang3.version>
+
+        <!-- JSON Processing -->
+        <jackson.version>2.17.3</jackson.version>
 
         <!-- Logging - Updated to fix security vulnerability -->
         <log4j-api.version>2.25.3</log4j-api.version>
@@ -274,14 +274,21 @@
         </dependency>
 
         <!-- ====================================== -->
-        <!-- Security & Authentication              -->
+        <!-- JSON Processing                        -->
         <!-- ====================================== -->
 
-        <!-- Auth0 Java JWT - Token Handling -->
+        <!-- Jackson Core - JSON Processing -->
         <dependency>
-            <groupId>com.auth0</groupId>
-            <artifactId>java-jwt</artifactId>
-            <version>${java-jwt.version}</version>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- Jackson Databind - JSON Object Mapping -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
 
         <!-- ====================================== -->
