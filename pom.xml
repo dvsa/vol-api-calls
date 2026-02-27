@@ -35,6 +35,9 @@
         <!-- JSON Processing -->
         <jackson.version>2.17.3</jackson.version>
 
+        <!-- JWT Processing -->
+        <jjwt.version>0.13.0</jjwt.version>
+
         <!-- Logging - Updated to fix security vulnerability -->
         <log4j-api.version>2.25.3</log4j-api.version>
         <log4j-core.version>2.25.3</log4j-core.version>
@@ -274,21 +277,30 @@
         </dependency>
 
         <!-- ====================================== -->
-        <!-- JSON Processing                        -->
+        <!-- JWT Processing                         -->
         <!-- ====================================== -->
 
-        <!-- Jackson Core - JSON Processing -->
+        <!-- JJWT API - JWT Processing Interface -->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>${jackson.version}</version>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>${jjwt.version}</version>
         </dependency>
 
-        <!-- Jackson Databind - JSON Object Mapping -->
+        <!-- JJWT Implementation - JWT Processing -->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>${jjwt.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- JJWT Jackson - JSON Processing for JWT -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>${jjwt.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <!-- ====================================== -->

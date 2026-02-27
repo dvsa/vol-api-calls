@@ -4,21 +4,21 @@ import activesupport.aws.s3.SecretsManager;
 import activesupport.system.Properties;
 import apiCalls.Utils.http.RestUtils;
 import apiCalls.actions.Token;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import org.apache.hc.core5.http.HttpException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.dvsa.testing.lib.url.api.ApiUrl;
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
 
-import java.nio.charset.StandardCharsets;
-import java.time.Instant;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.JsonNode;
 
 public class BaseAPI extends Token {
     private static final Logger LOGGER = LogManager.getLogger(BaseAPI.class);
@@ -47,47 +47,33 @@ public class BaseAPI extends Token {
 
     private boolean isTokenExpired(String token) {
         try {
-            // JWT tokens have 3 parts separated by dots: header.payload.signature
-            String[] parts = token.split("\\.");
-            if (parts.length != 3) {
-                LOGGER.error("Invalid JWT token format - expected 3 parts, got {}", parts.length);
-                return true;
-            }
-
-            // Decode the payload (second part)
-            String payload = parts[1];
+            Claims claims = Jwts.parser()
+                    .unsecured()
+                    .build()
+                    .parseUnsecuredClaims(token)
+                    .getPayload();
             
-            // Add padding if necessary for proper Base64 decoding
-            int paddingLength = 4 - (payload.length() % 4);
-            if (paddingLength != 4) {
-                payload += "=".repeat(paddingLength);
-            }
-            
-            // Decode Base64URL
-            byte[] decodedBytes = Base64.getUrlDecoder().decode(payload);
-            String decodedPayload = new String(decodedBytes, StandardCharsets.UTF_8);
-            
-            // Parse JSON to get expiration time
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode jsonNode = objectMapper.readTree(decodedPayload);
-            
-            // Get 'exp' claim (expiration time as Unix timestamp)
-            if (!jsonNode.has("exp")) {
-                LOGGER.warn("JWT token does not contain 'exp' claim, treating as expired");
+            Date expiration = claims.getExpiration();
+            if (expiration == null) {
+                LOGGER.warn("JWT token does not contain expiration claim, treating as expired");
                 return true;
             }
             
-            long expTimestamp = jsonNode.get("exp").asLong();
-            Instant expiration = Instant.ofEpochSecond(expTimestamp);
-            
-            boolean isExpired = expiration.isBefore(Instant.now());
+            boolean isExpired = expiration.before(new Date());
             LOGGER.debug("JWT token expires at: {}, is expired: {}", expiration, isExpired);
             
             return isExpired;
             
+        } catch (ExpiredJwtException e) {
+            // Token is already expired
+            LOGGER.debug("JWT token is expired: {}", e.getMessage());
+            return true;
+        } catch (MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
+            LOGGER.error("Invalid JWT token format: {}", e.getMessage());
+            return true; // Treat invalid tokens as expired
         } catch (Exception e) {
-            LOGGER.error("Error decoding JWT token: {}", e.getMessage());
-            return true; // Treat any decoding error as expired token
+            LOGGER.error("Unexpected error decoding JWT token: {}", e.getMessage());
+            return true; // Treat any unexpected error as expired
         }
     }
 
