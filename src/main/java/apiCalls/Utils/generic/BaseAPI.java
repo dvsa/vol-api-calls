@@ -4,11 +4,7 @@ import activesupport.aws.s3.SecretsManager;
 import activesupport.system.Properties;
 import apiCalls.Utils.http.RestUtils;
 import apiCalls.actions.Token;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
 import org.apache.hc.core5.http.HttpException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,33 +43,16 @@ public class BaseAPI extends Token {
 
     private boolean isTokenExpired(String token) {
         try {
-            Claims claims = Jwts.parser()
+            var decodedJWT = Jwts.parser()
                     .unsecured()
                     .build()
                     .parseUnsecuredClaims(token)
                     .getPayload();
             
-            Date expiration = claims.getExpiration();
-            if (expiration == null) {
-                LOGGER.warn("JWT token does not contain expiration claim, treating as expired");
-                return true;
-            }
-            
-            boolean isExpired = expiration.before(new Date());
-            LOGGER.debug("JWT token expires at: {}, is expired: {}", expiration, isExpired);
-            
-            return isExpired;
-            
-        } catch (ExpiredJwtException e) {
-            // Token is already expired
-            LOGGER.debug("JWT token is expired: {}", e.getMessage());
-            return true;
-        } catch (MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
-            LOGGER.error("Invalid JWT token format: {}", e.getMessage());
-            return true; // Treat invalid tokens as expired
+            return decodedJWT.getExpiration().before(new Date());
         } catch (Exception e) {
-            LOGGER.error("Unexpected error decoding JWT token: {}", e.getMessage());
-            return true; // Treat any unexpected error as expired
+            LOGGER.error("Error decoding token: {}", e.getMessage());
+            return true;
         }
     }
 
