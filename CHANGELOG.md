@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.3.2](https://github.com/dvsa/vol-api-calls/compare/v3.3.1...v3.3.2) (2026-03-04)
+
+
+### Bug Fixes
+
+* graceful handling ([a9f5e35](https://github.com/dvsa/vol-api-calls/commit/a9f5e35e8b98ee4bc772526e3109f12bec814023))
+* graceful handling ([935b8e3](https://github.com/dvsa/vol-api-calls/commit/935b8e33526bb6e835cc94b8f1d57374739e4e3b))
+* handle tokens ([ebabf19](https://github.com/dvsa/vol-api-calls/commit/ebabf19d12cae25b7a3ea9945301af74599c5373))
+
 ## [3.3.1](https://github.com/dvsa/vol-api-calls/compare/v3.3.0...v3.3.1) (2026-02-27)
 
 
