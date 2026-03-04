@@ -49,6 +49,15 @@ public class BaseAPI extends Token {
         } catch (JWTDecodeException e) {
             LOGGER.error("Error decoding token: {}", e.getMessage());
             return true;
+        } catch (Exception e) {
+            // Handle signature verification errors that may come from different JWT libraries or validators
+            if (e.getMessage() != null && e.getMessage().contains("Cannot verify JWS signature")) {
+                LOGGER.warn("JWT signature verification failed - token may be from different service. Treating as expired.");
+                return true;
+            } else {
+                LOGGER.error("Error decoding token: {}", e.getMessage());
+                return true;
+            }
         }
     }
 
