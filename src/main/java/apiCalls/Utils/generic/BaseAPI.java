@@ -4,8 +4,7 @@ import activesupport.aws.s3.SecretsManager;
 import activesupport.system.Properties;
 import apiCalls.Utils.http.RestUtils;
 import apiCalls.actions.Token;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.exceptions.JWTDecodeException;
+import io.jsonwebtoken.Jwts;
 import org.apache.hc.core5.http.HttpException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,9 +43,14 @@ public class BaseAPI extends Token {
 
     private boolean isTokenExpired(String token) {
         try {
-            var decodedJWT = JWT.decode(token);
-            return decodedJWT.getExpiresAt().before(new Date());
-        } catch (JWTDecodeException e) {
+            var decodedJWT = Jwts.parser()
+                    .unsecured()
+                    .build()
+                    .parseUnsecuredClaims(token)
+                    .getPayload();
+            
+            return decodedJWT.getExpiration().before(new Date());
+        } catch (Exception e) {
             LOGGER.error("Error decoding token: {}", e.getMessage());
             return true;
         } catch (Exception e) {

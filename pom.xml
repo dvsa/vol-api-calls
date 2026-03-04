@@ -7,7 +7,7 @@
     <!-- ========================================== -->
     <groupId>org.dvsa.testing.framework</groupId>
     <artifactId>vol-api-calls</artifactId>
-    <version>3.3.0</version>
+    <version>3.3.1</version>
 
     <!-- ========================================== -->
     <!-- Properties                                 -->
@@ -29,11 +29,11 @@
         <!-- HTTP Client -->
         <apache-http.version>5.3.1</apache-http.version>
 
-        <!-- Security & Authentication -->
-        <java-jwt.version>4.4.0</java-jwt.version>
-
         <!-- Utilities -->
         <commons-lang3.version>3.18.0</commons-lang3.version>
+
+        <!-- JWT Processing -->
+        <jjwt.version>0.13.0</jjwt.version>
 
         <!-- Logging - Updated to fix security vulnerability -->
         <log4j-api.version>2.25.3</log4j-api.version>
@@ -255,14 +255,30 @@
         </dependency>
 
         <!-- ====================================== -->
-        <!-- Security & Authentication              -->
+        <!-- JWT Processing                         -->
         <!-- ====================================== -->
 
-        <!-- Auth0 Java JWT - Token Handling -->
+        <!-- JJWT API - JWT Processing Interface -->
         <dependency>
-            <groupId>com.auth0</groupId>
-            <artifactId>java-jwt</artifactId>
-            <version>${java-jwt.version}</version>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>${jjwt.version}</version>
+        </dependency>
+
+        <!-- JJWT Implementation - JWT Processing -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>${jjwt.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- JJWT Jackson - JSON Processing for JWT -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>${jjwt.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <!-- ====================================== -->
