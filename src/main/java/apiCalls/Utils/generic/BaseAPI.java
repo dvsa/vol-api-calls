@@ -43,25 +43,31 @@ public class BaseAPI extends Token {
 
     private boolean isTokenExpired(String token) {
         try {
-            var decodedJWT = Jwts.parser()
-                    .unsecured()
-                    .build()
-                    .parseUnsecuredClaims(token)
-                    .getPayload();
-            
-            return decodedJWT.getExpiration().before(new Date());
-        } catch (Exception e) {
-            LOGGER.error("Error decoding token: {}", e.getMessage());
-            return true;
-        } catch (Exception e) {
-            // Handle signature verification errors that may come from different JWT libraries or validators
-            if (e.getMessage() != null && e.getMessage().contains("Cannot verify JWS signature")) {
-                LOGGER.warn("JWT signature verification failed - token may be from different service. Treating as expired.");
-                return true;
-            } else {
-                LOGGER.error("Error decoding token: {}", e.getMessage());
+
+            String[] chunks = token.split("\\.");
+            if (chunks.length != 3) {
+                LOGGER.error("Invalid JWT format - expected 3 parts but got {}", chunks.length);
                 return true;
             }
+            
+            String payload = new String(java.util.Base64.getUrlDecoder().decode(chunks[1]));
+            
+            com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            com.fasterxml.jackson.databind.JsonNode claims = mapper.readTree(payload);
+            
+            if (claims.has("exp")) {
+                long expTime = claims.get("exp").asLong() * 1000; // Convert from seconds to milliseconds
+                boolean expired = expTime < System.currentTimeMillis();
+                LOGGER.debug("Token expiration check: exp={}, current={}, expired={}", 
+                    new Date(expTime), new Date(), expired);
+                return expired;
+            } else {
+                LOGGER.warn("Token has no expiration claim, treating as expired");
+                return true;
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error checking token expiration: {}", e.getMessage());
+            return true;
         }
     }
 
