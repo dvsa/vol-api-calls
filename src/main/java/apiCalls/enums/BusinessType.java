@@ -7,13 +7,13 @@ public enum BusinessType {
     LIMITED_PARTNERSHIP("org_t_llp"),
     OTHER(" org_t_pa");
 
-    private final String businessTypes;
+    private final String value;
 
-    private BusinessType(String businessTypes){
-        this.businessTypes = businessTypes;
+    BusinessType(String value) {
+        this.value = value;
     }
 
     public String asString() {
-        return businessTypes;
+        return value;
     }
 }

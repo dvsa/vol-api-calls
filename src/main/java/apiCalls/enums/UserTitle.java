@@ -5,13 +5,13 @@ public enum UserTitle {
     MRS("title_mrs"),
     MS("title_ms");
 
-    private final String userTitles;
+    private final String value;
 
-    private UserTitle(String userTitles) {
-        this.userTitles = userTitles;
+    UserTitle(String value) {
+        this.value = value;
     }
 
     public String asString() {
-        return this.userTitles;
+        return value;
     }
 }

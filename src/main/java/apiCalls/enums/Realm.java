@@ -4,13 +4,13 @@ public enum Realm {
     SELF_SERVE("selfserve"),
     INTERNAL("internal");
 
-    private final String serviceType;
+    private final String value;
 
-    private Realm(String serviceType){
-        this.serviceType = serviceType;
+    Realm(String value) {
+        this.value = value;
     }
 
     public String asString() {
-        return serviceType;
+        return value;
     }
 }

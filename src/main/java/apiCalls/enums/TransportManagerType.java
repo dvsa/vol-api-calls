@@ -4,13 +4,13 @@ public enum TransportManagerType {
     INTERNAL("tm_t_e"),
     EXTERNAL("tm_t_i");
 
-    private final String transportManagerType;
+    private final String value;
 
-    private TransportManagerType(String transportManagerType){
-        this.transportManagerType = transportManagerType;
+    TransportManagerType(String value) {
+        this.value = value;
     }
 
-    public String asString(){
-        return transportManagerType;
+    public String asString() {
+        return value;
     }
 }

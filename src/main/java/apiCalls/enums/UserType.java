@@ -4,13 +4,13 @@ public enum UserType {
     INTERNAL("internal"),
     EXTERNAL("selfserve");
 
-    private final String userTypes;
+    private final String value;
 
-    private UserType(String userType) {
-        this.userTypes = userType;
+    UserType(String value) {
+        this.value = value;
     }
 
     public String asString() {
-        return userTypes;
+        return value;
     }
 }
