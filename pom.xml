@@ -36,8 +36,8 @@
         <jjwt.version>0.13.0</jjwt.version>
 
         <!-- Logging - Updated to fix security vulnerability -->
-        <log4j-api.version>2.25.3</log4j-api.version>
-        <log4j-core.version>2.25.3</log4j-core.version>
+        <log4j-api.version>2.25.4</log4j-api.version>
+        <log4j-core.version>2.25.4</log4j-core.version>
 
         <!-- AWS Maven Extension -->
         <aws-maven.version>5.0.0.RELEASE</aws-maven.version>
