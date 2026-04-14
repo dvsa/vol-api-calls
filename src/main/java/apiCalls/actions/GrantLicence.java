@@ -8,6 +8,7 @@ import apiCalls.Utils.volBuilders.*;
 import apiCalls.Utils.generic.BaseAPI;
 import apiCalls.Utils.generic.Headers;
 import apiCalls.Utils.generic.Utils;
+import apiCalls.enums.TrackingStatus;
 import io.restassured.response.ValidatableResponse;
 import org.apache.hc.core5.http.HttpException;
 import org.apache.hc.core5.http.HttpStatus;
@@ -73,7 +74,7 @@ public class GrantLicence extends BaseAPI {
 
     public synchronized void createOverview() throws HttpException {
         var overviewResource = ApiUrl.build(env, "application/%s/overview/".formatted(application.getApplicationId())).toString();
-        var status = "1";
+        var status = TrackingStatus.ACCEPTED.asString();
         var overrideOption = "Y";
         var transportArea = "D";
         var trackingId = fetchApplicationInformation(application.getApplicationId(), "applicationTracking.id", null);
@@ -86,33 +87,7 @@ public class GrantLicence extends BaseAPI {
         var tracking = new TrackingBuilder()
                 .withId(trackingId)
                 .withVersion(applicationTrackingVersion)
-                .withAddressesStatus(status)
-                .withBusinessDetailsStatus(status)
-                .withBusinessTypeStatus(status)
-                .withCommunityLicencesStatus(status)
-                .withConditionsUndertakingsStatus(status)
-                .withConvictionsPenaltiesStatus(status)
-                .withFinancialEvidenceStatus(status)
-                .withFinancialHistoryStatus(status)
-                .withLicenceHistoryStatus(status)
-                .withOperatingCentresStatus(status)
-                .withPeopleStatus(status)
-                .withSafetyStatus(status)
-                .withTransportManagersStatus(status)
-                .withTypeOfLicenceStatus(status)
-                .withDeclarationsInternalStatus(status)
-                .withVehiclesStatus(status)
-                .withVehiclesPsvStatus(status)
-                .withTaxiPhvStatus(status)
-                .withVehiclesSizeStatus(status)
-                .withPsvOperateSmallStatus(status)
-                .withPsvOperateLargeStatus(status)
-                .withPsvSmallConditionsStatus(status)
-                .withPsvOperateNoveltyStatus(status)
-                .withPsvSmallPartWrittenStatus(status)
-                .withPsvDocumentaryEvidenceSmallStatus(status)
-                .withPsvDocumentaryEvidenceLargeStatus(status)
-                .withPsvMainOccupationUndertakingsStatus(status);
+                .withAllStatuses(status);
 
 
         var overview = new OverviewBuilder()
