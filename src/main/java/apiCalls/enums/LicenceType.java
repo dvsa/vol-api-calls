@@ -1,7 +1,5 @@
 package apiCalls.enums;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Arrays;
 
 public enum LicenceType {
@@ -10,18 +8,20 @@ public enum LicenceType {
     STANDARD_INTERNATIONAL("ltyp_si"),
     SPECIAL_RESTRICTED("ltyp_sr");
 
-    private final String licenceTypes;
+    private final String value;
 
-    private LicenceType(String licenceTypes){
-        this.licenceTypes = licenceTypes;
+    LicenceType(String value) {
+        this.value = value;
     }
 
     public String asString() {
-        return licenceTypes;
+        return value;
     }
 
-    public static LicenceType getEnum(@NotNull String name) {
-        return Arrays.stream(LicenceType.values()).filter(status -> status.asString().equalsIgnoreCase(name))
-                .findFirst().orElseThrow(() -> new IllegalArgumentException("Unable to convert to enum, name: ".concat(name)));
+    public static LicenceType getEnum(String name) {
+        return Arrays.stream(values())
+                .filter(type -> type.asString().equalsIgnoreCase(name))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Unable to convert to enum, name: " + name));
     }
 }

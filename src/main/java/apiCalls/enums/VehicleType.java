@@ -4,13 +4,13 @@ public enum VehicleType {
     MIXED_FLEET("app_veh_type_mixed"),
     LGV_ONLY_FLEET("app_veh_type_lgv");
 
-    private final String vehicleTypes;
+    private final String value;
 
-    private VehicleType(String vehicleTypes){
-        this.vehicleTypes = vehicleTypes;
+    VehicleType(String value) {
+        this.value = value;
     }
 
     public String asString() {
-        return vehicleTypes;
+        return value;
     }
 }

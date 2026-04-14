@@ -8,13 +8,13 @@ public enum UserRoles {
     INTERNAL_CASE_WORKER("internal-case-worker"),
     INTERNAL("internal");
 
-    private final String userRoles;
+    private final String value;
 
-    private UserRoles(String userRoles) {
-        this.userRoles = userRoles;
+    UserRoles(String value) {
+        this.value = value;
     }
 
     public String asString() {
-        return userRoles;
+        return value;
     }
 }

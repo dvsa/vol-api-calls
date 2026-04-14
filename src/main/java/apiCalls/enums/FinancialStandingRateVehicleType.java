@@ -1,7 +1,5 @@
 package apiCalls.enums;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Arrays;
 
 public enum FinancialStandingRateVehicleType {
@@ -9,18 +7,20 @@ public enum FinancialStandingRateVehicleType {
     HGV("fin_sta_veh_typ_hgv"),
     LGV("fin_sta_veh_typ_lgv");
 
-    private final String vehicleTypes;
+    private final String value;
 
-    FinancialStandingRateVehicleType(String vehicleTypes){
-        this.vehicleTypes = vehicleTypes;
+    FinancialStandingRateVehicleType(String value) {
+        this.value = value;
     }
 
     public String asString() {
-        return vehicleTypes;
+        return value;
     }
 
-    public static FinancialStandingRateVehicleType getEnum(@NotNull String name) {
-        return Arrays.stream(FinancialStandingRateVehicleType.values()).filter(status -> status.asString().equalsIgnoreCase(name))
-                .findFirst().orElseThrow(() -> new IllegalArgumentException("Unable to convert to enum, name: ".concat(name)));
+    public static FinancialStandingRateVehicleType getEnum(String name) {
+        return Arrays.stream(values())
+                .filter(type -> type.asString().equalsIgnoreCase(name))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Unable to convert to enum, name: " + name));
     }
 }
