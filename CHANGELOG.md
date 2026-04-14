@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.1.0](https://github.com/dvsa/vol-api-calls/compare/v4.0.0...v4.1.0) (2026-04-14)
+
+
+### Features
+
+* improve PSV application tracking with type-safe statuses ([fa6e814](https://github.com/dvsa/vol-api-calls/commit/fa6e81472d5c6f38c865ecf35a71636b289c8120))
+
+
+### Bug Fixes
+
+* bump log4j from 2.25.3 to 2.25.4 ([f6df6d3](https://github.com/dvsa/vol-api-calls/commit/f6df6d3ffb66ba1389ef6dcbb9868a052cffa39e))
+
 ## [4.0.0](https://github.com/dvsa/vol-api-calls/compare/v3.3.2...v4.0.0) (2026-04-10)
 
 
