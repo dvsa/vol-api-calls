@@ -1,5 +1,21 @@
 # Changelog
 
+## [4.0.0](https://github.com/dvsa/vol-api-calls/compare/v3.3.2...v4.0.0) (2026-04-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* Updated active-support dependency from 2.15.2 to 2.15.4
+
+### Bug Fixes
+
+* correct commons-io version from 2.15.2 to 2.15.1 ([d62ed6a](https://github.com/dvsa/vol-api-calls/commit/d62ed6af338838baca0374cd2d241d642450d2b2))
+
+
+### Miscellaneous Chores
+
+* bump active-support to version 2.15.4 ([23ccae5](https://github.com/dvsa/vol-api-calls/commit/23ccae5377e766c926e87dbc68fa4ebe5ec451fb))
+
 ## [3.3.2](https://github.com/dvsa/vol-api-calls/compare/v3.3.1...v3.3.2) (2026-03-04)
 
 
