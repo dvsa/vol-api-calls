@@ -5,7 +5,7 @@ public enum BusinessType {
     SOLE_TRADER("org_t_st"),
     PARTNERSHIP("org_t_p"),
     LIMITED_PARTNERSHIP("org_t_llp"),
-    OTHER(" org_t_pa");
+    OTHER("org_t_pa");
 
     private final String value;
 

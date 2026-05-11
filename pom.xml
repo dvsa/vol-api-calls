@@ -310,6 +310,18 @@
             <version>${log4j-core.version}</version>
         </dependency>
 
+        <!-- ====================================== -->
+        <!-- Test Dependencies                      -->
+        <!-- ====================================== -->
+
+        <!-- JUnit 5 - Aligns engine version with API from active-support -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.11.3</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 </project>
