@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.2.1](https://github.com/dvsa/vol-api-calls/compare/v4.2.0...v4.2.1) (2026-05-18)
+
+
+### Bug Fixes
+
+* remove vehicle size declaration call pending vol-app backend fix ([db839bd](https://github.com/dvsa/vol-api-calls/commit/db839bd2e4b682f4c1fe9591cec4503c0c4a01e6))
+* remove vehicle size declaration call pending vol-app backend fix ([1d735a1](https://github.com/dvsa/vol-api-calls/commit/1d735a13e5d1127b8ec0e988cb61eeb1cdeb8ca3))
+
 ## [4.2.0](https://github.com/dvsa/vol-api-calls/compare/v4.1.0...v4.2.0) (2026-05-18)
 
 
