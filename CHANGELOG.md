@@ -1,5 +1,21 @@
 # Changelog
 
+## [4.2.0](https://github.com/dvsa/vol-api-calls/compare/v4.1.0...v4.2.0) (2026-05-18)
+
+
+### Features
+
+* add contract tests for olcs-transfer API alignment ([9f75293](https://github.com/dvsa/vol-api-calls/commit/9f75293064fd35db4be14f75a614b4715ae6b31a))
+* add contract tests for olcs-transfer API alignment ([686a176](https://github.com/dvsa/vol-api-calls/commit/686a176825382fa76d571f325654b81b49c7c24a))
+* bump active support ([0cc0cc3](https://github.com/dvsa/vol-api-calls/commit/0cc0cc337ffe72ebcf985bf8e6358b91a7959e18))
+* bump active support ([3abf041](https://github.com/dvsa/vol-api-calls/commit/3abf0410df6f0a61ffbf498f3b889f7227b2fc17))
+
+
+### Bug Fixes
+
+* re-enable vehicle size declaration for PSV applications ([a9ce2cb](https://github.com/dvsa/vol-api-calls/commit/a9ce2cb5387e1dd8ab14024c1d91c004a902e8a0))
+* re-enable vehicle size declaration for PSV applications ([3126668](https://github.com/dvsa/vol-api-calls/commit/31266688122f8fe0066b8e9f70edc602f0c03261))
+
 ## [4.1.0](https://github.com/dvsa/vol-api-calls/compare/v4.0.0...v4.1.0) (2026-04-14)
 
 
