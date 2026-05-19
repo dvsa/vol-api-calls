@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.3.0](https://github.com/dvsa/vol-api-calls/compare/v4.2.1...v4.3.0) (2026-05-19)
+
+
+### Features
+
+* add submitVehicleSize() for new PUT vehicle-size endpoint ([d15b34c](https://github.com/dvsa/vol-api-calls/commit/d15b34c2b7c6124b2d783d8f7370de1897817fb5))
+* add submitVehicleSize() for new PUT vehicle-size endpoint ([67845db](https://github.com/dvsa/vol-api-calls/commit/67845db7c98bc64a6c6a7bec52569c783bb64065))
+
 ## [4.2.1](https://github.com/dvsa/vol-api-calls/compare/v4.2.0...v4.2.1) (2026-05-18)
 
 
