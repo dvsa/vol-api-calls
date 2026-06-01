@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.3.1](https://github.com/dvsa/vol-api-calls/compare/v4.3.0...v4.3.1) (2026-06-01)
+
+
+### Bug Fixes
+
+* upgrade netty to 4.1.133.Final and active-support to 2.18.4 ([73293a9](https://github.com/dvsa/vol-api-calls/commit/73293a9f8461446e5949e486d57933b9065059be))
+* upgrade netty to 4.1.133.Final and active-support to 2.18.4 ([e66a053](https://github.com/dvsa/vol-api-calls/commit/e66a053228bfd3d48c6cb1fd5b3b46feecf03f97))
+
 ## [4.3.0](https://github.com/dvsa/vol-api-calls/compare/v4.2.1...v4.3.0) (2026-05-19)
 
 
