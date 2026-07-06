@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.3.3](https://github.com/dvsa/vol-api-calls/compare/v4.3.2...v4.3.3) (2026-07-06)
+
+
+### Bug Fixes
+
+* remove explicit httpclient5 dependency, inherit from active-support ([fb03b97](https://github.com/dvsa/vol-api-calls/commit/fb03b971c406cc9d7f3895ebbcf61df8ab634c1b))
+* upgrade httpclient5 from 5.5.1 to 5.6.2 to address CVE ([1c482bd](https://github.com/dvsa/vol-api-calls/commit/1c482bdc33b662fcf966018f80a540324489fb69))
+
 ## [4.3.2](https://github.com/dvsa/vol-api-calls/compare/v4.3.1...v4.3.2) (2026-07-02)
 
 
