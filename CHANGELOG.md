@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.3.4](https://github.com/dvsa/vol-api-calls/compare/v4.3.3...v4.3.4) (2026-07-22)
+
+
+### Bug Fixes
+
+* up active support ([2dea45f](https://github.com/dvsa/vol-api-calls/commit/2dea45f64423f10602af07b009393a1b5203f3b3))
+* up active support ([7c0a7ac](https://github.com/dvsa/vol-api-calls/commit/7c0a7ace28d54413f8d3b7fd7c7cf3b5cb01ae91))
+
 ## [4.3.3](https://github.com/dvsa/vol-api-calls/compare/v4.3.2...v4.3.3) (2026-07-06)
 
 
