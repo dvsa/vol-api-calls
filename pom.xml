@@ -20,11 +20,12 @@
         <maven.compiler.version>3.11.0</maven.compiler.version>
 
         <!-- DVSA Internal Libraries -->
-        <active-support.version>2.23.3</active-support.version>
+        <active-support.version>2.23.8</active-support.version>
         <uri-constructor.version>2.4.0</uri-constructor.version>
 
         <!-- Testing & API Libraries -->
         <rest-assured.version>5.4.0</rest-assured.version>
+        <jackson.version>2.18.11</jackson.version>
 
         <commons-lang3.version>3.18.0</commons-lang3.version>
 
@@ -50,6 +51,15 @@
             <!-- ================================== -->
             <!-- Security Fixes - Override Transitive Dependencies -->
             <!-- ================================== -->
+
+            <!-- Fix Jackson resource-allocation vulnerabilities and align all modules -->
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
             <!-- Fix Netty vulnerabilities from AWS SDK -->
             <dependency>
