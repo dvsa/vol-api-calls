@@ -12,7 +12,7 @@ import org.apache.hc.core5.http.HttpStatus;
 import org.dvsa.testing.lib.url.api.ApiUrl;
 
 import org.dvsa.testing.lib.url.utils.EnvironmentType;
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,7 +39,7 @@ public class RegisterConsultantAndOperator {
         return consultantDetails;
     }
 
-    @Nonnull
+    @NotNull
     public synchronized ValidatableResponse register() throws HttpException {
         var registerResource = ApiUrl.build(env, "user/selfserve/register/register-consultant-operator").toString();
 
