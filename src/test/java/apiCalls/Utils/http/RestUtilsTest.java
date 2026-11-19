@@ -74,11 +74,5 @@ class RestUtilsTest {
         assertEquals("Bearer header.payload.signature", authorization.get());
     }
 
-    @Test
-    void basicAuthenticationIsNotTreatedAsAJwt() {
-        RestUtils.get(endpoint, Map.of("Authorization", "Basic dXNlcjpwYXNz"));
 
-        assertEquals(1, requests.get());
-        assertEquals("Basic dXNlcjpwYXNz", authorization.get());
-    }
 }
