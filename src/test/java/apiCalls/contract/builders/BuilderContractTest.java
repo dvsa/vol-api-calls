@@ -1,6 +1,7 @@
 package apiCalls.contract.builders;
 
 import apiCalls.Utils.volBuilders.*;
+import apiCalls.enums.EnforcementArea;
 import apiCalls.enums.TrackingStatus;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -8,6 +9,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.dvsa.testing.lib.url.utils.EnvironmentType;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -29,6 +34,41 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @DisplayName("Builder serialisation matches olcs-transfer contract")
 class BuilderContractTest {
+
+    @Nested
+    @DisplayName("Operating centre enforcement areas are environment-specific")
+    class OperatingCentreEnforcementAreaContract {
+        @ParameterizedTest
+        @CsvSource({
+                "NORTH_EAST,V048",
+                "NORTH_WEST,V058",
+                "MIDLANDS,V026",
+                "EAST,N002",
+                "WALES,N004",
+                "WEST,V103",
+                "LONDON,V001",
+                "SCOTLAND,N003",
+                "NORTHERN_IRELAND,NI01"
+        })
+        void localPayloadUsesExistingReferenceData(EnforcementArea area, String expectedId)
+                throws JsonProcessingException {
+            var builder = new OperatingCentreUpdater()
+                    .withEnforcementArea(area.value(EnvironmentType.LOCAL));
+
+            assertThat(toJson(builder).get("enforcementArea").asText()).isEqualTo(expectedId);
+        }
+
+        @ParameterizedTest
+        @EnumSource(value = EnvironmentType.class, names = "LOCAL", mode = EnumSource.Mode.EXCLUDE)
+        void nonLocalPayloadKeepsExistingCodes(EnvironmentType environment)
+                throws JsonProcessingException {
+            for (var area : EnforcementArea.values()) {
+                var builder = new OperatingCentreUpdater().withEnforcementArea(area.value(environment));
+
+                assertThat(toJson(builder).get("enforcementArea").asText()).isEqualTo(area.value());
+            }
+        }
+    }
 
     private static JsonNode toJson(Object builder) throws JsonProcessingException {
         var m = new ObjectMapper();

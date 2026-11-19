@@ -16,6 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class CreateApplication extends BaseAPI{
     private static final Logger LOGGER = LogManager.getLogger(CreateApplication.class);
@@ -1188,6 +1189,19 @@ public class CreateApplication extends BaseAPI{
         if (licenceType.equals(LicenceType.SPECIAL_RESTRICTED.asString())) {
             return null;
         }
+        if (env == EnvironmentType.LOCAL && "Y".equals(getNiFlag())) {
+            // Set the local reference before creating an OC invokes the backend's EA-N default.
+            int applicationVersion = Integer.parseInt(fetchApplicationInformation(getApplicationId(), "version", "1"));
+            var defaultsResource = ApiUrl.build(env, String.format("application/%s/operating-centres", getApplicationId())).toString();
+            var defaults = Map.<String, Object>of(
+                    "id", getApplicationId(),
+                    "version", applicationVersion,
+                    "partial", true,
+                    "partialAction", "add",
+                    "trafficArea", TrafficArea.NORTHERN_IRELAND.value(),
+                    "enforcementArea", EnforcementArea.NORTHERN_IRELAND.value(env));
+            Utils.checkHTTPStatusCode(updateOperatingCentreDefaults(defaults, defaultsResource), HttpStatus.SC_OK);
+        }
         var operatingCentreResource = ApiUrl.build(env, String.format("application/%s/operating-centre/", getApplicationId())).toString();
         var permissionOption = "Y";
 
@@ -1207,12 +1221,20 @@ public class CreateApplication extends BaseAPI{
         if (operatorType.equals(OperatorType.PUBLIC.asString()) && (licenceType.equals(LicenceType.RESTRICTED.asString()))) {
             operatingCentreBuilder.withNoOfHgvVehiclesRequired(String.valueOf(getRestrictedVehicles()));
         }
-        apiResponse = RestUtils.post(operatingCentreBuilder, operatingCentreResource, apiHeaders.getApiHeader());
+        apiResponse = createOperatingCentre(operatingCentreBuilder, operatingCentreResource);
 
         Utils.checkHTTPStatusCode(apiResponse, HttpStatus.SC_CREATED);
 
 
         return apiResponse;
+    }
+
+    protected ValidatableResponse updateOperatingCentreDefaults(Map<String, Object> defaults, String resource) {
+        return RestUtils.put(defaults, resource, apiHeaders.getApiHeader());
+    }
+
+    protected ValidatableResponse createOperatingCentre(OperatingCentreBuilder operatingCentre, String resource) {
+        return RestUtils.post(operatingCentre, resource, apiHeaders.getApiHeader());
     }
 
     public synchronized ValidatableResponse updateOperatingCentre() throws HttpException {
@@ -1222,7 +1244,7 @@ public class CreateApplication extends BaseAPI{
         int applicationVersion = Integer.parseInt(fetchApplicationInformation(getApplicationId(), "version", "1"));
         var updateOperatingCentreResource = ApiUrl.build(env, String.format("application/%s/operating-centres", getApplicationId())).toString();
         OperatingCentreUpdater updateOperatingCentre = new OperatingCentreUpdater().withId(getApplicationId())
-                .withTrafficArea(getTrafficArea().value()).withEnforcementArea(getEnforcementArea().value()).withVersion(applicationVersion);
+                .withTrafficArea(getTrafficArea().value()).withEnforcementArea(getEnforcementArea().value(env)).withVersion(applicationVersion);
 
         if (operatorType.equals(OperatorType.GOODS.asString())) {
             if (getVehicleType().equals(VehicleType.MIXED_FLEET.asString())) {

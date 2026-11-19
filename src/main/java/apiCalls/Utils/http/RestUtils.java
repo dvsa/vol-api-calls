@@ -1,5 +1,6 @@
 package apiCalls.Utils.http;
 
+import apiCalls.Utils.generic.Headers;
 import io.restassured.config.RestAssuredConfig;
 import io.restassured.config.SSLConfig;
 import io.restassured.filter.log.ErrorLoggingFilter;
@@ -21,7 +22,7 @@ public class RestUtils {
                 .urlEncodingEnabled(true)
                 .filters(new ResponseLoggingFilter(), new ErrorLoggingFilter())
                 .contentType(ContentType.JSON)
-                .headers(headers)
+                .headers(Headers.forRequest(headers))
                 .body(requestBody)
                 .when()
                 .config(RestAssuredConfig.config().sslConfig(new SSLConfig().relaxedHTTPSValidation().allowAllHostnames()))
@@ -34,7 +35,7 @@ public class RestUtils {
                 .urlEncodingEnabled(true)
                 .filter(new ErrorLoggingFilter())
                 .contentType(ContentType.JSON)
-                .headers(headers)
+                .headers(Headers.forRequest(headers))
                 .body(requestBody)
                 .when()
                 .config(RestAssuredConfig.config().sslConfig(new SSLConfig().relaxedHTTPSValidation().allowAllHostnames()))
@@ -46,7 +47,7 @@ public class RestUtils {
         return given().queryParams(queryParam)
                 .urlEncodingEnabled(true)
                 .filter(new ErrorLoggingFilter())
-                .headers(headers)
+                .headers(Headers.forRequest(headers))
                 .when()
                 .config(RestAssuredConfig.config().sslConfig(new SSLConfig().relaxedHTTPSValidation().allowAllHostnames()))
                 .get(serviceEndPoint)
@@ -61,7 +62,7 @@ public class RestUtils {
         return given()
                 .urlEncodingEnabled(true)
                 .filter(new ErrorLoggingFilter())
-                .headers(headers)
+                .headers(Headers.forRequest(headers))
                 .when()
                 .config(RestAssuredConfig.config().sslConfig(new SSLConfig().relaxedHTTPSValidation().allowAllHostnames()))
                 .get(serviceEndPoint)
@@ -73,7 +74,7 @@ public class RestUtils {
                 .urlEncodingEnabled(true)
                 .filter(new ErrorLoggingFilter())
                 .contentType(ContentType.JSON)
-                .headers(headers)
+                .headers(Headers.forRequest(headers))
                 .body(requestBody)
                 .when()
                 .config(RestAssuredConfig.config().sslConfig(new SSLConfig().relaxedHTTPSValidation().allowAllHostnames()))
@@ -85,7 +86,7 @@ public class RestUtils {
         return given()
                 .urlEncodingEnabled(true)
                 .filter(new ErrorLoggingFilter())
-                .headers(headers)
+                .headers(Headers.forRequest(headers))
                 .proxy(proxyURI, proxyPort)
                 .when()
                 .config(RestAssuredConfig.config().sslConfig(new SSLConfig().relaxedHTTPSValidation().allowAllHostnames()))

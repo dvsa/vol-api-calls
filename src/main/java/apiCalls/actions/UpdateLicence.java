@@ -1107,7 +1107,7 @@ public class UpdateLicence extends BaseAPI {
             var updateOperatingCentreResource = ApiUrl.build(env, String.format("application/%s/operating-centres", this.variationApplicationId)).toString();
             var updateOperatingCentre = new OperatingCentreUpdater().withId(this.variationApplicationId)
                     .withTrafficArea(this.application.getTrafficArea().value())
-                    .withEnforcementArea(this.application.getEnforcementArea().value())
+                    .withEnforcementArea(this.application.getEnforcementArea().value(env))
                     .withVersion(applicationVersion)
                     .withTotAuthHgvVehicles(hgvAuthorisation)
                     .withTotCommunityLicences(1)
