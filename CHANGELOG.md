@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.5.0](https://github.com/dvsa/vol-api-calls/compare/v4.4.2...v4.5.0) (2026-11-19)
+
+
+### Features
+
+* local ([80a5eac](https://github.com/dvsa/vol-api-calls/commit/80a5eac8ae1174ee5568a72c3b508c4b622dd9e0))
+* local ([bfe74e7](https://github.com/dvsa/vol-api-calls/commit/bfe74e7ba68b56e6be5a1039ef9fc684f174fe88))
+
 ## [4.4.2](https://github.com/dvsa/vol-api-calls/compare/v4.4.1...v4.4.2) (2026-11-09)
 
 
