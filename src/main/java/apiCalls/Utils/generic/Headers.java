@@ -13,6 +13,26 @@ public class Headers {
         return apiHeaderThreadLocal.get();
     }
 
+    public static void requireValidToken(String token) {
+        if (token == null || !token.matches("[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+")) {
+            throw new IllegalStateException("Authentication did not return a valid JWT access token");
+        }
+    }
+
+    public static Map<String, String> forRequest(Map<String, String> headers) {
+        Map<String, String> snapshot = new HashMap<>(headers);
+        snapshot.forEach((name, value) -> {
+            if ("Authorization".equalsIgnoreCase(name)
+                    && value != null && value.regionMatches(true, 0, "Bearer", 0, 6)) {
+                if (!value.regionMatches(true, 0, "Bearer ", 0, 7)) {
+                    throw new IllegalStateException("Cannot send a malformed bearer authorization header");
+                }
+                requireValidToken(value.substring(7));
+            }
+        });
+        return snapshot;
+    }
+
     public static String getAPI_HEADER() {
         return API_HEADER;
     }

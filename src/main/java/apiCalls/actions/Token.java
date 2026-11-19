@@ -3,6 +3,7 @@ package apiCalls.actions;
 import apiCalls.Utils.http.RestUtils;
 import activesupport.system.Properties;
 import apiCalls.Utils.generic.Utils;
+import apiCalls.Utils.generic.Headers;
 import apiCalls.Utils.volBuilders.TokenRequestBuilder;
 import apiCalls.enums.UserType;
 import io.restassured.response.ValidatableResponse;
@@ -29,13 +30,8 @@ public class Token {
     }
 
     public synchronized String generateAdminToken(String adminUser, String adminPassword) throws HttpException {
-        if (adminToken == null) {
-            LOGGER.info("Admin token is null, generating a new token.");
-            adminToken = getToken(adminUser, adminPassword, UserType.INTERNAL.asString());
-            setToken(adminToken);
-        } else {
-            LOGGER.info("Admin token already exists, returning the existing token.");
-        }
+        adminToken = null;
+        adminToken = getToken(adminUser, adminPassword, UserType.INTERNAL.asString());
         return adminToken;
     }
 
@@ -47,31 +43,52 @@ public class Token {
 
         int retryCount = 0;
         int maxRetries = 3;
+        Exception lastFailure = null;
         while (retryCount < maxRetries) {
+            ValidatableResponse tokenResponse;
             try {
-                ValidatableResponse tokenResponse = RestUtils.post(tokenBody, jwtTokenResource, header);
+                tokenResponse = requestToken(jwtTokenResource);
                 Utils.checkHTTPStatusCode(tokenResponse, HttpStatus.SC_CREATED);
-                LOGGER.info("Token successfully created.");
-                return tokenResponse.extract().body().jsonPath().getString("flags.identity.Token.access_token");
             } catch (Exception e) {
-                LOGGER.warning("Token creation failed, retrying... " + e.getMessage());
+                lastFailure = e;
                 retryCount++;
-                try {
-                    Thread.sleep((long) Math.pow(2, retryCount) * 1000);
-                } catch (InterruptedException ie) {
-                    Thread.currentThread().interrupt();
+                if (retryCount < maxRetries) {
+                    LOGGER.warning("Token request failed; retrying.");
+                    try {
+                        Thread.sleep((long) Math.pow(2, retryCount) * 1000);
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        throw new HttpException("Interrupted while requesting an authentication token", ie);
+                    }
                 }
+                continue;
             }
+
+            var response = tokenResponse.extract().body().jsonPath();
+            if (!Boolean.TRUE.equals(response.get("flags.isValid"))) {
+                throw new HttpException("Authentication failed for user '" + username
+                        + "' in realm '" + realm + "' (code: " + response.get("flags.code") + ")");
+            }
+
+            String accessToken = response.getString("flags.identity.Token.access_token");
+            try {
+                Headers.requireValidToken(accessToken);
+            } catch (IllegalStateException e) {
+                throw new HttpException("Authentication returned no valid JWT access token for user '"
+                        + username + "' in realm '" + realm + "'", e);
+            }
+            LOGGER.info("Token successfully created.");
+            return accessToken;
         }
-        throw new HttpException("Failed to create token after " + maxRetries + " retries.");
+        throw new HttpException("Failed to create token after " + maxRetries + " attempts for user '"
+                + username + "' in realm '" + realm + "'", lastFailure);
     }
 
     public String getAdminToken() {
         return adminToken;
     }
 
-    private synchronized void setToken(String adminToken) {
-        this.adminToken = adminToken;
-        LOGGER.info("Admin token set.");
+    protected ValidatableResponse requestToken(String resource) {
+        return RestUtils.post(tokenBody, resource, header);
     }
 }
